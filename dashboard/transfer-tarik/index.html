@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer & Tarik - Griyapay Dashboard</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        .bg-grid-slate {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+        }
+        
+        .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
+
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
+        
+        <div class="p-6">
+            <a href="../index.html" class="flex items-center gap-3 mb-6">
+                <img src="../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
+                <div class="text-2xl font-extrabold tracking-tight text-white">
+                    Griya<span class="text-teal-300">pay</span>
+                </div>
+            </a>
+            
+            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+                <div>
+                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                </div>
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
+            
+            <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                Halaman Utama
+            </a>
+
+
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Pembayaran
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
+                    <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
+                    <a href="../pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
+                </div>
+            </div>
+
+            <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            
+            <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+
+            <a href="index.html" class="flex items-center gap-3 bg-white/20 text-white shadow-md border border-white/10 px-4 py-3.5 rounded-xl font-bold transition">
+                <svg class="w-5 h-5 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Transfer & Tarik
+            </a>
+
+            <a href="#" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Penjualan Barang
+            </a>
+            <a href="#" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Topup E-Money
+            </a>
+
+            
+            <a href="#" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Deposit
+            </a>
+            <a href="#" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report
+            </a>
+
+            <div x-data="{ open: false }" class="pt-2">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Setting & Admin
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
+        
+        <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
+
+        <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 py-4 px-6 flex items-center justify-between shrink-0 z-10 lg:rounded-tl-[2.5rem]">
+            <div class="flex items-center gap-4 flex-1">
+                <button @click="sidebarOpen = true" class="lg:hidden text-slate-800 hover:text-teal-600 transition p-1 bg-slate-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div>
+                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Transfer & Tarik Dana</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Kelola perpindahan saldo Anda</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6">
+                <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
+                    <div>
+                        <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
+                        <p class="text-sm font-black tracking-tight drop-shadow-sm" id="headerSaldo">Rp 1.278.441</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="transferTarikLogic()">
+            
+            <div class="max-w-3xl mx-auto pb-10">
+                
+                <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200 flex mb-8 mx-auto w-full md:w-fit">
+                    <button @click="activeTab = 'transfer'" class="flex-1 md:w-48 py-3 rounded-xl font-bold text-sm transition-all duration-300" :class="activeTab === 'transfer' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'">
+                        Kirim Saldo
+                    </button>
+                    <button @click="activeTab = 'tarik'" class="flex-1 md:w-48 py-3 rounded-xl font-bold text-sm transition-all duration-300" :class="activeTab === 'tarik' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'">
+                        Tarik ke Bank
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+                    
+                    <div x-show="activeTab === 'transfer'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="p-6 md:p-8">
+                        <div class="mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">💸</div>
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900 leading-tight">Transfer Saldo</h2>
+                                <p class="text-xs text-slate-500">Kirim saldo ke sesama mitra Griyapay (Gratis Admin)</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">ID Mitra / No HP Tujuan</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    </div>
+                                    <input type="text" x-model="transfer.tujuan" placeholder="Contoh: GP-12345 / 0812..." class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nominal Transfer (Rp)</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span class="text-slate-400 font-bold">Rp</span>
+                                    </div>
+                                    <input type="number" x-model="transfer.nominal" placeholder="0" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-black text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition" min="10000">
+                                </div>
+                                <div class="flex flex-wrap gap-2 mt-3">
+                                    <button @click="transfer.nominal = 50000" class="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 text-xs font-bold rounded-lg transition border border-slate-200">50.000</button>
+                                    <button @click="transfer.nominal = 100000" class="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 text-xs font-bold rounded-lg transition border border-slate-200">100.000</button>
+                                    <button @click="transfer.nominal = 500000" class="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 text-xs font-bold rounded-lg transition border border-slate-200">500.000</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Catatan (Opsional)</label>
+                                <input type="text" x-model="transfer.catatan" placeholder="Bayar utang..." class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition">
+                            </div>
+
+                            <button @click="prosesTransfer()" :disabled="!transfer.tujuan || !transfer.nominal" :class="(!transfer.tujuan || !transfer.nominal) ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/30 hover:-translate-y-1 active:scale-95'" class="w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex justify-center items-center gap-2">
+                                Lanjut Transfer
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'tarik'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="p-6 md:p-8">
+                        <div class="mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center text-xl">🏦</div>
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900 leading-tight">Tarik Saldo ke Bank</h2>
+                                <p class="text-xs text-slate-500">Pindahkan saldo Griyapay Anda ke Rekening Bank Pribadi</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Bank Tujuan</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
+                                    </div>
+                                    <select x-model="tarik.bank" class="w-full pl-12 pr-10 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition appearance-none cursor-pointer">
+                                        <option value="" disabled selected>Pilih Bank</option>
+                                        <option value="BCA">Bank BCA</option>
+                                        <option value="BRI">Bank BRI</option>
+                                        <option value="BNI">Bank BNI</option>
+                                        <option value="Mandiri">Bank Mandiri</option>
+                                        <option value="BSI">Bank Syariah Indonesia (BSI)</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Rekening</label>
+                                <input type="number" x-model="tarik.rekening" placeholder="Contoh: 1234567890" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition">
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nominal Penarikan (Rp)</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span class="text-slate-400 font-bold">Rp</span>
+                                    </div>
+                                    <input type="number" x-model="tarik.nominal" placeholder="0" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-black text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition" min="50000">
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <p class="text-xs text-slate-500">Min. Penarikan: Rp 50.000</p>
+                                    <p class="text-xs font-bold text-orange-500">Biaya Admin: Rp 2.500</p>
+                                </div>
+                            </div>
+
+                            <button @click="prosesTarik()" :disabled="!tarik.bank || !tarik.rekening || !tarik.nominal" :class="(!tarik.bank || !tarik.rekening || !tarik.nominal) ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800 text-white shadow-lg hover:-translate-y-1 active:scale-95'" class="w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex justify-center items-center gap-2">
+                                Tarik Sekarang
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
+                    <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    Semua transaksi dilindungi sistem keamanan enkripsi ujung-ke-ujung.
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function transferTarikLogic() {
+            return {
+                activeTab: 'transfer',
+                saldo: 1278441,
+                
+                transfer: { tujuan: '', nominal: '', catatan: '' },
+                tarik: { bank: '', rekening: '', nominal: '' },
+
+                formatRupiah(angka) {
+                    return new Intl.NumberFormat('id-ID').format(angka);
+                },
+
+                prosesTransfer() {
+                    if(!this.transfer.tujuan || !this.transfer.nominal) return;
+                    if(this.transfer.nominal > this.saldo) {
+                        Swal.fire({ icon: 'error', title: 'Oops...', text: 'Saldo tidak mencukupi.', customClass: { popup: 'rounded-[2rem]' } });
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: '<span class="text-slate-800 font-extrabold text-xl">Konfirmasi Transfer</span>',
+                        html: `
+                            <div class="text-left text-sm space-y-2 mt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <div class="flex justify-between border-b border-slate-200 pb-2">
+                                    <span class="text-slate-500">Tujuan</span><span class="font-bold text-slate-800">${this.transfer.tujuan}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-2">
+                                    <span class="text-slate-500">Nominal</span><span class="font-black text-teal-600">Rp ${this.formatRupiah(this.transfer.nominal)}</span>
+                                </div>
+                                <div class="flex justify-between pt-2">
+                                    <span class="text-slate-500">Catatan</span><span class="text-slate-800 italic">${this.transfer.catatan || '-'}</span>
+                                </div>
+                            </div>
+                        `,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#0d9488',
+                        cancelButtonColor: '#ef4444',
+                        confirmButtonText: 'Kirim Sekarang',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-teal-500/30', cancelButton: 'rounded-xl px-6 py-2.5 font-bold' }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({ title: 'Memproses...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
+                            setTimeout(() => {
+                                this.saldo -= parseInt(this.transfer.nominal);
+                                document.getElementById('headerSaldo').innerText = 'Rp ' + this.formatRupiah(this.saldo);
+                                this.transfer = { tujuan: '', nominal: '', catatan: '' }; // Reset
+                                
+                                Swal.fire({
+                                    icon: 'success', title: 'Transfer Berhasil!', html: '<p>Dana telah masuk ke akun tujuan.</p>', confirmButtonColor: '#0d9488', customClass: { popup: 'rounded-[2rem]' }
+                                });
+                            }, 1500);
+                        }
+                    });
+                },
+
+                prosesTarik() {
+                    if(!this.tarik.bank || !this.tarik.rekening || !this.tarik.nominal) return;
+                    let totalTarik = parseInt(this.tarik.nominal) + 2500; // + Admin
+                    
+                    if(totalTarik > this.saldo) {
+                        Swal.fire({ icon: 'error', title: 'Oops...', text: 'Saldo beserta admin tidak mencukupi.', customClass: { popup: 'rounded-[2rem]' } });
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: '<span class="text-slate-800 font-extrabold text-xl">Konfirmasi Penarikan</span>',
+                        html: `
+                            <div class="text-left text-sm space-y-2 mt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <div class="flex justify-between border-b border-slate-200 pb-2">
+                                    <span class="text-slate-500">Bank</span><span class="font-bold text-slate-800">${this.tarik.bank}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-2">
+                                    <span class="text-slate-500">No. Rekening</span><span class="font-bold text-slate-800">${this.tarik.rekening}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-2">
+                                    <span class="text-slate-500">Nominal Tarik</span><span class="font-bold text-slate-800">Rp ${this.formatRupiah(this.tarik.nominal)}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-2">
+                                    <span class="text-slate-500">Biaya Admin</span><span class="font-bold text-orange-500">Rp 2.500</span>
+                                </div>
+                                <div class="flex justify-between pt-2 items-center">
+                                    <span class="text-slate-500 font-bold">Total Potong Saldo</span><span class="font-black text-slate-900 text-lg">Rp ${this.formatRupiah(totalTarik)}</span>
+                                </div>
+                            </div>
+                        `,
+                        icon: 'warning',
+                        iconColor: '#f59e0b',
+                        showCancelButton: true,
+                        confirmButtonColor: '#0f172a',
+                        cancelButtonColor: '#cbd5e1',
+                        confirmButtonText: 'Tarik Dana',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-lg', cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800' }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({ title: 'Memproses Penarikan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
+                            setTimeout(() => {
+                                this.saldo -= totalTarik;
+                                document.getElementById('headerSaldo').innerText = 'Rp ' + this.formatRupiah(this.saldo);
+                                this.tarik = { bank: '', rekening: '', nominal: '' }; // Reset
+                                
+                                Swal.fire({
+                                    icon: 'success', title: 'Penarikan Diproses!', html: '<p>Dana akan masuk ke rekening Anda dalam waktu maksimal 1x24 jam kerja.</p>', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem]' }
+                                });
+                            }, 2000);
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

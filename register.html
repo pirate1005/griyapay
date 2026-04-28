@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun - Griyapay</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Pattern Background Minimalis */
+        .bg-pattern {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Custom Scrollbar untuk Dropdown */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-pattern text-slate-800 antialiased min-h-screen flex items-center justify-center p-4 md:p-6">
+
+    <a href="index.html" class="absolute top-6 left-6 flex items-center gap-2 text-slate-500 hover:text-teal-600 transition font-medium bg-white/80 backdrop-blur px-4 py-2 rounded-full shadow-sm border border-slate-100 z-20">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Kembali
+    </a>
+
+    <div class="max-w-4xl w-full bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10 my-10">
+        
+        <div class="hidden md:flex md:w-5/12 bg-slate-900 relative p-10 flex-col justify-between overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+            <div class="absolute top-0 right-0 w-64 h-64 bg-teal-500 rounded-full blur-[80px] opacity-20 -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-orange-500 rounded-full blur-[80px] opacity-20 translate-y-1/2 -translate-x-1/2"></div>
+
+            <div class="relative z-10">
+                <a href="index.html" class="flex items-center gap-3 mb-10">
+                    <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">G</div>
+                    <div class="text-2xl font-extrabold tracking-tight text-white">
+                        Griya<span class="text-teal-400">pay</span>
+                    </div>
+                </a>
+
+                <h1 class="text-4xl font-black text-white leading-tight mb-6">
+                    Mulai Langkah Suksesmu Hari Ini.
+                </h1>
+                <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                    Bergabung dengan ribuan agen lainnya. Pendaftaran 100% GRATIS tanpa biaya admin tersembunyi.
+                </p>
+
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-teal-400">✓</div>
+                        <span class="text-slate-300 font-medium">Harga Modal Termurah</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-teal-400">✓</div>
+                        <span class="text-slate-300 font-medium">Transaksi Detik-an</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-teal-400">✓</div>
+                        <span class="text-slate-300 font-medium">CS Siap Bantu 24 Jam</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="relative z-10 mt-10">
+                <div class="flex -space-x-3">
+                    <img class="w-10 h-10 rounded-full border-2 border-slate-900" src="https://i.pravatar.cc/100?img=1" alt="User">
+                    <img class="w-10 h-10 rounded-full border-2 border-slate-900" src="https://i.pravatar.cc/100?img=2" alt="User">
+                    <img class="w-10 h-10 rounded-full border-2 border-slate-900" src="https://i.pravatar.cc/100?img=3" alt="User">
+                    <div class="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center text-xs font-bold text-white">+10K</div>
+                </div>
+                <p class="text-xs text-slate-500 mt-3">Telah dipercaya oleh 10.000+ Agen</p>
+            </div>
+        </div>
+
+        <div class="w-full md:w-7/12 p-6 sm:p-10 md:p-12 bg-white overflow-y-auto" style="max-height: 90vh;">
+            
+            <div class="mb-8">
+                <div class="md:hidden flex items-center gap-2 mb-6">
+                    <div class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center text-white font-black text-lg">G</div>
+                    <div class="text-xl font-extrabold text-slate-800">Griya<span class="text-teal-600">pay</span></div>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-2">Buat Akun Baru</h2>
+                <p class="text-slate-500 text-sm">Lengkapi data diri Anda di bawah ini dengan benar.</p>
+            </div>
+
+            <form action="#" method="POST" x-data="registerForm()" @submit.prevent="submitForm">
+                
+                <div class="mb-5">
+                    <label for="nama" class="block text-sm font-bold text-slate-700 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
+                    <input type="text" id="nama" x-model="formData.nama" placeholder="Masukan Nama Anda" required
+                        class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400">
+                </div>
+
+                <div class="mb-5">
+                    <label for="phone" class="block text-sm font-bold text-slate-700 mb-1.5">Nomor Handphone <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="text-slate-500 font-bold">+62</span>
+                        </div>
+                        <input type="tel" id="phone" x-model="formData.phone" placeholder="81234567890" inputmode="numeric" required
+                            class="w-full pl-14 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400">
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1">Isikan No Handphone Aktif Anda (WhatsApp disarankan)</p>
+                </div>
+
+                <div class="mb-5 relative" @click.outside="showKelurahanList = false">
+                    <label for="kelurahan" class="block text-sm font-bold text-slate-700 mb-1.5">Kelurahan / Desa <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text" id="kelurahan" x-model="formData.kelurahan" @focus="showKelurahanList = true" @input="showKelurahanList = true" placeholder="Ketik & pilih kelurahan/desa lokasi Anda" required autocomplete="off"
+                            class="w-full pl-4 pr-10 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400">
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                    </div>
+                    
+                    <div x-show="showKelurahanList" x-transition class="absolute z-20 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-48 overflow-y-auto custom-scrollbar" style="display: none;">
+                        <template x-for="kel in filteredKelurahan()" :key="kel">
+                            <div @click="selectKelurahan(kel)" class="px-4 py-2 hover:bg-teal-50 cursor-pointer text-sm text-slate-700 transition" x-text="kel"></div>
+                        </template>
+                        <div x-show="filteredKelurahan().length === 0" class="px-4 py-3 text-sm text-slate-500 text-center">
+                            Kelurahan tidak ditemukan
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label for="alamat" class="block text-sm font-bold text-slate-700 mb-1.5">Alamat Lengkap <span class="text-red-500">*</span></label>
+                    <textarea id="alamat" x-model="formData.alamat" rows="3" placeholder="Contoh: Jl. Sudirman No. 123, RT 01 / RW 02" required
+                        class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400 resize-none"></textarea>
+                    
+                    <div class="mt-2 bg-blue-50 border border-blue-100 p-3 rounded-lg flex items-start gap-2">
+                        <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p class="text-[11px] text-blue-700 leading-relaxed">
+                            Isikan dengan detail alamat lengkap Anda. Isikan Alamat Anda dengan benar untuk mempercepat pengiriman paket starterkit PPOB ke Alamat Anda.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <div class="relative flex items-center justify-center mt-0.5">
+                            <input type="checkbox" x-model="formData.isAgreed" required class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md checked:bg-teal-600 checked:border-teal-600 transition-all cursor-pointer">
+                            <svg class="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <span class="text-xs text-slate-600 leading-relaxed pt-0.5">
+                            Dengan melanjutkan, saya menyatakan telah membaca, memahami dan menyetujui seluruh 
+                            <a href="#" class="text-teal-600 font-bold hover:underline">Syarat dan Ketentuan</a> serta 
+                            <a href="#" class="text-teal-600 font-bold hover:underline">Kebijakan Privasi</a> Griyapay.
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" 
+                    :disabled="!isFormValid()"
+                    :class="isFormValid() ? 'bg-teal-600 hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-500/30 hover:-translate-y-0.5 text-white' : 'bg-slate-200 text-slate-400 cursor-not-allowed'"
+                    class="w-full font-bold text-lg py-4 rounded-xl transition-all duration-300 active:scale-95 flex justify-center items-center gap-2">
+                    Lanjutkan
+                    <svg x-show="isFormValid()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </form>
+
+            <p class="text-center text-slate-500 mt-8 text-sm">
+                Sudah memiliki akun? 
+                <a href="login.html" class="text-teal-600 font-bold hover:underline transition">Masuk Disini</a>
+            </p>
+
+        </div>
+    </div>
+
+    <script>
+        function registerForm() {
+            return {
+                formData: {
+                    nama: '',
+                    phone: '',
+                    kelurahan: '',
+                    alamat: '',
+                    isAgreed: false
+                },
+                showKelurahanList: false,
+                
+                // Mock Data Kelurahan (Bisa diganti API dinamis nanti)
+                daftarKelurahan: [
+                    'Paya Bujok Seulemak, Langsa Baro, Kota Langsa',
+                    'Gampong Jawa, Langsa Kota, Kota Langsa',
+                    'Alue Dua, Langsa Baro, Kota Langsa',
+                    'Pondok Pabrik, Langsa Lama, Kota Langsa',
+                    'Sungai Pauh, Langsa Barat, Kota Langsa',
+                    'Kebayoran Baru, Jakarta Selatan, DKI Jakarta',
+                    'Setiabudi, Jakarta Selatan, DKI Jakarta',
+                    'Menteng, Jakarta Selatan, DKI Jakarta'
+                ],
+                
+                filteredKelurahan() {
+                    if (this.formData.kelurahan === '') return this.daftarKelurahan;
+                    return this.daftarKelurahan.filter(kel => 
+                        kel.toLowerCase().includes(this.formData.kelurahan.toLowerCase())
+                    );
+                },
+
+                selectKelurahan(kel) {
+                    this.formData.kelurahan = kel;
+                    this.showKelurahanList = false;
+                },
+
+                isFormValid() {
+                    return this.formData.nama.length > 2 && 
+                           this.formData.phone.length > 8 && 
+                           this.formData.kelurahan.length > 3 &&
+                           this.formData.alamat.length > 10 &&
+                           this.formData.isAgreed;
+                },
+
+                submitForm() {
+                    if(this.isFormValid()){
+                        // Simulasi loading atau pindah halaman
+                        let btn = event.target.querySelector('button[type="submit"]');
+                        let originalText = btn.innerHTML;
+                        btn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
+                        
+                        setTimeout(() => {
+                            // Redirect ke halaman sukses / OTP (contoh)
+                            alert('Pendaftaran Berhasil! Lanjut ke Verifikasi OTP.');
+                            btn.innerHTML = originalText;
+                        }, 1500);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

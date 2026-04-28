@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report - Griyapay Dashboard</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .bg-grid-slate {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+        }
+        
+        .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
+
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
+        
+        <div class="p-6">
+            <a href="../index.html" class="flex items-center gap-3 mb-6">
+                <img src="../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
+                <div class="text-2xl font-extrabold tracking-tight text-white">
+                    Griya<span class="text-teal-300">pay</span>
+                </div>
+            </a>
+            
+            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+                <div>
+                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                </div>
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
+            
+            <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                Halaman Utama
+            </a>
+
+            
+
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Pembayaran
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
+                    <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
+                    <a href="../pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
+                </div>
+            </div>
+
+            <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            
+            <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+
+            <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Transfer & Tarik
+            </a>
+
+            <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Penjualan Barang
+            </a>
+
+            <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Topup E-Money
+            </a>
+
+            <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Deposit
+            </a>
+
+            <a href="index.html" class="flex items-center gap-3 bg-white/20 text-white shadow-md border border-white/10 px-4 py-3.5 rounded-xl font-bold transition">
+                <svg class="w-5 h-5 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report
+            </a>
+
+            <div x-data="{ open: false }" class="pt-2">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Setting & Admin
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
+        
+        <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
+
+        <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 py-4 px-6 flex items-center justify-between shrink-0 z-10 lg:rounded-tl-[2.5rem]">
+            <div class="flex items-center gap-4 flex-1">
+                <button @click="sidebarOpen = true" class="lg:hidden text-slate-800 hover:text-teal-600 transition p-1 bg-slate-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div>
+                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Laporan & Rekap</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Pantau seluruh aktivitas kemitraan Anda</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6">
+                <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
+                    <div>
+                        <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
+                        <p class="text-sm font-black tracking-tight drop-shadow-sm">Rp 1.278.441</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="reportLogic()">
+            
+            <div class="max-w-6xl mx-auto pb-10">
+                
+                <div class="flex gap-2 mb-8 overflow-x-auto hide-scroll pb-2">
+                    <button @click="activeTab = 'lap_deposit'" :class="activeTab === 'lap_deposit' ? 'bg-teal-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-3 rounded-xl font-bold text-sm transition whitespace-nowrap">Laporan Deposit</button>
+                    <button @click="activeTab = 'mutasi'" :class="activeTab === 'mutasi' ? 'bg-teal-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-3 rounded-xl font-bold text-sm transition whitespace-nowrap">Mutasi Saldo</button>
+                    <button @click="activeTab = 'transaksi'" :class="activeTab === 'transaksi' ? 'bg-teal-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-3 rounded-xl font-bold text-sm transition whitespace-nowrap">Laporan Transaksi</button>
+                    <button @click="activeTab = 'rekap'" :class="activeTab === 'rekap' ? 'bg-teal-600 text-white shadow-md' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-3 rounded-xl font-bold text-sm transition whitespace-nowrap">Rekap Bulanan</button>
+                </div>
+
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden min-h-[500px]">
+                    
+                    <div x-show="activeTab === 'lap_deposit'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800">Laporan Deposit</h2>
+                                <p class="text-xs text-slate-500">Daftar riwayat isi ulang saldo 30 hari terakhir.</p>
+                            </div>
+                            <button class="text-sm font-bold text-teal-600 bg-teal-50 px-4 py-2 rounded-lg border border-teal-100 hover:bg-teal-100 transition">Filter Tanggal</button>
+                        </div>
+                        
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                        <th class="p-4 font-bold">Tanggal</th>
+                                        <th class="p-4 font-bold">Metode</th>
+                                        <th class="p-4 font-bold">Nominal</th>
+                                        <th class="p-4 font-bold">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="item in dataDeposit" :key="item.id">
+                                        <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition cursor-pointer" @click="showDetail(item)">
+                                            <td class="p-4">
+                                                <p class="text-sm font-bold text-slate-800" x-text="item.tanggal"></p>
+                                                <p class="text-[10px] text-slate-400" x-text="item.jam"></p>
+                                            </td>
+                                            <td class="p-4">
+                                                <p class="text-sm font-medium text-slate-700" x-text="item.metode"></p>
+                                            </td>
+                                            <td class="p-4">
+                                                <p class="text-sm font-black text-slate-800" x-text="'Rp ' + formatRupiah(item.nominal)"></p>
+                                            </td>
+                                            <td class="p-4">
+                                                <span class="text-[10px] font-bold px-2 py-1 rounded"
+                                                      :class="{
+                                                          'bg-green-100 text-green-700 border border-green-200': item.status === 'SUKSES',
+                                                          'bg-yellow-100 text-yellow-700 border border-yellow-200': item.status === 'PENDING',
+                                                          'bg-red-100 text-red-700 border border-red-200': item.status === 'GAGAL'
+                                                      }" x-text="item.status"></span>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'mutasi'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;">
+                        <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800">Laporan Mutasi Saldo</h2>
+                                <p class="text-xs text-slate-500">Riwayat pergerakan saldo keluar dan masuk.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                        <th class="p-4 font-bold">Waktu</th>
+                                        <th class="p-4 font-bold">Keterangan</th>
+                                        <th class="p-4 font-bold text-right">Keluar / Masuk</th>
+                                        <th class="p-4 font-bold text-right">Saldo Akhir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="item in dataMutasi" :key="item.id">
+                                        <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition">
+                                            <td class="p-4 whitespace-nowrap">
+                                                <p class="text-xs font-medium text-slate-500" x-text="item.waktu"></p>
+                                            </td>
+                                            <td class="p-4">
+                                                <p class="text-sm font-bold text-slate-700 line-clamp-1" x-text="item.desc"></p>
+                                            </td>
+                                            <td class="p-4 text-right whitespace-nowrap">
+                                                <p class="text-sm font-black" :class="item.jenis === 'in' ? 'text-green-600' : 'text-red-500'" x-text="(item.jenis === 'in' ? '+' : '-') + 'Rp ' + formatRupiah(item.jumlah)"></p>
+                                            </td>
+                                            <td class="p-4 text-right whitespace-nowrap">
+                                                <p class="text-sm font-bold text-slate-800" x-text="'Rp ' + formatRupiah(item.saldoAkhir)"></p>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'transaksi'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;">
+                        <div class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800">Laporan Transaksi</h2>
+                                <p class="text-xs text-slate-500">Daftar transaksi penjualan layanan PPOB.</p>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 w-full md:w-auto">
+                                <input type="date" class="w-full md:w-36 px-3 py-2 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 focus:outline-none focus:border-teal-500">
+                                <span class="text-slate-400 text-sm">s/d</span>
+                                <input type="date" class="w-full md:w-36 px-3 py-2 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 focus:outline-none focus:border-teal-500">
+                                <button class="bg-slate-800 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-slate-700 transition">Cari</button>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                        <th class="p-4 font-bold">Waktu</th>
+                                        <th class="p-4 font-bold">Layanan</th>
+                                        <th class="p-4 font-bold">Tujuan</th>
+                                        <th class="p-4 font-bold">Harga</th>
+                                        <th class="p-4 font-bold">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="item in dataTransaksi" :key="item.id">
+                                        <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition cursor-pointer" @click="showDetail(item)">
+                                            <td class="p-4 whitespace-nowrap">
+                                                <p class="text-[11px] font-bold text-slate-700" x-text="item.waktu"></p>
+                                            </td>
+                                            <td class="p-4">
+                                                <p class="text-sm font-bold text-teal-700" x-text="item.produk"></p>
+                                            </td>
+                                            <td class="p-4">
+                                                <p class="text-sm font-medium text-slate-700" x-text="item.tujuan"></p>
+                                            </td>
+                                            <td class="p-4 whitespace-nowrap">
+                                                <p class="text-sm font-black text-slate-800" x-text="'Rp ' + formatRupiah(item.harga)"></p>
+                                            </td>
+                                            <td class="p-4">
+                                                <span class="text-[10px] font-bold px-2 py-1 rounded"
+                                                      :class="{
+                                                          'bg-green-100 text-green-700': item.status === 'SUKSES',
+                                                          'bg-yellow-100 text-yellow-700': item.status === 'PROSES',
+                                                          'bg-red-100 text-red-700': item.status === 'GAGAL'
+                                                      }" x-text="item.status"></span>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'rekap'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;">
+                        <div class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800">Rekapitulasi Bulanan</h2>
+                                <p class="text-xs text-slate-500">Ringkasan total transaksi dan keuntungan per bulan.</p>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 w-full md:w-auto">
+                                <select class="w-full md:w-32 px-3 py-2 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 focus:outline-none focus:border-teal-500">
+                                    <option value="01">Januari</option>
+                                    <option value="02">Februari</option>
+                                    <option value="03">Maret</option>
+                                    <option value="04" selected>April</option>
+                                </select>
+                                <select class="w-full md:w-24 px-3 py-2 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 focus:outline-none focus:border-teal-500">
+                                    <option value="2026" selected>2026</option>
+                                    <option value="2025">2025</option>
+                                </select>
+                                <button class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-700 transition">Tampilkan</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 border-b border-slate-100">
+                            <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl">
+                                <p class="text-[10px] font-bold text-blue-500 uppercase tracking-wider mb-1">Total Transaksi</p>
+                                <p class="text-2xl font-black text-blue-700">142 <span class="text-sm font-medium">Trx</span></p>
+                            </div>
+                            <div class="bg-teal-50 border border-teal-100 p-4 rounded-2xl">
+                                <p class="text-[10px] font-bold text-teal-500 uppercase tracking-wider mb-1">Total Omset</p>
+                                <p class="text-2xl font-black text-teal-700">Rp 4.520.000</p>
+                            </div>
+                            <div class="bg-green-50 border border-green-100 p-4 rounded-2xl">
+                                <p class="text-[10px] font-bold text-green-500 uppercase tracking-wider mb-1">Estimasi Laba</p>
+                                <p class="text-2xl font-black text-green-700">Rp 245.500</p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <h3 class="text-sm font-bold text-slate-700 mb-4 border-l-4 border-slate-400 pl-2">Rincian per Kategori</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="text-sm font-bold text-slate-600">Pulsa & Data</span>
+                                    <span class="text-sm font-black text-slate-800">Rp 1.250.000 <span class="text-xs text-slate-400 font-medium">(85 Trx)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="text-sm font-bold text-slate-600">PLN / Listrik</span>
+                                    <span class="text-sm font-black text-slate-800">Rp 2.100.000 <span class="text-xs text-slate-400 font-medium">(32 Trx)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="text-sm font-bold text-slate-600">Topup E-Money</span>
+                                    <span class="text-sm font-black text-slate-800">Rp 850.000 <span class="text-xs text-slate-400 font-medium">(20 Trx)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="text-sm font-bold text-slate-600">Lainnya</span>
+                                    <span class="text-sm font-black text-slate-800">Rp 320.000 <span class="text-xs text-slate-400 font-medium">(5 Trx)</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function reportLogic() {
+            return {
+                activeTab: 'lap_deposit', // Default Tab
+
+                formatRupiah(angka) {
+                    return new Intl.NumberFormat('id-ID').format(angka);
+                },
+
+                // Mock Data Deposit
+                dataDeposit: [
+                    { id: 'DP101', tanggal: '23 Apr 2026', jam: '14:30 WIB', metode: 'Transfer BCA', nominal: 500000, status: 'SUKSES' },
+                    { id: 'DP102', tanggal: '21 Apr 2026', jam: '09:15 WIB', metode: 'QRIS', nominal: 250000, status: 'SUKSES' },
+                    { id: 'DP103', tanggal: '18 Apr 2026', jam: '18:45 WIB', metode: 'Virtual Account BRI', nominal: 1000000, status: 'SUKSES' },
+                    { id: 'DP104', tanggal: '15 Apr 2026', jam: '10:00 WIB', metode: 'Transfer Mandiri', nominal: 100000, status: 'GAGAL' }
+                ],
+
+                // Mock Data Mutasi
+                dataMutasi: [
+                    { id: 1, waktu: '23 Apr 2026 15:00', desc: 'TRX Pulsa Tsel 08123456789', jenis: 'out', jumlah: 10250, saldoAkhir: 1278441 },
+                    { id: 2, waktu: '23 Apr 2026 14:30', desc: 'Deposit Tiket DP101', jenis: 'in', jumlah: 500000, saldoAkhir: 1288691 },
+                    { id: 3, waktu: '22 Apr 2026 08:20', desc: 'TRX Token PLN 1122334455', jenis: 'out', jumlah: 50250, saldoAkhir: 788691 },
+                    { id: 4, waktu: '22 Apr 2026 07:15', desc: 'TRX Saldo DANA 0855112233', jenis: 'out', jumlah: 20500, saldoAkhir: 838941 }
+                ],
+
+                // Mock Data Transaksi
+                dataTransaksi: [
+                    { id: 'TRX901', waktu: '23/04/26 15:00', produk: 'Telkomsel Reguler 10.000', tujuan: '08123456789', harga: 10250, status: 'SUKSES' },
+                    { id: 'TRX902', waktu: '22/04/26 08:20', produk: 'Token Listrik 50.000', tujuan: '1122334455', harga: 50250, status: 'SUKSES' },
+                    { id: 'TRX903', waktu: '22/04/26 07:15', produk: 'Saldo DANA 20.000', tujuan: '0855112233', harga: 20500, status: 'SUKSES' },
+                    { id: 'TRX904', waktu: '21/04/26 19:30', produk: 'Indosat Data 5GB', tujuan: '0856123123', harga: 35000, status: 'PROSES' }
+                ],
+
+                // Tampilkan Detail via SweetAlert
+                showDetail(item) {
+                    Swal.fire({
+                        title: '<span class="text-slate-800 font-extrabold text-xl">Detail Data</span>',
+                        html: `
+                            <div class="text-left text-sm mt-4 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                                <div class="flex justify-between border-b border-slate-200 pb-2">
+                                    <span class="text-slate-500">ID Ref</span><span class="font-bold text-slate-800">${item.id}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 pb-2">
+                                    <span class="text-slate-500">Tanggal</span><span class="font-bold text-slate-800">${item.tanggal || item.waktu}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 pb-2">
+                                    <span class="text-slate-500">Status</span>
+                                    <span class="font-bold ${item.status === 'SUKSES' ? 'text-green-600' : 'text-red-500'}">${item.status}</span>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonColor: '#0d9488',
+                        confirmButtonText: 'Tutup',
+                        customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-8 py-2 font-bold' }
+                    });
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
