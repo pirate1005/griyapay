@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiket Kereta Api - Griyapay Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        .bg-grid-slate {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+        }
+        
+        .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
+
+    <!-- ================= SIDEBAR (KONSISTEN) ================= -->
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
+        
+        <div class="p-6">
+            <a href="../index.html" class="flex items-center gap-3 mb-6">
+                <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
+                <div class="text-2xl font-extrabold tracking-tight text-white">
+                    Griya<span class="text-teal-300">pay</span>
+                </div>
+            </a>
+            
+            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+                <div>
+                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                </div>
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
+            
+            <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                Halaman Utama
+            </a>
+
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Pembayaran
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
+                    <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
+                    <a href="../pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
+                </div>
+            </div>
+
+            <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+            <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Transfer & Tarik
+            </a>
+            <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Penjualan Barang
+            </a>
+            <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Topup E-Money
+            </a>
+            <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Deposit
+            </a>
+            <a href="../report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report
+            </a>
+
+            <div x-data="{ open: false }" class="pt-2">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Setting & Admin
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0" x-data="trainLogic()">
+        
+        <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
+
+        <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 py-4 px-6 flex items-center justify-between shrink-0 z-10 lg:rounded-tl-[2.5rem]">
+            <div class="flex items-center gap-4 flex-1">
+                <button @click="sidebarOpen = true" class="lg:hidden text-slate-800 hover:text-teal-600 transition p-1 bg-slate-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div>
+                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Tiket Kereta Api</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Pemesanan Tiket & Hotel > KAI Antar Kota</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Saldo Widget -->
+                <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
+                    <div>
+                        <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
+                        <p class="text-sm font-black tracking-tight drop-shadow-sm">Rp 1.278.441</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- KONTEN HALAMAN TIKET KERETA -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10">
+            
+            <div class="max-w-5xl mx-auto space-y-6 pb-32">
+                
+                <!-- 1. FORM PENCARIAN TIKET -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden relative">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-amber-50 rounded-bl-full -z-10"></div>
+                    
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl">🚂</div>
+                            <h2 class="text-xl font-bold text-slate-800">Cari Tiket Kereta</h2>
+                        </div>
+
+                        <div class="space-y-5">
+                            <!-- Stasiun Asal & Tujuan -->
+                            <div class="flex flex-col md:flex-row items-center gap-4">
+                                <div class="w-full relative">
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Stasiun Asal</label>
+                                    <select x-model="asal" @change="resetSearch()" class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition appearance-none">
+                                        <template x-for="stasiun in listStasiun" :key="stasiun.kode">
+                                            <option :value="stasiun.kode" x-text="stasiun.kota + ' (' + stasiun.kode + ')'"></option>
+                                        </template>
+                                    </select>
+                                    <div class="absolute top-8 left-3 text-slate-400">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                    </div>
+                                </div>
+
+                                <!-- Tombol Swap -->
+                                <button @click="swapStation()" class="w-10 h-10 shrink-0 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-full flex items-center justify-center transition shadow-sm border border-amber-100 mt-5 md:mt-4 z-10 md:rotate-90">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                                </button>
+
+                                <div class="w-full relative">
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Stasiun Tujuan</label>
+                                    <select x-model="tujuan" @change="resetSearch()" class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition appearance-none">
+                                        <template x-for="stasiun in listStasiun" :key="stasiun.kode">
+                                            <option :value="stasiun.kode" x-text="stasiun.kota + ' (' + stasiun.kode + ')'"></option>
+                                        </template>
+                                    </select>
+                                    <div class="absolute top-8 left-3 text-slate-400">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tanggal & Penumpang -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="w-full relative">
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Tanggal Keberangkatan</label>
+                                    <input type="date" x-model="tanggal" @change="resetSearch()" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition">
+                                </div>
+                                <div class="w-full relative">
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Jumlah Penumpang</label>
+                                    <select x-model.number="penumpang" @change="resetSearch()" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition appearance-none">
+                                        <option value="1">1 Dewasa</option>
+                                        <option value="2">2 Dewasa</option>
+                                        <option value="3">3 Dewasa</option>
+                                        <option value="4">4 Dewasa</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-end border-t border-slate-100 pt-6">
+                            <button @click="cariTiket()" :disabled="!tanggal || asal === tujuan || isSearching" 
+                                    :class="(!tanggal || asal === tujuan) ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/30 hover:-translate-y-1 active:scale-95'"
+                                    class="w-full md:w-auto px-10 py-4 rounded-xl font-bold transition duration-300 flex justify-center items-center gap-2">
+                                <span x-show="!isSearching">Cari Kereta</span>
+                                <svg x-show="isSearching" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. HASIL PENCARIAN (LIST KERETA) -->
+                <div x-show="isSearched" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
+                    
+                    <div class="flex items-center justify-between mb-4 px-2">
+                        <h3 class="font-bold text-slate-800 text-lg">Kereta Tersedia</h3>
+                        <p class="text-sm font-bold text-amber-600" x-text="trains.length + ' Kereta'"></p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <template x-for="train in trains" :key="train.id">
+                            <div class="bg-white rounded-[1.5rem] p-5 md:p-6 shadow-sm border-2 transition-all duration-300 hover:shadow-md"
+                                 :class="selectedTrain && selectedTrain.id === train.id ? 'border-amber-500 bg-amber-50/30 ring-4 ring-amber-500/10' : 'border-slate-100 hover:border-amber-200'">
+                                
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                    
+                                    <!-- Train Info -->
+                                    <div class="flex items-center gap-4 md:w-1/4">
+                                        <div class="w-12 h-12 flex items-center justify-center p-1">
+                                            <!-- KAI Logo Mockup -->
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Logo_PT_Kereta_Api_Indonesia_%28Persero%29_2020.svg/1200px-Logo_PT_Kereta_Api_Indonesia_%28Persero%29_2020.svg.png" alt="KAI" class="w-full h-full object-contain">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-800 text-sm" x-text="train.nama"></h4>
+                                            <p class="text-[10px] text-slate-500 uppercase tracking-widest" x-text="train.kelas + ' (' + train.subkelas + ')'"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Train Timeline -->
+                                    <div class="flex-1 flex items-center justify-between px-2 md:px-8">
+                                        <div class="text-center">
+                                            <p class="text-xl font-black text-slate-800" x-text="train.berangkat"></p>
+                                            <p class="text-xs font-bold text-slate-400 mt-1" x-text="asal"></p>
+                                        </div>
+                                        
+                                        <div class="flex-1 px-4 relative flex flex-col items-center">
+                                            <p class="text-[10px] font-bold text-slate-400 mb-1" x-text="train.durasi + ' • Langsung'"></p>
+                                            <div class="w-full flex items-center justify-center relative">
+                                                <div class="w-2 h-2 rounded-full border-2 border-amber-300"></div>
+                                                <div class="h-1 bg-amber-100 flex-1 mx-1 rounded-full relative">
+                                                    <div class="absolute inset-y-0 left-0 bg-amber-300 w-1/2 rounded-full"></div>
+                                                </div>
+                                                <div class="w-2 h-2 rounded-full border-2 border-amber-300 bg-white"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <p class="text-xl font-black text-slate-800" x-text="train.tiba"></p>
+                                            <p class="text-xs font-bold text-slate-400 mt-1" x-text="tujuan"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Price & Action -->
+                                    <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center md:w-1/4 pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 gap-2">
+                                        <div class="text-left md:text-right">
+                                            <p class="text-2xl font-black text-amber-600" x-text="'Rp ' + formatRupiah(train.harga)"></p>
+                                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" x-text="'Sisa ' + train.sisaKursi + ' Kursi'"></p>
+                                        </div>
+                                        <button @click="pilihKereta(train)" 
+                                                class="px-8 py-2.5 rounded-xl font-bold transition-all text-sm"
+                                                :class="selectedTrain && selectedTrain.id === train.id ? 'bg-amber-100 text-amber-700 border border-amber-200' : 'bg-slate-900 text-white hover:bg-slate-800'">
+                                            <span x-text="selectedTrain && selectedTrain.id === train.id ? 'Terpilih' : 'Pilih'"></span>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- 3. FORM DATA PENUMPANG (Muncul jika kereta dipilih) -->
+                <div x-show="selectedTrain !== null" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
+                    
+                    <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200 mt-8">
+                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                            <div class="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-lg">👤</div>
+                            <h3 class="text-lg font-bold text-slate-900">Data Penumpang Dewasa 1</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+                            <div class="md:col-span-3 relative">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Titel</label>
+                                <select x-model="passenger.titel" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition appearance-none">
+                                    <option value="Tn.">Tuan (Tn.)</option>
+                                    <option value="Ny.">Nyonya (Ny.)</option>
+                                    <option value="Nn.">Nona (Nn.)</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-5 relative">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nama Lengkap (Sesuai ID)</label>
+                                <input type="text" x-model="passenger.nama" placeholder="Cth: Budi Santoso" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition">
+                            </div>
+                            <div class="md:col-span-4 relative">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">NIK / KTP / Paspor</label>
+                                <input type="text" x-model="passenger.nik" maxlength="16" placeholder="Cth: 317123..." class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition">
+                            </div>
+                        </div>
+                        <p class="text-xs text-orange-500 mt-4 flex items-center gap-1 font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            Nama dan NIK harus sesuai dengan kartu identitas asli untuk verifikasi *boarding*.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BOTTOM BAR CHECKOUT (Sejajar dengan Max-W 5xl) -->
+        <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
+             :class="(selectedTrain !== null && passenger.nama.length > 2 && passenger.nik.length >= 16) ? 'translate-y-0' : 'translate-y-full'">
+            
+            <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 text-xl font-bold">🎟️</div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase">Total Pembayaran</p>
+                        <p class="text-2xl font-black text-amber-600 leading-none mt-1" x-text="selectedTrain ? 'Rp ' + formatRupiah(selectedTrain.harga * penumpang) : 'Rp 0'"></p>
+                    </div>
+                </div>
+                
+                <button @click="bayarSekarang()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-amber-500/30 transition-all hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
+                    Lanjut Pembayaran
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script Alpine.js Component -->
+    <script>
+        function trainLogic() {
+            return {
+                // Pencarian
+                asal: 'GMR',
+                tujuan: 'BD',
+                tanggal: '',
+                penumpang: 1,
+                
+                isSearching: false,
+                isSearched: false,
+                trains: [],
+                selectedTrain: null,
+                
+                // Penumpang
+                passenger: {
+                    titel: 'Tn.',
+                    nama: '',
+                    nik: ''
+                },
+
+                // Mockup Stasiun Kereta
+                listStasiun: [
+                    { kode: 'GMR', kota: 'Jakarta Gambir' },
+                    { kode: 'PSE', kota: 'Jakarta Pasar Senen' },
+                    { kode: 'BD',  kota: 'Bandung' },
+                    { kode: 'SMC', kota: 'Semarang Poncol' },
+                    { kode: 'SMT', kota: 'Semarang Tawang' },
+                    { kode: 'YK',  kota: 'Yogyakarta' },
+                    { kode: 'SLO', kota: 'Solo Balapan' },
+                    { kode: 'SGU', kota: 'Surabaya Gubeng' },
+                    { kode: 'SBI', kota: 'Surabaya Pasar Turi' },
+                    { kode: 'ML',  kota: 'Malang' }
+                ],
+
+                swapStation() {
+                    let temp = this.asal;
+                    this.asal = this.tujuan;
+                    this.tujuan = temp;
+                    this.resetSearch();
+                },
+
+                resetSearch() {
+                    this.isSearched = false;
+                    this.selectedTrain = null;
+                    this.passenger.nama = '';
+                    this.passenger.nik = '';
+                },
+
+                formatRupiah(angka) {
+                    return new Intl.NumberFormat('id-ID').format(angka);
+                },
+
+                cariTiket() {
+                    if(!this.tanggal || this.asal === this.tujuan) return;
+
+                    this.isSearching = true;
+                    this.isSearched = false;
+                    this.selectedTrain = null;
+
+                    // Simulasi API Fetch
+                    setTimeout(() => {
+                        
+                        // Mockup Data Kereta
+                        this.trains = [
+                            { 
+                                id: 'TR-001', nama: 'Argo Bromo Anggrek', kelas: 'Eksekutif', subkelas: 'A',
+                                berangkat: '08:20', tiba: '11:45', durasi: '3j 25m', harga: 450000, sisaKursi: 12
+                            },
+                            { 
+                                id: 'TR-002', nama: 'Turangga', kelas: 'Eksekutif', subkelas: 'AA',
+                                berangkat: '10:15', tiba: '13:50', durasi: '3j 35m', harga: 480000, sisaKursi: 5
+                            },
+                            { 
+                                id: 'TR-003', nama: 'Lodaya', kelas: 'Ekonomi', subkelas: 'C',
+                                berangkat: '13:30', tiba: '17:15', durasi: '3j 45m', harga: 220000, sisaKursi: 45
+                            },
+                            { 
+                                id: 'TR-004', nama: 'Bima', kelas: 'Eksekutif', subkelas: 'J',
+                                berangkat: '17:00', tiba: '20:10', durasi: '3j 10m', harga: 510000, sisaKursi: 2
+                            }
+                        ];
+
+                        this.isSearching = false;
+                        this.isSearched = true;
+                    }, 1500);
+                },
+
+                pilihKereta(train) {
+                    this.selectedTrain = train;
+                    // Auto scroll sedikit ke form penumpang
+                    setTimeout(() => {
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }, 100);
+                },
+
+                bayarSekarang() {
+                    let totalHarga = this.selectedTrain.harga * this.penumpang;
+
+                    Swal.fire({
+                        title: '<span class="text-slate-800 font-extrabold text-2xl">Detail Pemesanan</span>',
+                        html: `
+                            <div class="text-left text-sm space-y-2 mt-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                                <div class="flex justify-between border-b border-slate-200 pb-3">
+                                    <span class="text-slate-500 font-medium">Kereta Api</span>
+                                    <span class="font-bold text-slate-800">${this.selectedTrain.nama} (${this.selectedTrain.kelas})</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-3">
+                                    <span class="text-slate-500 font-medium">Rute</span>
+                                    <span class="font-bold text-slate-800">${this.asal} ➔ ${this.tujuan}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-3">
+                                    <span class="text-slate-500 font-medium">Jadwal</span>
+                                    <span class="font-bold text-slate-800">${this.tanggal} | ${this.selectedTrain.berangkat}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-3">
+                                    <span class="text-slate-500 font-medium">Penumpang Utama</span>
+                                    <span class="font-bold text-slate-800">${this.passenger.titel} ${this.passenger.nama}</span>
+                                </div>
+                                <div class="flex justify-between pt-3 items-center">
+                                    <span class="text-slate-500 font-bold">Total Harga (${this.penumpang} Pax)</span>
+                                    <span class="font-black text-amber-600 text-xl">Rp ${this.formatRupiah(totalHarga)}</span>
+                                </div>
+                            </div>
+                        `,
+                        icon: 'question',
+                        iconColor: '#f59e0b',
+                        showCancelButton: true,
+                        confirmButtonColor: '#f59e0b',
+                        cancelButtonColor: '#cbd5e1',
+                        confirmButtonText: 'Bayar Tiket',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        customClass: {
+                            popup: 'rounded-[2rem] border border-slate-100 shadow-2xl',
+                            confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md shadow-amber-500/30',
+                            cancelButton: 'rounded-xl px-6 py-3 font-bold text-slate-800'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            
+                            Swal.fire({
+                                title: '<span class="text-slate-800 font-extrabold">Memproses Tiket...</span>',
+                                html: '<p class="text-slate-500">Mohon tunggu, kami sedang memesan kursi Anda ke sistem KAI.</p>',
+                                allowOutsideClick: false,
+                                didOpen: () => { Swal.showLoading(); },
+                                customClass: { popup: 'rounded-[2rem]' }
+                            });
+
+                            setTimeout(() => {
+                                Swal.fire({
+                                    title: '<span class="text-slate-800 font-extrabold text-2xl">E-Tiket Terbit!</span>',
+                                    html: `
+                                        <p class="text-slate-500 mb-4">Pemesanan tiket Kereta Api <b>${this.selectedTrain.nama}</b> berhasil. Kode Booking siap digunakan untuk cetak *boarding pass*.</p>
+                                        <div class="bg-amber-50 text-amber-700 font-mono font-black text-2xl py-4 rounded-xl border border-amber-200 border-dashed tracking-widest">
+                                            KAI${Math.floor(Math.random() * 90000 + 10000)}
+                                        </div>
+                                    `,
+                                    icon: 'success',
+                                    iconColor: '#f59e0b',
+                                    confirmButtonColor: '#f59e0b',
+                                    confirmButtonText: 'Selesai',
+                                    customClass: {
+                                        popup: 'rounded-[2rem] border border-slate-100 shadow-2xl',
+                                        confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-amber-500/30'
+                                    }
+                                }).then(() => {
+                                    // Reset halaman
+                                    this.resetSearch();
+                                    this.tanggal = '';
+                                });
+                                
+                            }, 2500);
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

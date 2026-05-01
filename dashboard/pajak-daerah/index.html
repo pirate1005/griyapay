@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDAM - Griyapay Dashboard</title>
+    <title>Pajak Daerah - Griyapay Dashboard</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -38,7 +38,6 @@
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
 
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
-        
         <div class="p-6">
             <a href="../index.html" class="flex items-center gap-3 mb-6">
                 <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
@@ -46,7 +45,6 @@
                     Griya<span class="text-teal-300">pay</span>
                 </div>
             </a>
-            
             <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
                 <div>
                     <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
@@ -59,32 +57,25 @@
         </div>
 
         <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
-            
             <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 Halaman Utama
             </a>
-
-            <div x-data="{ open: true }">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-white bg-white/10 shadow-sm border border-white/5 px-4 py-3.5 rounded-xl font-bold transition">
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         Pembayaran
                     </div>
-                    <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
                     <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
                     <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
                     <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
-                    
-                    <a href="index.html" class="block pl-8 py-2 text-sm text-white font-bold transition relative">
-                        <span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.8)]"></span>
-                        PDAM
-                    </a>
+                    <a href="../pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
                 </div>
             </div>
-
             <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Tagihan Rutin
@@ -105,7 +96,6 @@
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 Topup E-Money
             </a>
-
             <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Deposit
@@ -114,24 +104,10 @@
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Report
             </a>
-
-            <div x-data="{ open: false }" class="pt-2">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        Setting & Admin
-                    </div>
-                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
-                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
-                </div>
-            </div>
         </nav>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0" x-data="pajakDaerahLogic()">
         
         <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
 
@@ -141,8 +117,8 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <div>
-                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Tagihan Air PDAM</h1>
-                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Pembayaran > PDAM</p>
+                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Pajak Daerah (PBB & Lainnya)</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Tagihan & Asuransi > Bapenda > Bayar Pajak Kota/Kab</p>
                 </div>
             </div>
             <div class="flex items-center gap-4 md:gap-6">
@@ -155,165 +131,176 @@
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="pdamLogic()">
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10">
             
-            <div class="max-w-4xl mx-auto space-y-8 pb-24">
+            <div class="max-w-4xl mx-auto space-y-8 pb-32">
                 
-                <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-bl-full -z-10"></div>
+                <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-bl-full -z-10"></div>
                     
                     <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl">💧</span>
-                        Cek Tagihan Air
+                        <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xl">🏢</span>
+                        Cek Tagihan Pajak Daerah
                     </h2>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
                         <div class="relative">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Wilayah / Kabupaten</label>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Wilayah (Provinsi/Kota)</label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                </div>
-                                <select x-model="selectedWilayah" @change="resetData()" class="w-full pl-12 pr-10 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition appearance-none cursor-pointer">
-                                    <option value="" disabled selected>-- Pilih Wilayah PDAM --</option>
-                                    <option value="PDAM Kota Langsa">PDAM Kota Langsa</option>
-                                    <option value="PDAM Tirta Daroy Banda Aceh">PDAM Tirta Daroy Banda Aceh</option>
-                                    <option value="PDAM Tirta Tamiang">PDAM Tirta Tamiang</option>
-                                    <option value="PDAM Tirta Mon Pase">PDAM Tirta Mon Pase</option>
-                                    <option value="PDAM Kota Medan">PDAM Kota Medan</option>
-                                    <option value="PDAM Tirtanadi Sumut">PDAM Tirtanadi Sumut</option>
+                                <select x-model="wilayah" @change="resetData()" class="w-full px-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-amber-500 transition appearance-none">
+                                    <option value="" disabled selected>Pilih Provinsi/Kabupaten...</option>
+                                    <option value="DKI Jakarta">DKI Jakarta</option>
+                                    <option value="Jawa Barat">Jawa Barat (Provinsi)</option>
+                                    <option value="Jawa Tengah">Jawa Tengah (Provinsi)</option>
+                                    <option value="Jawa Timur">Jawa Timur (Provinsi)</option>
+                                    <option value="Banten">Banten (Provinsi)</option>
+                                    <option value="Bali">Bali (Provinsi)</option>
                                 </select>
-                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </div>
                             </div>
                         </div>
 
                         <div class="relative">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Pelanggan</label>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Objek Pajak (NOP) / ID</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
+                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                                 </div>
-                                <input type="text" x-model="idPelanggan" @input="resetData()" placeholder="Contoh: 123456789" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold text-slate-800 tracking-wide focus:outline-none focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition">
+                                <input type="text" x-model="nop" @input="resetData()" maxlength="18" placeholder="Contoh: 317101000100100000" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 tracking-wide focus:outline-none focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition">
                             </div>
                         </div>
                     </div>
 
-                    <button @click="cekTagihan()" :disabled="!isReadyToCheck()" :class="!isReadyToCheck() ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg hover:-translate-y-0.5'" class="w-full md:w-auto px-10 py-4 rounded-xl font-bold transition duration-300 flex justify-center items-center gap-2">
-                        <span x-show="!isLoading">Cek Tagihan Saya</span>
-                        <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    </button>
+                    <div class="flex justify-end">
+                        <button @click="cekTagihan()" :disabled="!wilayah || nop.length < 10" :class="(!wilayah || nop.length < 10) ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg'" class="w-full md:w-auto px-12 py-4 rounded-xl font-bold transition duration-300 flex justify-center items-center gap-2">
+                            <span x-show="!isLoading">Cek Tagihan Pajak</span>
+                            <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div x-show="isVerified" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
                     
-                    <h3 class="text-lg font-bold text-slate-900 mb-4 px-2">Rincian Tagihan</h3>
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 px-2">Rincian Pembayaran Pajak</h3>
                     
                     <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="bg-cyan-50 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-cyan-100">
+                        <div class="bg-amber-50 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-amber-100">
                             <div>
-                                <p class="text-xs font-bold text-cyan-700 uppercase mb-1">Nama Pelanggan</p>
+                                <p class="text-xs font-bold text-amber-700 uppercase mb-1">Nama Wajib Pajak</p>
                                 <p class="text-xl font-black text-slate-800" x-text="billData.nama"></p>
+                                <p class="text-xs font-bold text-slate-500 mt-1" x-text="'Alamat: ' + billData.alamat"></p>
                             </div>
-                            <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-cyan-100">
-                                <p class="text-[10px] font-bold text-slate-500 uppercase mb-0.5">Periode Tagihan</p>
-                                <p class="text-sm font-bold text-slate-800" x-text="billData.periode"></p>
+                            <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-amber-100 text-right">
+                                <p class="text-[10px] font-bold text-slate-500 uppercase mb-0.5">Tahun Pajak</p>
+                                <p class="text-sm font-bold text-slate-800" x-text="billData.tahun"></p>
                             </div>
                         </div>
 
                         <div class="p-6 space-y-4">
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80 cursor-default hover:bg-slate-50 transition px-2 rounded">
-                                <span class="text-sm font-medium text-slate-500">Pemakaian Air</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="billData.pemakaian + ' m³'"></span>
+                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                <span class="text-sm font-medium text-slate-500">Nomor Objek Pajak (NOP)</span>
+                                <span class="text-sm font-bold text-slate-800" x-text="billData.nop"></span>
                             </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80 cursor-default hover:bg-slate-50 transition px-2 rounded">
-                                <span class="text-sm font-medium text-slate-500">Tagihan Pokok</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + billData.tagihan.toLocaleString('id-ID')"></span>
+                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                <span class="text-sm font-medium text-slate-500">Provinsi / Wilayah</span>
+                                <span class="text-sm font-bold text-slate-800" x-text="wilayah"></span>
                             </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80 cursor-default hover:bg-slate-50 transition px-2 rounded">
-                                <span class="text-sm font-medium text-slate-500">Denda / Tunggakan</span>
-                                <span class="text-sm font-bold text-red-500" x-text="'Rp ' + billData.denda.toLocaleString('id-ID')"></span>
+                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                <span class="text-sm font-medium text-slate-500">Pokok Pajak</span>
+                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + formatRupiah(billData.tagihan)"></span>
                             </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80 cursor-default hover:bg-slate-50 transition px-2 rounded">
-                                <span class="text-sm font-medium text-slate-500">Biaya Admin Bank</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + billData.admin.toLocaleString('id-ID')"></span>
+                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                <span class="text-sm font-medium text-slate-500">Denda / Sanksi</span>
+                                <span class="text-sm font-bold text-red-500" x-text="'Rp ' + formatRupiah(billData.denda)"></span>
+                            </div>
+                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                <span class="text-sm font-medium text-slate-500">Biaya Admin</span>
+                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + formatRupiah(billData.admin)"></span>
                             </div>
                         </div>
 
                         <div class="bg-slate-50 p-6 flex justify-between items-center border-t border-slate-200">
-                            <span class="text-sm font-bold text-slate-600 uppercase tracking-wider">Total Tagihan</span>
-                            <span class="text-2xl font-black text-cyan-600" x-text="'Rp ' + billData.total.toLocaleString('id-ID')"></span>
+                            <span class="text-sm font-bold text-slate-600 uppercase tracking-wider">Total Pembayaran</span>
+                            <span class="text-2xl font-black text-amber-600" x-text="'Rp ' + formatRupiah(billData.total)"></span>
                         </div>
                     </div>
                 </div>
 
             </div>
-
-            <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
-                 :class="isVerified ? 'translate-y-0' : 'translate-y-full'">
-                <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center gap-4 w-full sm:w-auto">
-                        <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center text-cyan-600 text-xl font-bold">💳</div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase">Total Bayar</p>
-                            <p class="text-2xl font-black text-cyan-700 leading-none mt-1" x-text="isVerified ? 'Rp ' + billData.total.toLocaleString('id-ID') : 'Rp 0'"></p>
-                        </div>
-                    </div>
-                    
-                    <button @click="bayarSekarang()" class="w-full sm:w-auto bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
-                        Bayar Sekarang
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </button>
-                </div>
-            </div>
-
         </div>
+
+        <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
+             :class="isVerified ? 'translate-y-0' : 'translate-y-full'">
+            
+            <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 text-xl font-bold">💳</div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase">Total Bayar</p>
+                        <p class="text-2xl font-black text-amber-600 leading-none mt-1" x-text="isVerified ? 'Rp ' + formatRupiah(billData.total) : 'Rp 0'"></p>
+                    </div>
+                </div>
+                
+                <button @click="bayarSekarang()" class="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-amber-500/30 transition-all hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
+                    Bayar Pajak Sekarang
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </button>
+            </div>
+        </div>
+
     </main>
 
     <script>
-        function pdamLogic() {
+        function pajakDaerahLogic() {
             return {
-                selectedWilayah: '',
-                idPelanggan: '',
+                wilayah: '',
+                nop: '',
                 isLoading: false,
                 isVerified: false,
                 
-                // Data Mockup Tagihan
+                // Data Mockup Tagihan Pajak Daerah
                 billData: {
                     nama: '',
-                    periode: '',
-                    pemakaian: 0,
+                    alamat: '',
+                    nop: '',
+                    tahun: '',
                     tagihan: 0,
                     denda: 0,
                     admin: 0,
                     total: 0
                 },
 
-                isReadyToCheck() {
-                    return this.selectedWilayah !== '' && this.idPelanggan.length >= 6;
-                },
-
                 resetData() {
                     this.isVerified = false;
                 },
 
+                formatRupiah(angka) {
+                    return new Intl.NumberFormat('id-ID').format(angka);
+                },
+
                 cekTagihan() {
-                    if(!this.isReadyToCheck()) return;
+                    if(!this.wilayah || this.nop.length < 10) return;
                     
                     this.isLoading = true;
                     this.isVerified = false;
                     
-                    // Simulasi fetching data ke server biller
+                    // Simulasi fetching API Bapenda
                     setTimeout(() => {
+                        let tagihanPokok = Math.floor(Math.random() * (850000 - 150000 + 1)) + 150000;
+                        let sanksiDenda = 0; 
+                        let feeAdmin = 3000;
+
                         this.billData = {
                             nama: 'MOHAMMAD SUBAIRI',
-                            periode: 'April 2026',
-                            pemakaian: 24, // meter kubik
-                            tagihan: 145000,
-                            denda: 0,
-                            admin: 2500,
-                            total: 147500
+                            alamat: 'Jl. Melati No. 45, Kebayoran Baru, Jakarta Selatan',
+                            nop: this.nop,
+                            tahun: '2026',
+                            tagihan: tagihanPokok,
+                            denda: sanksiDenda,
+                            admin: feeAdmin,
+                            total: tagihanPokok + sanksiDenda + feeAdmin
                         };
                         
                         this.isLoading = false;
@@ -323,49 +310,49 @@
 
                 bayarSekarang() {
                     if(!this.isVerified) return;
-                    
+
                     Swal.fire({
                         title: '<span class="text-slate-800 font-extrabold text-2xl">Konfirmasi Pembayaran</span>',
                         html: `
-                            <p class="text-slate-500 mb-4 text-sm">Pastikan data pelanggan PDAM sudah benar.</p>
+                            <p class="text-slate-500 mb-4 text-sm">Pastikan NOP dan Nama Wajib Pajak sudah benar.</p>
                             <div class="text-left text-sm space-y-2 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between border-b border-slate-200 pb-3">
-                                    <span class="text-slate-500 font-medium">Wilayah</span>
-                                    <span class="font-bold text-slate-800 text-right w-1/2">${this.selectedWilayah}</span>
+                                    <span class="text-slate-500 font-medium">Instansi</span>
+                                    <span class="font-bold text-slate-800">Bapenda ${this.wilayah}</span>
                                 </div>
                                 <div class="flex justify-between border-b border-slate-200 py-3">
-                                    <span class="text-slate-500 font-medium">Nama Pelanggan</span>
-                                    <span class="font-bold text-slate-800">${this.billData.nama}</span>
+                                    <span class="text-slate-500 font-medium">Wajib Pajak</span>
+                                    <span class="font-bold text-slate-800 text-right w-1/2">${this.billData.nama}</span>
                                 </div>
                                 <div class="flex justify-between border-b border-slate-200 py-3">
-                                    <span class="text-slate-500 font-medium">Periode</span>
-                                    <span class="font-bold text-slate-800">${this.billData.periode}</span>
+                                    <span class="text-slate-500 font-medium">NOP</span>
+                                    <span class="font-bold text-slate-800">${this.billData.nop}</span>
                                 </div>
                                 <div class="flex justify-between pt-3 items-center">
                                     <span class="text-slate-500 font-medium">Total Bayar</span>
-                                    <span class="font-black text-cyan-600 text-xl">Rp ${this.billData.total.toLocaleString('id-ID')}</span>
+                                    <span class="font-black text-amber-600 text-xl">Rp ${this.formatRupiah(this.billData.total)}</span>
                                 </div>
                             </div>
                         `,
                         icon: 'question',
-                        iconColor: '#0891b2',
+                        iconColor: '#d97706',
                         showCancelButton: true,
-                        confirmButtonColor: '#0891b2',
-                        cancelButtonColor: '#ef4444',
-                        confirmButtonText: 'Ya, Bayar Tagihan',
+                        confirmButtonColor: '#d97706',
+                        cancelButtonColor: '#cbd5e1',
+                        confirmButtonText: 'Ya, Bayar Pajak',
                         cancelButtonText: 'Batal',
                         reverseButtons: true,
                         customClass: {
                             popup: 'rounded-[2rem] border border-slate-100 shadow-2xl',
-                            confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md shadow-cyan-500/30',
-                            cancelButton: 'rounded-xl px-6 py-3 font-bold'
+                            confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md shadow-amber-500/30',
+                            cancelButton: 'rounded-xl px-6 py-3 font-bold text-slate-700'
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
                             
                             Swal.fire({
                                 title: '<span class="text-slate-800 font-extrabold">Memproses Pembayaran...</span>',
-                                html: '<p class="text-slate-500">Mohon tunggu, kami sedang melunasi tagihan Anda ke PDAM.</p>',
+                                html: '<p class="text-slate-500">Mohon tunggu, kami sedang menyetorkan dana ke Kas Daerah.</p>',
                                 allowOutsideClick: false,
                                 didOpen: () => {
                                     Swal.showLoading();
@@ -379,26 +366,27 @@
                                 Swal.fire({
                                     title: '<span class="text-slate-800 font-extrabold text-2xl">Pembayaran Berhasil!</span>',
                                     html: `
-                                        <p class="text-slate-500 mb-4">Tagihan PDAM Anda untuk periode ${this.billData.periode} telah lunas.</p>
-                                        <div class="bg-green-50 text-green-700 font-mono font-bold text-lg py-3 rounded-xl border border-green-200 border-dashed">
-                                            Reff: PDM-${Math.floor(Math.random() * 100000000)}
+                                        <p class="text-slate-500 mb-4">Pajak Daerah untuk <b>${this.billData.nama}</b> telah lunas.</p>
+                                        <div class="bg-amber-50 text-amber-700 font-mono font-bold py-3 px-2 rounded-xl border border-amber-200 border-dashed text-sm md:text-base">
+                                            Reff: PJKD-${Math.random().toString(36).substring(2, 14).toUpperCase()}
                                         </div>
+                                        <p class="text-[10px] text-slate-400 mt-3">Struk ini adalah bukti sah pembayaran pajak daerah Anda.</p>
                                     `,
                                     icon: 'success',
-                                    iconColor: '#10b981',
-                                    confirmButtonColor: '#0891b2',
-                                    confirmButtonText: 'Tutup',
+                                    iconColor: '#d97706',
+                                    confirmButtonColor: '#d97706',
+                                    confirmButtonText: 'Selesai',
                                     customClass: {
                                         popup: 'rounded-[2rem] border border-slate-100 shadow-2xl',
-                                        confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-cyan-500/30'
+                                        confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-amber-500/30'
                                     }
                                 }).then(() => {
                                     this.resetData();
-                                    this.idPelanggan = '';
-                                    this.selectedWilayah = '';
+                                    this.nop = '';
+                                    this.wilayah = '';
                                 });
                                 
-                            }, 2000);
+                            }, 2500);
                         }
                     });
                 }

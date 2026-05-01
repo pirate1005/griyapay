@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Debet - Griyapay Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+        
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .bg-grid-slate {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+        }
+        
+        .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+
+        /* Toggle Switch CSS */
+        .toggle-checkbox:checked { right: 0; border-color: #0d9488; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #0d9488; }
+        .toggle-checkbox { right: 0; z-index: 1; border-color: #e2e8f0; transition: all 0.3s; }
+        .toggle-label { width: 3rem; height: 1.5rem; background-color: #cbd5e1; border-radius: 9999px; transition: all 0.3s; cursor: pointer; }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
+
+    <!-- ================= SIDEBAR (KONSISTEN) ================= -->
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
+        
+        <div class="p-6">
+            <a href="../index.html" class="flex items-center gap-3 mb-6">
+                <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
+                <div class="text-2xl font-extrabold tracking-tight text-white">
+                    Griya<span class="text-teal-300">pay</span>
+                </div>
+            </a>
+            
+            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+                <div>
+                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                </div>
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
+            
+            <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                Halaman Utama
+            </a>
+
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Pembayaran
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
+                    <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
+                    <a href="../pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
+                </div>
+            </div>
+
+            <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+            <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Transfer & Tarik
+            </a>
+            <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Penjualan Barang
+            </a>
+            <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Topup E-Money
+            </a>
+            <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Deposit
+            </a>
+            <a href="../report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report
+            </a>
+
+            <div x-data="{ open: false }" class="pt-2">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Setting & Admin
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
+        
+        <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
+
+        <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 py-4 px-6 flex items-center justify-between shrink-0 z-10 lg:rounded-tl-[2.5rem]">
+            <div class="flex items-center gap-4 flex-1">
+                <button @click="sidebarOpen = true" class="lg:hidden text-slate-800 hover:text-teal-600 transition p-1 bg-slate-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div>
+                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Auto Debet</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Kelola jadwal pembayaran otomatis Anda</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Saldo Widget -->
+                <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
+                    <div>
+                        <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
+                        <p class="text-sm font-black tracking-tight drop-shadow-sm">Rp 1.278.441</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- KONTEN HALAMAN AUTO DEBET -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="autoDebetLogic()">
+            
+            <div class="max-w-5xl mx-auto pb-24">
+                
+                <!-- TABS SWITCHER -->
+                <div class="flex gap-2 mb-8 overflow-x-auto hide-scroll pb-2 border-b border-slate-200">
+                    <button @click="activeTab = 'list'" :class="activeTab === 'list' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Daftar Auto Debet</button>
+                    <button @click="activeTab = 'add'" :class="activeTab === 'add' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">+ Buat Jadwal Baru</button>
+                </div>
+
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 min-h-[400px]">
+                    
+                    <!-- ================= TAB 1: DAFTAR AUTO DEBET ================= -->
+                    <div x-show="activeTab === 'list'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        <div class="p-6 border-b border-slate-100 bg-slate-50/50 rounded-t-[2rem]">
+                            <h2 class="text-lg font-bold text-slate-800">Auto Debet Aktif</h2>
+                            <p class="text-xs text-slate-500">Saldo Anda akan dipotong otomatis sesuai tanggal yang dijadwalkan.</p>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                
+                                <template x-for="item in debits" :key="item.id">
+                                    <div class="border border-slate-200 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition bg-white group">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center p-2 border border-slate-100 shrink-0 group-hover:border-teal-300 transition">
+                                                <img :src="item.icon" class="w-full h-full object-contain">
+                                            </div>
+                                            <div>
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <h3 class="font-bold text-slate-800" x-text="item.layanan"></h3>
+                                                    <span class="text-[10px] font-black px-2 py-0.5 rounded uppercase"
+                                                          :class="item.status ? 'bg-teal-100 text-teal-700' : 'bg-slate-200 text-slate-500'" x-text="item.status ? 'Aktif' : 'Nonaktif'"></span>
+                                                </div>
+                                                <p class="text-sm font-medium text-slate-500" x-text="'No Pelanggan: ' + item.no"></p>
+                                                <p class="text-xs font-bold text-orange-500 mt-1" x-text="'Jadwal Potong: Tgl ' + item.tgl + ' Setiap Bulan'"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between md:justify-end gap-4 pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 w-full md:w-auto">
+                                            <!-- Toggle Switch -->
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs font-bold text-slate-400">Status</span>
+                                                <div class="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+                                                    <input type="checkbox" :id="'toggle-' + item.id" x-model="item.status" @change="toggleStatus(item)" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                                    <label :for="'toggle-' + item.id" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer"></label>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Tombol Hapus -->
+                                            <button @click="deleteDebit(item.id)" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition" title="Hapus Jadwal">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Empty State -->
+                                <div x-show="debits.length === 0" class="py-12 text-center">
+                                    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">🗓️</div>
+                                    <h3 class="font-bold text-slate-700 text-lg mb-1">Belum Ada Jadwal</h3>
+                                    <p class="text-sm text-slate-500">Anda belum membuat jadwal Auto Debet satupun.</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= TAB 2: BUAT JADWAL BARU ================= -->
+                    <div x-show="activeTab === 'add'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;">
+                        <div class="p-6 border-b border-slate-100 bg-slate-50/50 rounded-t-[2rem]">
+                            <h2 class="text-lg font-bold text-slate-800">Buat Jadwal Baru</h2>
+                            <p class="text-xs text-slate-500">Isi form di bawah ini untuk mengatur pembayaran otomatis bulanan.</p>
+                        </div>
+
+                        <div class="p-6 md:p-8 max-w-3xl mx-auto space-y-6">
+                            
+                            <!-- Pilih Layanan -->
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 block">1. Pilih Jenis Tagihan</label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <button @click="newDebit.layanan = 'PLN Pascabayar'; newDebit.icon = 'https://img.icons8.com/fluency/96/light-on.png'" 
+                                            class="p-4 border-2 rounded-xl flex flex-col items-center justify-center gap-2 transition"
+                                            :class="newDebit.layanan === 'PLN Pascabayar' ? 'border-teal-500 bg-teal-50' : 'border-slate-200 hover:bg-slate-50 hover:border-teal-300'">
+                                        <img src="https://img.icons8.com/fluency/96/light-on.png" class="h-10 object-contain">
+                                        <span class="text-xs font-bold text-slate-700">PLN Pasca</span>
+                                    </button>
+                                    <button @click="newDebit.layanan = 'BPJS Kesehatan'; newDebit.icon = 'https://img.icons8.com/fluency/96/hospital-3.png'" 
+                                            class="p-4 border-2 rounded-xl flex flex-col items-center justify-center gap-2 transition"
+                                            :class="newDebit.layanan === 'BPJS Kesehatan' ? 'border-teal-500 bg-teal-50' : 'border-slate-200 hover:bg-slate-50 hover:border-teal-300'">
+                                        <img src="https://img.icons8.com/fluency/96/hospital-3.png" class="h-10 object-contain">
+                                        <span class="text-xs font-bold text-slate-700">BPJS Kes</span>
+                                    </button>
+                                    <button @click="newDebit.layanan = 'PDAM'; newDebit.icon = 'https://img.icons8.com/fluency/96/water-tap.png'" 
+                                            class="p-4 border-2 rounded-xl flex flex-col items-center justify-center gap-2 transition"
+                                            :class="newDebit.layanan === 'PDAM' ? 'border-teal-500 bg-teal-50' : 'border-slate-200 hover:bg-slate-50 hover:border-teal-300'">
+                                        <img src="https://img.icons8.com/fluency/96/water-tap.png" class="h-10 object-contain">
+                                        <span class="text-xs font-bold text-slate-700">PDAM</span>
+                                    </button>
+                                    <button @click="newDebit.layanan = 'Indihome'; newDebit.icon = 'https://img.icons8.com/fluency/96/modem.png'" 
+                                            class="p-4 border-2 rounded-xl flex flex-col items-center justify-center gap-2 transition"
+                                            :class="newDebit.layanan === 'Indihome' ? 'border-teal-500 bg-teal-50' : 'border-slate-200 hover:bg-slate-50 hover:border-teal-300'">
+                                        <img src="https://img.icons8.com/fluency/96/modem.png" class="h-10 object-contain">
+                                        <span class="text-xs font-bold text-slate-700">Indihome</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Input ID & Tanggal -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" x-show="newDebit.layanan !== ''">
+                                <div>
+                                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">2. Nomor Pelanggan / VA</label>
+                                    <input type="text" x-model="newDebit.no" placeholder="Masukkan ID Pelanggan" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 transition">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">3. Tanggal Pendebetan (Per Bulan)</label>
+                                    <div class="relative">
+                                        <select x-model="newDebit.tgl" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 transition appearance-none">
+                                            <template x-for="i in 28" :key="i">
+                                                <option :value="i" x-text="'Tanggal ' + i"></option>
+                                            </template>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 border-t border-slate-100 flex justify-end" x-show="newDebit.layanan !== '' && newDebit.no.length > 5">
+                                <button @click="saveNewDebit()" class="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-teal-500/30 transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-2">
+                                    Simpan Jadwal
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script Alpine.js Component -->
+    <script>
+        function autoDebetLogic() {
+            return {
+                activeTab: 'list',
+                
+                newDebit: {
+                    layanan: '',
+                    icon: '',
+                    no: '',
+                    tgl: '1'
+                },
+
+                debits: [
+                    { id: 'AD-001', layanan: 'PLN Pascabayar', no: '512345678901', tgl: '5', status: true, icon: 'https://img.icons8.com/fluency/96/light-on.png' },
+                    { id: 'AD-002', layanan: 'BPJS Kesehatan', no: '88888012345678', tgl: '10', status: true, icon: 'https://img.icons8.com/fluency/96/hospital-3.png' },
+                    { id: 'AD-003', layanan: 'Indihome', no: '122333444555', tgl: '20', status: false, icon: 'https://img.icons8.com/fluency/96/modem.png' }
+                ],
+
+                toggleStatus(item) {
+                    let statusText = item.status ? 'diaktifkan' : 'dinonaktifkan';
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: `Auto Debet ${item.layanan} ${statusText}.`,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                },
+
+                saveNewDebit() {
+                    Swal.fire({
+                        title: 'Menyimpan Jadwal...',
+                        allowOutsideClick: false,
+                        didOpen: () => { Swal.showLoading(); },
+                        customClass: { popup: 'rounded-[2rem]' }
+                    });
+
+                    setTimeout(() => {
+                        let newId = 'AD-' + Math.floor(Math.random() * 900 + 100);
+                        this.debits.unshift({
+                            id: newId,
+                            layanan: this.newDebit.layanan,
+                            no: this.newDebit.no,
+                            tgl: this.newDebit.tgl,
+                            status: true,
+                            icon: this.newDebit.icon
+                        });
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Jadwal Auto Debet baru telah ditambahkan.',
+                            confirmButtonColor: '#0d9488',
+                            customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-8 py-2 font-bold' }
+                        }).then(() => {
+                            // Reset Form & Switch Tab
+                            this.newDebit = { layanan: '', icon: '', no: '', tgl: '1' };
+                            this.activeTab = 'list';
+                        });
+                    }, 1000);
+                },
+
+                deleteDebit(id) {
+                    Swal.fire({
+                        title: 'Hapus Jadwal?',
+                        text: "Pembayaran otomatis untuk tagihan ini akan dihentikan.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#cbd5e1',
+                        confirmButtonText: 'Ya, Hapus',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-6 py-2 font-bold', cancelButton: 'rounded-xl px-6 py-2 font-bold text-slate-800' }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.debits = this.debits.filter(item => item.id !== id);
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Jadwal berhasil dihapus.',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

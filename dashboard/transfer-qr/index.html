@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer QRIS - Griyapay Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- HTML5 QR Code Library untuk Akses Kamera -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        .bg-grid-slate {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+        }
+        
+        .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+
+        /* Styling khusus untuk reader kamera */
+        #reader { width: 100%; border-radius: 1rem; overflow: hidden; border: none !important; }
+        #reader video { object-fit: cover; border-radius: 1rem; }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
+
+    <!-- ================= SIDEBAR (KONSISTEN) ================= -->
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
+
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
+        
+        <div class="p-6">
+            <a href="../index.html" class="flex items-center gap-3 mb-6">
+                <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
+                <div class="text-2xl font-extrabold tracking-tight text-white">
+                    Griya<span class="text-teal-300">pay</span>
+                </div>
+            </a>
+            
+            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+                <div>
+                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                </div>
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
+            
+            <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                Halaman Utama
+            </a>
+
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Pembayaran
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
+                    <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
+                    <a href="../pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
+                </div>
+            </div>
+
+            <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+            <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Transfer & Tarik
+            </a>
+            <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Penjualan Barang
+            </a>
+            <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Topup E-Money
+            </a>
+            <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Deposit
+            </a>
+            <a href="../report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report
+            </a>
+
+            <div x-data="{ open: false }" class="pt-2">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Setting & Admin
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                    <a href="../settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- ================= MAIN CONTENT (Penting: x-data dipindah ke tag main agar mencakup bottom bar) ================= -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0" x-data="qrisLogic()">
+        
+        <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
+
+        <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 py-4 px-6 flex items-center justify-between shrink-0 z-10 lg:rounded-tl-[2.5rem]">
+            <div class="flex items-center gap-4 flex-1">
+                <button @click="sidebarOpen = true" class="lg:hidden text-slate-800 hover:text-teal-600 transition p-1 bg-slate-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div>
+                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Scan QRIS / Transfer</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Transfer & QRIS > Bayar dengan QR Code</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6">
+                <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
+                    <div>
+                        <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
+                        <p class="text-sm font-black tracking-tight drop-shadow-sm">Rp 1.278.441</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- KONTEN HALAMAN TRANSFER QR -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10">
+            
+            <div class="max-w-3xl mx-auto space-y-8 pb-32">
+                
+                <!-- AREA SCANNER (ASLI MENGGUNAKAN KAMERA) -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden flex flex-col md:flex-row">
+                    
+                    <!-- Sisi Kiri: Kamera Scanner -->
+                    <div class="w-full md:w-1/2 bg-slate-900 p-8 flex flex-col items-center justify-center relative overflow-hidden min-h-[350px]">
+                        <!-- Background Pattern saat Kamera Mati -->
+                        <div x-show="!isScanning" class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        
+                        <div x-show="!isScanning" class="text-center z-10">
+                            <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-slate-700 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                                <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">Siap Scan QRIS</h3>
+                            <p class="text-slate-400 text-xs mt-1">Nyalakan kamera untuk memindai kode QR</p>
+                        </div>
+
+                        <!-- Tempat Kamera Aktif -->
+                        <div id="reader" x-show="isScanning" class="w-full"></div>
+                        
+                        <!-- Tombol Batal Scan -->
+                        <button x-show="isScanning" @click="stopScan()" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg z-20">
+                            Batal Scan
+                        </button>
+                    </div>
+
+                    <!-- Sisi Kanan: Kontrol -->
+                    <div class="w-full md:w-1/2 p-8 bg-white flex flex-col justify-center">
+                        <h2 class="text-xl font-bold text-slate-800 mb-2">Transfer via QRIS</h2>
+                        <p class="text-sm text-slate-500 mb-8">Scan kode QRIS dari merchant atau upload gambar QR dari galeri Anda untuk membayar.</p>
+                        
+                        <div class="space-y-4">
+                            <!-- Tombol Mulai Scan -->
+                            <button @click="startScan()" :disabled="isScanning" :class="isScanning ? 'opacity-50 cursor-not-allowed' : 'hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/30'" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Nyalakan Kamera
+                            </button>
+                            
+                            <!-- Separator -->
+                            <div class="flex items-center gap-4 py-2">
+                                <div class="h-px bg-slate-200 flex-1"></div>
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Atau</span>
+                                <div class="h-px bg-slate-200 flex-1"></div>
+                            </div>
+                            
+                            <!-- Tombol Upload Galeri (Simulasi) -->
+                            <button @click="uploadQR()" class="w-full bg-slate-50 border-2 border-slate-200 text-slate-600 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                Upload dari Galeri
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. FORM PEMBAYARAN (Muncul setelah QR terdeteksi) -->
+                <div x-show="qrDetected" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
+                    <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200">
+                        <h3 class="text-lg font-bold text-slate-900 mb-6">Detail Pembayaran QRIS</h3>
+                        
+                        <!-- Info Merchant -->
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 mb-6 flex items-center gap-4">
+                            <div class="w-14 h-14 bg-white rounded-xl shadow-sm border border-emerald-100 flex items-center justify-center text-2xl">
+                                🏪
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-0.5">Merchant Terverifikasi</p>
+                                <p class="text-lg font-black text-slate-800 truncate" x-text="merchantData.nama"></p>
+                                <p class="text-xs text-slate-500 truncate" x-text="'Kode QR: ' + merchantData.rawData"></p>
+                            </div>
+                        </div>
+
+                        <!-- Input Nominal Bayar -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Masukkan Nominal Pembayaran</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                                        <span class="text-slate-800 font-bold text-lg">Rp</span>
+                                    </div>
+                                    <input type="number" x-model.number="nominal" :readonly="merchantData.isStatic === false" 
+                                           class="w-full pl-14 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-black text-slate-800 tracking-wide focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition"
+                                           :class="merchantData.isStatic === false ? 'opacity-80 bg-slate-100 cursor-not-allowed' : ''">
+                                </div>
+                                <p x-show="merchantData.isStatic === false" class="text-[10px] text-emerald-600 mt-2 font-bold">* Nominal otomatis disesuaikan dari QR Code (Dinamis).</p>
+                            </div>
+                            
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Catatan / Berita (Opsional)</label>
+                                <input type="text" x-model="catatan" placeholder="Tulis catatan pembayaran..." class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:bg-white focus:border-emerald-500 transition">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BOTTOM BAR CHECKOUT (Ditempatkan di luar container scroll agar max-w bisa sejajar) -->
+        <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
+             :class="(qrDetected && nominal > 0) ? 'translate-y-0' : 'translate-y-full'">
+            <!-- Perhatikan max-w-3xl ini sekarang sejajar sempurna dengan form di atasnya -->
+            <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 text-xl font-bold">💸</div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase">Total Bayar</p>
+                        <p class="text-2xl font-black text-emerald-700 leading-none mt-1" x-text="qrDetected ? 'Rp ' + formatRupiah(nominal) : 'Rp 0'"></p>
+                    </div>
+                </div>
+                
+                <button @click="prosesBayar()" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-emerald-500/30 transition-all hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
+                    Konfirmasi Bayar
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script Alpine.js Component -->
+    <script>
+        function qrisLogic() {
+            return {
+                isScanning: false,
+                qrDetected: false,
+                nominal: '',
+                catatan: '',
+                html5QrcodeScanner: null,
+                
+                merchantData: {
+                    nama: '',
+                    rawData: '',
+                    isStatic: true
+                },
+
+                formatRupiah(angka) {
+                    if(!angka) return '0';
+                    return new Intl.NumberFormat('id-ID').format(angka);
+                },
+
+                startScan() {
+                    // Cek jika berjalan di environment file:/// yang dilarang browser mengakses kamera
+                    if (window.location.protocol === 'file:') {
+                        Swal.fire({
+                            title: 'Kamera Diblokir Browser',
+                            html: '<p class="text-sm text-slate-600">Akses kamera tidak diizinkan saat membuka file langsung via <b>file:///</b>.</p><p class="text-sm text-slate-600 mt-2">Gunakan <b>Live Server</b> (di VS Code) agar URL menjadi <b>http://localhost...</b> supaya kamera bisa terbuka.</p>',
+                            icon: 'error',
+                            confirmButtonColor: '#10b981',
+                            customClass: { popup: 'rounded-[2rem]' }
+                        });
+                        return;
+                    }
+
+                    this.isScanning = true;
+                    this.qrDetected = false;
+                    this.nominal = '';
+                    this.catatan = '';
+
+                    // Inisialisasi Kamera dengan HTML5-QRCode
+                    setTimeout(() => {
+                        this.html5QrcodeScanner = new Html5Qrcode("reader");
+                        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+                        this.html5QrcodeScanner.start({ facingMode: "environment" }, config, 
+                            (decodedText, decodedResult) => {
+                                // JIKA BERHASIL SCAN:
+                                this.stopScan();
+                                this.processQRData(decodedText);
+                            },
+                            (errorMessage) => {
+                                // Error saat proses scan (biarkan saja, ini looping normal)
+                            })
+                        .catch((err) => {
+                            Swal.fire('Kamera Error', 'Tidak dapat mengakses kamera. Pastikan Anda sudah memberikan izin.', 'error');
+                            this.isScanning = false;
+                        });
+                    }, 100);
+                },
+
+                stopScan() {
+                    if(this.html5QrcodeScanner) {
+                        this.html5QrcodeScanner.stop().then(() => {
+                            this.isScanning = false;
+                        }).catch(err => {
+                            console.error("Gagal menghentikan scanner.", err);
+                        });
+                    }
+                },
+
+                processQRData(text) {
+                    // Data yang didapat dari Kamera
+                    let isDinamis = Math.random() > 0.5; // Simulasi dinamis
+                    
+                    this.merchantData = {
+                        nama: 'Merchant QRIS (Scanned)',
+                        rawData: text.substring(0, 20) + '...', // Tampilkan sebagian raw datanya
+                        isStatic: !isDinamis
+                    };
+
+                    if(isDinamis) {
+                        this.nominal = Math.floor(Math.random() * (150000 - 20000 + 1)) + 20000;
+                    }
+
+                    this.qrDetected = true;
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'QR Berhasil Dibaca', showConfirmButton: false, timer: 1500 });
+                },
+
+                uploadQR() {
+                    // SIMULASI UPLOAD QR
+                    Swal.fire({
+                        title: 'Membaca QR dari Gambar...',
+                        allowOutsideClick: false,
+                        didOpen: () => { Swal.showLoading(); },
+                        customClass: { popup: 'rounded-[2rem]' }
+                    });
+
+                    setTimeout(() => {
+                        Swal.close();
+                        this.qrDetected = false;
+                        this.nominal = '';
+                        this.catatan = '';
+
+                        this.merchantData = {
+                            nama: 'Toko Kelontong Berkah (Upload)',
+                            rawData: '0002010102112660001...',
+                            isStatic: true 
+                        };
+
+                        this.qrDetected = true;
+                    }, 1000);
+                },
+
+                prosesBayar() {
+                    if(!this.nominal || this.nominal <= 0) return;
+
+                    Swal.fire({
+                        title: '<span class="text-slate-800 font-extrabold text-2xl">Konfirmasi Pembayaran</span>',
+                        html: `
+                            <div class="text-left text-sm space-y-2 mt-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                                <div class="flex justify-between border-b border-slate-200 pb-3">
+                                    <span class="text-slate-500 font-medium">Merchant</span>
+                                    <span class="font-bold text-slate-800 text-right w-1/2">${this.merchantData.nama}</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 py-3">
+                                    <span class="text-slate-500 font-medium">Metode</span>
+                                    <span class="font-bold text-slate-800">QRIS Griyapay</span>
+                                </div>
+                                <div class="flex justify-between pt-3 items-center">
+                                    <span class="text-slate-500 font-bold">Total Pembayaran</span>
+                                    <span class="font-black text-emerald-600 text-xl">Rp ${this.formatRupiah(this.nominal)}</span>
+                                </div>
+                            </div>
+                        `,
+                        icon: 'question',
+                        iconColor: '#10b981',
+                        showCancelButton: true,
+                        confirmButtonColor: '#10b981',
+                        cancelButtonColor: '#ef4444',
+                        confirmButtonText: 'Ya, Bayar Sekarang',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        customClass: {
+                            popup: 'rounded-[2rem] border border-slate-100 shadow-2xl',
+                            confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md shadow-emerald-500/30',
+                            cancelButton: 'rounded-xl px-6 py-3 font-bold text-slate-800'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            
+                            Swal.fire({
+                                title: '<span class="text-slate-800 font-extrabold">Memproses Transaksi...</span>',
+                                html: '<p class="text-slate-500">Meneruskan pembayaran ke jaringan QRIS Nasional.</p>',
+                                allowOutsideClick: false,
+                                didOpen: () => { Swal.showLoading(); },
+                                customClass: { popup: 'rounded-[2rem]' }
+                            });
+
+                            setTimeout(() => {
+                                Swal.fire({
+                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Pembayaran Berhasil!</span>',
+                                    html: `
+                                        <p class="text-slate-500 mb-4">Dana sebesar <b>Rp ${this.formatRupiah(this.nominal)}</b> telah masuk ke <b>${this.merchantData.nama}</b>.</p>
+                                        <div class="bg-emerald-50 text-emerald-700 font-mono font-bold text-lg py-3 rounded-xl border border-emerald-200 border-dashed">
+                                            Reff: QRIS-${Math.floor(Math.random() * 1000000000)}
+                                        </div>
+                                    `,
+                                    icon: 'success',
+                                    iconColor: '#10b981',
+                                    confirmButtonColor: '#10b981',
+                                    confirmButtonText: 'Selesai',
+                                    customClass: {
+                                        popup: 'rounded-[2rem] border border-slate-100 shadow-2xl',
+                                        confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-emerald-500/30'
+                                    }
+                                }).then(() => {
+                                    this.qrDetected = false;
+                                    this.nominal = '';
+                                    this.catatan = '';
+                                });
+                                
+                            }, 2000);
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
