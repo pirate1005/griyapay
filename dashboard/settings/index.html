@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan & Admin - Griyapay Dashboard</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -43,6 +39,33 @@
         .toggle-checkbox:checked + .toggle-label { background-color: #0d9488; }
         .toggle-checkbox { right: 0; z-index: 1; border-color: #e2e8f0; transition: all 0.3s; }
         .toggle-label { width: 3rem; height: 1.5rem; background-color: #cbd5e1; border-radius: 9999px; transition: all 0.3s; cursor: pointer; }
+
+        /* ================== CSS UNTUK PRINT STRUK ================== */
+        @media print {
+            /* Memaksa browser menghilangkan margin halaman dan header/footer (URL, Tanggal) */
+            @page { margin: 0; }
+            
+            body * {
+                visibility: hidden; 
+            }
+            #printable-area, #printable-area * {
+                visibility: visible; 
+            }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 10px; /* Sedikit padding agar tulisan tidak terlalu mepet dengan sobekan kertas */
+                box-shadow: none !important;
+                border: none !important;
+            }
+            /* Hilangkan elemen SweetAlert */
+            .swal2-container {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -143,7 +166,6 @@
         </nav>
     </aside>
 
-    <!-- ================= MAIN CONTENT ================= -->
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
         
         <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
@@ -172,7 +194,6 @@
             
             <div class="max-w-6xl mx-auto pb-10">
                 
-                <!-- TABS SWITCHER -->
                 <div class="flex gap-2 mb-8 overflow-x-auto hide-scroll pb-2 border-b border-slate-200">
                     <button @click="activeTab = 'profil'" :class="activeTab === 'profil' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Profil Saya</button>
                     <button @click="activeTab = 'keamanan'" :class="activeTab === 'keamanan' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Keamanan</button>
@@ -182,11 +203,9 @@
 
                 <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden min-h-[500px]">
                     
-                    <!-- ================= TAB PROFIL ================= -->
                     <div x-show="activeTab === 'profil'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="p-6 md:p-8">
                         <div class="flex flex-col md:flex-row gap-8">
                             
-                            <!-- Foto & Ringkasan -->
                             <div class="w-full md:w-1/3 flex flex-col items-center text-center">
                                 <div class="relative group cursor-pointer mb-4">
                                     <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-50 shadow-md">
@@ -201,7 +220,6 @@
                                 <p class="text-xs text-slate-400 mt-2">Bergabung sejak: 12 April 2024</p>
                             </div>
 
-                            <!-- Form Profil -->
                             <div class="flex-1 space-y-5">
                                 <div>
                                     <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nama Lengkap Usaha/Personal</label>
@@ -228,7 +246,6 @@
                         </div>
                     </div>
 
-                    <!-- ================= TAB KEAMANAN ================= -->
                     <div x-show="activeTab === 'keamanan'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;" class="p-6 md:p-8">
                         <div class="max-w-2xl mx-auto space-y-8">
                             
@@ -276,7 +293,6 @@
                         </div>
                     </div>
 
-                    <!-- ================= TAB NOTIFIKASI ================= -->
                     <div x-show="activeTab === 'notifikasi'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;" class="p-6 md:p-8">
                         <div class="max-w-3xl mx-auto">
                             <h2 class="text-lg font-bold text-slate-800 mb-2">Preferensi Notifikasi</h2>
@@ -319,11 +335,9 @@
                         </div>
                     </div>
 
-                    <!-- ================= TAB SISTEM & ADMIN ================= -->
                     <div x-show="activeTab === 'sistem'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;" class="p-6 md:p-8">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             
-                            <!-- 1. Pengaturan Biaya Admin -->
                             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                                 <div>
                                     <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
@@ -334,29 +348,32 @@
                                         </div>
                                     </div>
                                     <div class="space-y-4">
-                                        <!-- PLN -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin PLN (Pascabayar & Token)</label>
                                             <select x-model.number="adminFees.pln" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
-                                                
                                                 <option value="4500">Rp 4.500</option>
                                                 <option value="5000">Rp 5.000</option>
                                                 <option value="7500">Rp 7.500</option>
                                                 <option value="10000">Rp 10.000</option>
                                             </select>
                                         </div>
-                                        <!-- PDAM -->
+                                        <div class="flex items-center justify-between gap-4">
+                                            <label class="text-xs font-bold text-slate-700 w-1/2">Admin PLN Nontaglis</label>
+                                            <select x-model.number="adminFees.plnNontaglis" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
+                                                <option value="5000">Rp 5.000</option>
+                                                <option value="7500">Rp 7.500</option>
+                                                <option value="10000">Rp 10.000</option>
+                                            </select>
+                                        </div>
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin PDAM</label>
                                             <select x-model.number="adminFees.pdam" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
-                                                
                                                 <option value="4500">Rp 4.500</option>
                                                 <option value="5000">Rp 5.000</option>
                                                 <option value="7500">Rp 7.500</option>
                                                 <option value="10000">Rp 10.000</option>
                                             </select>
                                         </div>
-                                        <!-- BPJS -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin BPJS</label>
                                             <select x-model.number="adminFees.bpjs" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
@@ -366,7 +383,6 @@
                                                 <option value="10000">Rp 10.000</option>
                                             </select>
                                         </div>
-                                        <!-- Lainnya -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin Telkom / Indihome</label>
                                             <select x-model.number="adminFees.telkom" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
@@ -381,7 +397,6 @@
                                 <button @click="simpanSistem('Biaya Admin')" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold text-sm transition mt-6">Simpan Biaya Admin</button>
                             </div>
 
-                            <!-- 2. Pengaturan Cetak Struk (Printer) -->
                             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                                 <div>
                                     <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
@@ -405,7 +420,6 @@
                                                 <option value="POS_80_150">PRINTER POS 80 x 150 mm (Landscape / Portrait)</option>
                                             </select>
                                             
-                                            <!-- Kotak Informasi Detail Ukuran -->
                                             <div class="mt-3 bg-blue-50 border border-blue-100 p-3 rounded-xl flex gap-3 text-xs text-blue-800">
                                                 <svg class="w-4 h-4 shrink-0 mt-0.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                                 <div>
@@ -421,10 +435,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button @click="simpanSistem('Format Printer Struk')" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold text-sm transition mt-6">Simpan Pengaturan Struk</button>
+                                <div class="flex gap-3 mt-6">
+                                    <button @click="simpanSistem('Format Printer Struk')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold text-sm transition">Simpan Pengaturan</button>
+                                    <button @click="testPrintStruk()" class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-700 py-3 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg> 
+                                        Test Print (Preview)
+                                    </button>
+                                </div>
                             </div>
 
-                            <!-- 3. Integrasi API (Dipindah ke bawah agar grid tetap rapi) -->
                             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm lg:col-span-2">
                                 <div class="flex items-center gap-3 mb-6">
                                     <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl">⚙️</div>
@@ -474,6 +493,7 @@
 
                 adminFees: {
                     pln: 4500,
+                    plnNontaglis: 5000,
                     pdam: 4500,
                     bpjs: 4500,
                     telkom: 4500
@@ -531,6 +551,99 @@
                         text: `Pengaturan ${type} telah berhasil diupdate ke server. Struk transaksi selanjutnya akan mengikuti format baru ini.`,
                         confirmButtonColor: '#1e293b',
                         customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-6 py-2 font-bold' }
+                    });
+                },
+
+                testPrintStruk() {
+                    let ukuran = this.printerSettings.ukuran;
+                    let widthStyle = '';
+                    let containerClass = '';
+                    
+                    // Set Ukuran dan Class Berdasarkan Pilihan
+                    if (ukuran === 'A6_POTRAIT') { 
+                        widthStyle = 'width: 10.5cm; min-height: 14cm;'; 
+                        containerClass = 'text-left text-sm p-6'; 
+                    } else if (ukuran === 'A4_LANDSCAPE') { 
+                        widthStyle = 'width: 29.7cm; min-height: 21cm;'; 
+                        containerClass = 'text-left text-base p-8'; 
+                    } else if (ukuran === 'QUARTO_3') { 
+                        widthStyle = 'width: 21cm; min-height: 9.3cm;'; 
+                        containerClass = 'text-left text-sm p-4'; 
+                    } else if (ukuran === 'QUARTO_4') { 
+                        widthStyle = 'width: 21cm; min-height: 7cm;'; 
+                        containerClass = 'text-left text-xs p-3'; 
+                    } else if (ukuran === 'THERMAL_80') { 
+                        widthStyle = 'width: 80mm;'; 
+                        containerClass = 'text-center text-xs p-4'; 
+                    } else if (ukuran === 'THERMAL_76') { 
+                        widthStyle = 'width: 76mm;'; 
+                        containerClass = 'text-center text-xs p-4'; 
+                    } else if (ukuran === 'THERMAL_58') { 
+                        widthStyle = 'width: 58mm;'; 
+                        containerClass = 'text-center text-[10px] leading-tight p-2'; 
+                    } else if (ukuran === 'POS_80_150') { 
+                        widthStyle = 'width: 80mm; min-height: 150mm;'; 
+                        containerClass = 'text-center text-xs p-4 flex flex-col justify-between'; 
+                    }
+
+                    // Buat Data Dummy Struk di bungkus ID "printable-area" untuk CSS media print
+                    let dummyData = `
+                        <div id="printable-area" class="font-mono ${containerClass} border border-slate-300 shadow-md mx-auto bg-white text-black" style="${widthStyle}">
+                            <div class="font-bold text-center mb-1 text-lg">GRIYAPAY</div>
+                            <div class="text-center mb-3 opacity-80">${this.profile.alamat}</div>
+                            <div class="border-b-2 border-dashed border-black mb-3"></div>
+                            
+                            <div class="flex justify-between mb-1"><span>TGL/WAKTU</span><span>02/05/2026 14:00</span></div>
+                            <div class="flex justify-between mb-1"><span>LAYANAN</span><span>PLN NONTAGLIS</span></div>
+                            <div class="flex justify-between mb-1"><span>ID PELANGGAN</span><span>54321123456</span></div>
+                            <div class="flex justify-between mb-1"><span>NAMA</span><span>${this.profile.nama}</span></div>
+                            
+                            <div class="border-b-2 border-dashed border-black my-3"></div>
+                            
+                            <div class="flex justify-between mb-1"><span>TAGIHAN POKOK</span><span>Rp 150.000</span></div>
+                            <div class="flex justify-between mb-1"><span>BIAYA ADMIN</span><span>Rp ${this.adminFees.plnNontaglis.toLocaleString('id-ID')}</span></div>
+                            
+                            <div class="border-b-2 border-dashed border-black my-3"></div>
+                            <div class="flex justify-between font-extrabold text-sm mb-1"><span>TOTAL BAYAR</span><span>Rp ${(150000 + this.adminFees.plnNontaglis).toLocaleString('id-ID')}</span></div>
+                            <div class="border-b-2 border-dashed border-black my-3"></div>
+                            
+                            <div class="text-center mt-6 italic opacity-80 text-[10px] sm:text-xs">${this.printerSettings.footer}</div>
+                        </div>
+                    `;
+
+                    Swal.fire({
+                        title: '<span class="text-slate-800 font-extrabold">Preview Cetak Struk</span>',
+                        html: `<p class="text-sm text-slate-500 mb-6">Simulasi kertas: <b>${this.keteranganStruk[ukuran].split('.')[0]}</b></p>` + dummyData,
+                        showCancelButton: true,
+                        confirmButtonText: '🖨️ Cetak ke Printer',
+                        cancelButtonText: 'Tutup',
+                        confirmButtonColor: '#0ea5e9', // cyan-500
+                        cancelButtonColor: '#cbd5e1',
+                        customClass: { 
+                            popup: 'rounded-[2rem] w-auto max-w-[95vw]',
+                            confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-cyan-500/30',
+                            cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
+                        }
+                    }).then((result) => {
+                        // JIKA TOMBOL CETAK DIKLIK -> Trigger window.print()
+                        if (result.isConfirmed) {
+                            // Karena struktur HTML dari SweetAlert dihapus sesaat setelah ditutup, 
+                            // kita harus menahan cetakan HTML-nya ke dalam DOM sementara
+                            
+                            // 1. Buat elemen penampung cetak di body
+                            const printContainer = document.createElement('div');
+                            printContainer.id = "print-container-temp";
+                            printContainer.innerHTML = dummyData;
+                            document.body.appendChild(printContainer);
+
+                            // 2. Jalankan perintah print browser
+                            window.print();
+
+                            // 3. Setelah dialog print tertutup/selesai, hapus elemen sementaranya
+                            setTimeout(() => {
+                                document.body.removeChild(printContainer);
+                            }, 500);
+                        }
                     });
                 },
 
