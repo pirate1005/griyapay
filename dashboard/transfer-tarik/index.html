@@ -30,6 +30,24 @@
         }
         
         .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+
+        /* ================== CSS UNTUK PRINT STRUK ================== */
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #printable-area, #printable-area * { visibility: visible; }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 10px;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .swal2-container { display: none !important; }
+        }
     </style>
 </head>
 
@@ -64,7 +82,6 @@
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 Halaman Utama
             </a>
-
 
             <div x-data="{ open: false }">
                 <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
@@ -105,7 +122,6 @@
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 Topup E-Money
             </a>
-
             
             <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -124,9 +140,9 @@
                     </div>
                     <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative" style="display: none;">
                     <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                    <a href="../settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
                 </div>
             </div>
         </nav>
@@ -294,6 +310,15 @@
                 transfer: { tujuan: '', nominal: '', catatan: '' },
                 tarik: { bank: '', rekening: '', nominal: '' },
 
+                // Pengaturan Print & Toko
+                profile: {
+                    nama: 'TOKO GARUDA',
+                    alamat: 'JLN KUALA LANGSA NO 15 DSN SATRIA RT 03 SUNGAI PAUH KOTA LANGSA ACEH 24410 20'
+                },
+                printerSettings: {
+                    footer: 'Terima kasih. Simpan struk ini sebagai bukti transaksi yang sah.'
+                },
+
                 formatRupiah(angka) {
                     return new Intl.NumberFormat('id-ID').format(angka);
                 },
@@ -331,13 +356,80 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             Swal.fire({ title: 'Memproses...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
+                            
                             setTimeout(() => {
                                 this.saldo -= parseInt(this.transfer.nominal);
                                 document.getElementById('headerSaldo').innerText = 'Rp ' + this.formatRupiah(this.saldo);
-                                this.transfer = { tujuan: '', nominal: '', catatan: '' }; // Reset
                                 
+                                // Siapkan Template HTML Struk 76mm Transfer
+                                let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
+                                let randIdTrans = Math.floor(Math.random() * 1000000000);
+                                let nominalTransfer = this.transfer.nominal;
+                                
+                                let dummyStrukHTML = `
+                                    <div id="printable-area" class="font-mono text-left p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <img src="../../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
+                                            <span class="font-bold">GRIYAPAY</span>
+                                        </div>
+                                        <div class="uppercase text-[11px]">${this.profile.nama}</div>
+                                        <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
+                                        
+                                        <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
+                                            <span>Tgl Bayar : ${dateStr}</span>
+                                            <span>ID Trans : ${randIdTrans}</span>
+                                        </div>
+                                        
+                                        <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Transfer Saldo</div>
+                                        
+                                        <div class="flex flex-col space-y-1 text-[11px] uppercase">
+                                            <div class="flex justify-between"><span>TUJUAN</span><span>${this.transfer.tujuan}</span></div>
+                                            <div class="flex justify-between"><span>NOMINAL</span><span>Rp ${this.formatRupiah(nominalTransfer)}</span></div>
+                                            <div class="flex justify-between"><span>ADMIN</span><span>Rp 0</span></div>
+                                            <div class="flex justify-between"><span>CATATAN</span><span class="text-right ml-4">${this.transfer.catatan || '-'}</span></div>
+                                            <div class="flex justify-between"><span>STATUS</span><span>SUKSES</span></div>
+                                        </div>
+                                        
+                                        <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
+                                        <div class="flex justify-between font-black text-sm uppercase">
+                                            <span>TOTAL TRANSFER</span>
+                                            <span>Rp ${this.formatRupiah(nominalTransfer)}</span>
+                                        </div>
+                                        <div class="border-b-2 border-dashed border-black my-2"></div>
+                                        
+                                        <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed">${this.printerSettings.footer}</div>
+                                    </div>
+                                `;
+                                
+                                this.transfer = { tujuan: '', nominal: '', catatan: '' }; // Reset Form
+
                                 Swal.fire({
-                                    icon: 'success', title: 'Transfer Berhasil!', html: '<p>Dana telah masuk ke akun tujuan.</p>', confirmButtonColor: '#0d9488', customClass: { popup: 'rounded-[2rem]' }
+                                    icon: 'success', 
+                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Transfer Berhasil!</span>', 
+                                    html: `<p class="text-slate-500 mb-4">Dana telah masuk ke akun tujuan.</p>` + dummyStrukHTML, 
+                                    showCancelButton: true,
+                                    confirmButtonText: '🖨️ Cetak Struk',
+                                    cancelButtonText: 'Tutup',
+                                    confirmButtonColor: '#0d9488', 
+                                    cancelButtonColor: '#cbd5e1',
+                                    customClass: { 
+                                        popup: 'rounded-[2rem] w-auto max-w-[95vw]',
+                                        confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-teal-500/30',
+                                        cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
+                                    }
+                                }).then((printResult) => {
+                                    if(printResult.isConfirmed) {
+                                        const printContainer = document.createElement('div');
+                                        printContainer.id = "print-container-temp";
+                                        printContainer.innerHTML = dummyStrukHTML;
+                                        document.body.appendChild(printContainer);
+                                        
+                                        window.print();
+                                        
+                                        setTimeout(() => {
+                                            document.body.removeChild(printContainer);
+                                        }, 500);
+                                    }
                                 });
                             }, 1500);
                         }
@@ -386,13 +478,82 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             Swal.fire({ title: 'Memproses Penarikan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
+                            
                             setTimeout(() => {
                                 this.saldo -= totalTarik;
                                 document.getElementById('headerSaldo').innerText = 'Rp ' + this.formatRupiah(this.saldo);
-                                this.tarik = { bank: '', rekening: '', nominal: '' }; // Reset
+                                
+                                // Siapkan Template HTML Struk 76mm Tarik
+                                let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
+                                let randIdTrans = Math.floor(Math.random() * 1000000000);
+                                let tarikNominal = this.tarik.nominal;
+                                let tarikBank = this.tarik.bank;
+                                let tarikRek = this.tarik.rekening;
+                                
+                                let dummyStrukHTML = `
+                                    <div id="printable-area" class="font-mono text-left p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <img src="../../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
+                                            <span class="font-bold">GRIYAPAY</span>
+                                        </div>
+                                        <div class="uppercase text-[11px]">${this.profile.nama}</div>
+                                        <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
+                                        
+                                        <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
+                                            <span>Tgl Tarik : ${dateStr}</span>
+                                            <span>ID Trans : ${randIdTrans}</span>
+                                        </div>
+                                        
+                                        <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Penarikan Dana</div>
+                                        
+                                        <div class="flex flex-col space-y-1 text-[11px] uppercase">
+                                            <div class="flex justify-between"><span>BANK TUJUAN</span><span>${tarikBank}</span></div>
+                                            <div class="flex justify-between"><span>NO. REKENING</span><span>${tarikRek}</span></div>
+                                            <div class="flex justify-between"><span>NOMINAL TARIK</span><span>Rp ${this.formatRupiah(tarikNominal)}</span></div>
+                                            <div class="flex justify-between"><span>BIAYA ADMIN</span><span>Rp 2.500</span></div>
+                                            <div class="flex justify-between"><span>STATUS</span><span>DIPROSES</span></div>
+                                        </div>
+                                        
+                                        <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
+                                        <div class="flex justify-between font-black text-sm uppercase">
+                                            <span>TOTAL POTONGAN</span>
+                                            <span>Rp ${this.formatRupiah(totalTarik)}</span>
+                                        </div>
+                                        <div class="border-b-2 border-dashed border-black my-2"></div>
+                                        
+                                        <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed">${this.printerSettings.footer}</div>
+                                    </div>
+                                `;
+
+                                this.tarik = { bank: '', rekening: '', nominal: '' }; // Reset Form
                                 
                                 Swal.fire({
-                                    icon: 'success', title: 'Penarikan Diproses!', html: '<p>Dana akan masuk ke rekening Anda dalam waktu maksimal 1x24 jam kerja.</p>', confirmButtonColor: '#0f172a', customClass: { popup: 'rounded-[2rem]' }
+                                    icon: 'success', 
+                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Penarikan Diproses!</span>', 
+                                    html: `<p class="text-slate-500 mb-4">Dana akan masuk ke rekening Anda maksimal 1x24 jam kerja.</p>` + dummyStrukHTML, 
+                                    showCancelButton: true,
+                                    confirmButtonText: '🖨️ Cetak Struk',
+                                    cancelButtonText: 'Tutup',
+                                    confirmButtonColor: '#0f172a', 
+                                    cancelButtonColor: '#cbd5e1',
+                                    customClass: { 
+                                        popup: 'rounded-[2rem] w-auto max-w-[95vw]',
+                                        confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md',
+                                        cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
+                                    }
+                                }).then((printResult) => {
+                                    if(printResult.isConfirmed) {
+                                        const printContainer = document.createElement('div');
+                                        printContainer.id = "print-container-temp";
+                                        printContainer.innerHTML = dummyStrukHTML;
+                                        document.body.appendChild(printContainer);
+                                        
+                                        window.print();
+                                        
+                                        setTimeout(() => {
+                                            document.body.removeChild(printContainer);
+                                        }, 500);
+                                    }
                                 });
                             }, 2000);
                         }

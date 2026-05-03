@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Toll & E-Money - Griyapay Dashboard</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -34,12 +30,29 @@
         }
         
         .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+
+        /* ================== CSS UNTUK PRINT STRUK ================== */
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #printable-area, #printable-area * { visibility: visible; }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 10px;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .swal2-container { display: none !important; }
+        }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
 
-    <!-- ================= SIDEBAR ================= -->
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
 
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
@@ -78,7 +91,7 @@
                     </div>
                     <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative" style="display: none;">
                     <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
                     <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
                     <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
@@ -90,22 +103,27 @@
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Tagihan Rutin
             </a>
+            
             <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 Layanan Terbaru
             </a>
+            
             <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 Transfer & Tarik
             </a>
+            
             <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 Penjualan Barang
             </a>
+            
             <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 Topup E-Money
             </a>
+            
             <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
                 <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Deposit
@@ -123,15 +141,14 @@
                     </div>
                     <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative" style="display: none;">
                     <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                    <a href="../settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
                 </div>
             </div>
         </nav>
     </aside>
 
-    <!-- ================= MAIN CONTENT ================= -->
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
         
         <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
@@ -147,7 +164,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-4 md:gap-6">
-                <!-- Saldo Widget -->
                 <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
                     <div>
                         <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
@@ -157,14 +173,12 @@
             </div>
         </header>
 
-        <!-- KONTEN HALAMAN E-TOLL -->
         <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="etollLogic()">
             
             <div class="max-w-4xl mx-auto space-y-8 pb-24">
                 
                 <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200">
                     
-                    <!-- TAB NAVIGASI -->
                     <div class="flex gap-2 mb-8 overflow-x-auto hide-scroll pb-2 border-b border-slate-100">
                         <button @click="pilihKartu('mandiri')" :class="jenisKartu === 'mandiri' ? 'border-yellow-500 text-yellow-600 bg-yellow-50' : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-yellow-600'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap flex items-center gap-2">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Mandiri_e-money_logo.png/640px-Mandiri_e-money_logo.png" class="h-4 object-contain mix-blend-multiply"> Mandiri E-Money
@@ -177,10 +191,8 @@
                         </button>
                     </div>
 
-                    <!-- FORM INPUT -->
                     <div class="space-y-6">
                         
-                        <!-- Peringatan NFC -->
                         <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl flex items-start gap-3 text-sm text-blue-800">
                             <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <p><strong>Penting:</strong> Setelah topup berhasil, saldo tidak akan langsung masuk ke kartu. Pelanggan wajib melakukan <strong>Update Saldo</strong> menggunakan HP ber-NFC atau melalui mesin ATM terdekat.</p>
@@ -201,9 +213,9 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                 <template x-for="nom in quickNominals" :key="nom">
                                     <button @click="nominal = nom" 
-                                            class="py-4 rounded-xl border-2 font-bold text-sm md:text-base transition-all duration-200 text-center"
+                                            class="py-4 rounded-xl border-2 font-bold text-sm md:text-base transition-all duration-200 text-center flex flex-col items-center justify-center gap-1"
                                             :class="nominal === nom ? 'border-teal-500 bg-teal-50 text-teal-700 shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:border-teal-300 hover:bg-slate-50'">
-                                        Rp <span x-text="formatRupiah(nom)"></span>
+                                        <span>Rp <span x-text="formatRupiah(nom)"></span></span>
                                     </button>
                                 </template>
                             </div>
@@ -214,7 +226,6 @@
 
             </div>
 
-            <!-- BOTTOM BAR CHECKOUT -->
             <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
                  :class="(nominal > 0 && noKartu.length >= 10) ? 'translate-y-0' : 'translate-y-full'">
                 <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -236,7 +247,6 @@
         </div>
     </main>
 
-    <!-- Script Alpine.js Component -->
     <script>
         function etollLogic() {
             return {
@@ -245,6 +255,15 @@
                 nominal: 0,
                 quickNominals: [20000, 50000, 100000, 150000, 200000, 300000, 400000, 500000],
                 biayaAdmin: 1500, // Flat admin fee
+                
+                // Variabel Sistem (Biasa ditarik dari backend)
+                profile: {
+                    nama: 'TOKO GARUDA',
+                    alamat: 'JLN KUALA LANGSA NO 15 DSN SATRIA RT 03 SUNGAI PAUH KOTA LANGSA ACEH 24410 20'
+                },
+                printerSettings: {
+                    footer: 'Pastikan untuk melakukan UPDATE SALDO melalui mesin ATM atau HP Ber-NFC. Terima kasih.'
+                },
                 
                 namaKartuDisplay() {
                     if(this.jenisKartu === 'mandiri') return 'Mandiri E-Money';
@@ -265,6 +284,7 @@
                     if(this.nominal === 0 || this.noKartu.length < 10) return;
 
                     let totalBayar = this.nominal + this.biayaAdmin;
+                    let nmKartu = this.namaKartuDisplay();
 
                     Swal.fire({
                         title: '<span class="text-slate-800 font-extrabold text-xl">Detail Pembayaran</span>',
@@ -272,7 +292,7 @@
                             <div class="text-left text-sm space-y-2 mt-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between border-b border-slate-200 pb-3">
                                     <span class="text-slate-500 font-medium">Jenis Kartu</span>
-                                    <span class="font-bold text-slate-800">${this.namaKartuDisplay()}</span>
+                                    <span class="font-bold text-slate-800">${nmKartu}</span>
                                 </div>
                                 <div class="flex justify-between border-b border-slate-200 py-3">
                                     <span class="text-slate-500 font-medium">Nomor Kartu</span>
@@ -312,27 +332,96 @@
                                 html: '<p class="text-slate-500">Saldo sedang dikirim ke server. Mohon tunggu.</p>',
                                 allowOutsideClick: false,
                                 didOpen: () => { Swal.showLoading(); },
-                                customClass: { popup: 'rounded-[2rem]' }
+                                customClass: { popup: 'rounded-[2rem] border border-slate-100 shadow-2xl' }
                             });
 
                             setTimeout(() => {
+                                // Ekstrak Data Cetak Struk 76mm
+                                let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
+                                let snRef = 'ET-' + Math.floor(Math.random() * 10000000000);
+                                let noKartuStr = this.noKartu;
+                                let nomTopup = this.nominal;
+                                let adminBiaya = this.biayaAdmin;
+                                
+                                let dummyStrukHTML = `
+                                    <div id="printable-area" class="font-mono text-left p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
+                                        
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <img src="../../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
+                                            <span class="font-bold">GRIYAPAY</span>
+                                        </div>
+                                        <div class="uppercase text-[11px]">${this.profile.nama}</div>
+                                        <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
+                                        
+                                        <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
+                                            <span>Tgl Topup : ${dateStr}</span>
+                                            <span>ID Trans : ${Math.floor(Math.random() * 1000000000)}</span>
+                                        </div>
+                                        
+                                        <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Isi Ulang E-Toll</div>
+                                        
+                                        <div class="flex flex-col space-y-1 text-[11px] uppercase">
+                                            <div class="flex justify-between"><span>JENIS KARTU</span><span>${nmKartu}</span></div>
+                                            <div class="flex justify-between"><span>NO KARTU</span><span>${noKartuStr}</span></div>
+                                            <div class="flex justify-between"><span>NOMINAL TOPUP</span><span>Rp ${nomTopup.toLocaleString('id-ID')}</span></div>
+                                            <div class="flex justify-between"><span>SN/REF</span><span>${snRef}</span></div>
+                                            <div class="flex justify-between"><span>STATUS</span><span>SUKSES</span></div>
+                                            
+                                            <div class="border-b border-dashed border-black my-1"></div>
+                                            
+                                            <div class="flex justify-between"><span>BIAYA ADMIN</span><span>Rp ${adminBiaya.toLocaleString('id-ID')}</span></div>
+                                        </div>
+                                        
+                                        <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
+                                        <div class="flex justify-between font-black text-sm uppercase">
+                                            <span>TOTAL BAYAR</span>
+                                            <span>Rp ${totalBayar.toLocaleString('id-ID')}</span>
+                                        </div>
+                                        <div class="border-b-2 border-dashed border-black my-2"></div>
+                                        
+                                        <div class="text-[9px] uppercase mt-2 text-center opacity-80 leading-relaxed font-bold">
+                                            ${this.printerSettings.footer}
+                                        </div>
+
+                                    </div>
+                                `;
+
                                 Swal.fire({
                                     title: '<span class="text-slate-800 font-extrabold text-2xl">Topup Berhasil!</span>',
                                     html: `
-                                        <p class="text-slate-500 mb-4">Pengisian saldo <b>${this.namaKartuDisplay()}</b> telah berhasil. Silakan lakukan <b>Update Saldo</b> untuk memunculkan saldo pada kartu fisik Anda.</p>
-                                        <div class="bg-slate-100 text-slate-700 font-mono font-bold text-lg py-3 rounded-xl border border-slate-300 border-dashed">
-                                            SN: ET-${Math.floor(Math.random() * 1000000000)}
+                                        <p class="text-slate-500 mb-4">Pengisian saldo <b>${nmKartu}</b> telah berhasil. Silakan lakukan <b>Update Saldo</b> pada kartu fisik Anda.</p>
+                                        <div class="bg-slate-100 text-slate-700 font-mono font-bold text-lg py-3 rounded-xl border border-slate-300 border-dashed mb-4">
+                                            SN: ${snRef}
                                         </div>
+                                        ${dummyStrukHTML}
                                     `,
                                     icon: 'success',
                                     iconColor: '#10b981',
+                                    showCancelButton: true,
+                                    confirmButtonText: '🖨️ Cetak Struk',
+                                    cancelButtonText: 'Tutup',
                                     confirmButtonColor: '#0f172a',
-                                    confirmButtonText: 'Tutup',
+                                    cancelButtonColor: '#cbd5e1',
                                     customClass: {
-                                        popup: 'rounded-[2rem]',
-                                        confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-lg'
+                                        popup: 'rounded-[2rem] border border-slate-100 shadow-2xl w-auto max-w-[95vw]',
+                                        confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-lg',
+                                        cancelButton: 'rounded-xl px-6 py-3 font-bold text-slate-800'
                                     }
-                                }).then(() => {
+                                }).then((printResult) => {
+                                    if(printResult.isConfirmed) {
+                                        // Pemicu Print Browser Langsung
+                                        const printContainer = document.createElement('div');
+                                        printContainer.id = "print-container-temp";
+                                        printContainer.innerHTML = dummyStrukHTML;
+                                        document.body.appendChild(printContainer);
+                                        
+                                        window.print();
+                                        
+                                        setTimeout(() => {
+                                            document.body.removeChild(printContainer);
+                                        }, 500);
+                                    }
+                                    
                                     // Reset Form
                                     this.noKartu = '';
                                     this.nominal = 0;
