@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan & Admin - Griyapay Dashboard</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -161,7 +157,6 @@
         </nav>
     </aside>
 
-    <!-- ================= MAIN CONTENT ================= -->
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
         
         <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
@@ -190,7 +185,6 @@
             
             <div class="max-w-6xl mx-auto pb-10">
                 
-                <!-- TABS SWITCHER -->
                 <div class="flex gap-2 mb-8 overflow-x-auto hide-scroll pb-2 border-b border-slate-200">
                     <button @click="activeTab = 'profil'" :class="activeTab === 'profil' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Profil Saya</button>
                     <button @click="activeTab = 'keamanan'" :class="activeTab === 'keamanan' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Keamanan</button>
@@ -200,11 +194,9 @@
 
                 <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden min-h-[500px]">
                     
-                    <!-- ================= TAB PROFIL ================= -->
                     <div x-show="activeTab === 'profil'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="p-6 md:p-8">
                         <div class="flex flex-col md:flex-row gap-8">
                             
-                            <!-- Foto & Ringkasan -->
                             <div class="w-full md:w-1/3 flex flex-col items-center text-center">
                                 <div class="relative group cursor-pointer mb-4">
                                     <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-50 shadow-md">
@@ -219,7 +211,6 @@
                                 <p class="text-xs text-slate-400 mt-2">Bergabung sejak: 12 April 2024</p>
                             </div>
 
-                            <!-- Form Profil -->
                             <div class="flex-1 space-y-5">
                                 <div>
                                     <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nama Lengkap Usaha/Personal</label>
@@ -246,7 +237,6 @@
                         </div>
                     </div>
 
-                    <!-- ================= TAB KEAMANAN ================= -->
                     <div x-show="activeTab === 'keamanan'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;" class="p-6 md:p-8">
                         <div class="max-w-2xl mx-auto space-y-8">
                             
@@ -294,7 +284,6 @@
                         </div>
                     </div>
 
-                    <!-- ================= TAB NOTIFIKASI ================= -->
                     <div x-show="activeTab === 'notifikasi'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;" class="p-6 md:p-8">
                         <div class="max-w-3xl mx-auto">
                             <h2 class="text-lg font-bold text-slate-800 mb-2">Preferensi Notifikasi</h2>
@@ -337,11 +326,9 @@
                         </div>
                     </div>
 
-                    <!-- ================= TAB SISTEM & ADMIN ================= -->
                     <div x-show="activeTab === 'sistem'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;" class="p-6 md:p-8">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             
-                            <!-- 1. Pengaturan Biaya Admin -->
                             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                                 <div>
                                     <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
@@ -352,7 +339,6 @@
                                         </div>
                                     </div>
                                     <div class="space-y-4">
-                                        <!-- PLN Reguler -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin PLN (Pascabayar & Token)</label>
                                             <select x-model.number="adminFees.pln" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
@@ -362,7 +348,6 @@
                                                 <option value="10000">Rp 10.000</option>
                                             </select>
                                         </div>
-                                        <!-- PLN Nontaglis -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin PLN Nontaglis</label>
                                             <select x-model.number="adminFees.plnNontaglis" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
@@ -371,7 +356,6 @@
                                                 <option value="10000">Rp 10.000</option>
                                             </select>
                                         </div>
-                                        <!-- PDAM -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin PDAM</label>
                                             <select x-model.number="adminFees.pdam" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
@@ -381,7 +365,6 @@
                                                 <option value="5000">Rp 5.000</option>
                                             </select>
                                         </div>
-                                        <!-- BPJS -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin BPJS</label>
                                             <select x-model.number="adminFees.bpjs" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
@@ -399,7 +382,6 @@
                                                 <option value="5000">Rp 5.000</option>
                                             </select>
                                         </div>
-                                        <!-- Lainnya -->
                                         <div class="flex items-center justify-between gap-4">
                                             <label class="text-xs font-bold text-slate-700 w-1/2">Admin Telkom / Indihome</label>
                                             <select x-model.number="adminFees.telkom" class="w-1/2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 cursor-pointer">
@@ -413,7 +395,6 @@
                                 <button @click="simpanSistem('Biaya Admin')" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold text-sm transition mt-6">Simpan Biaya Admin</button>
                             </div>
 
-                            <!-- 2. Pengaturan Cetak Struk (Printer) -->
                             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                                 <div>
                                     <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
@@ -437,7 +418,6 @@
                                                 <option value="POS_80_150">PRINTER POS 80 x 150 mm (Land/Port)</option>
                                             </select>
                                             
-                                            <!-- Kotak Informasi Detail Ukuran -->
                                             <div class="mt-3 bg-blue-50 border border-blue-100 p-3 rounded-xl flex gap-3 text-xs text-blue-800">
                                                 <svg class="w-4 h-4 shrink-0 mt-0.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                                 <div>
@@ -462,7 +442,6 @@
                                 </div>
                             </div>
 
-                            <!-- 3. Integrasi API -->
                             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm lg:col-span-2">
                                 <div class="flex items-center gap-3 mb-6">
                                     <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl">⚙️</div>
@@ -566,90 +545,87 @@
                     // Set Ukuran CSS Print Berdasarkan Pilihan
                     if (ukuran === 'A6_POTRAIT') { 
                         widthStyle = 'width: 10.5cm; min-height: 14cm;'; 
-                        containerClass = 'text-left text-xs p-6'; 
+                        containerClass = 'text-left text-xs p-6 mx-auto'; 
                     } else if (ukuran === 'A4_LANDSCAPE') { 
-                        widthStyle = 'width: 29.7cm; min-height: 21cm;'; 
-                        containerClass = 'text-left text-base p-8'; 
+                        widthStyle = 'width: 100%; min-height: 19cm; padding-left: 1.5cm; padding-right: 2cm;'; 
+                        containerClass = 'text-left text-sm pt-4 pb-4 mx-auto'; 
                     } else if (ukuran === 'QUARTO_3') { 
-                        widthStyle = 'width: 21cm; min-height: 9.3cm;'; 
-                        containerClass = 'text-left text-xs p-4'; 
+                        widthStyle = 'width: 21cm; min-height: 9.3cm; padding-left: 1cm; padding-right: 1.5cm;'; 
+                        containerClass = 'text-left text-xs py-2 mx-auto'; 
                     } else if (ukuran === 'QUARTO_4') { 
-                        widthStyle = 'width: 21cm; min-height: 7cm;'; 
-                        containerClass = 'text-left text-[10px] sm:text-xs p-3'; 
+                        widthStyle = 'width: 100%; min-height: 6.5cm; padding-left: 1cm; padding-right: 2cm;'; 
+                        containerClass = 'text-left text-[10px] sm:text-xs pt-1 pb-1 mx-auto leading-tight'; 
                     } else if (ukuran === 'THERMAL_80') { 
                         widthStyle = 'width: 80mm;'; 
-                        containerClass = 'text-left text-xs p-4'; 
+                        containerClass = 'text-left text-xs p-4 mx-auto'; 
                     } else if (ukuran === 'THERMAL_76') { 
                         widthStyle = 'width: 76mm;'; 
-                        containerClass = 'text-left text-xs p-4'; 
+                        containerClass = 'text-left text-xs p-4 mx-auto'; 
                     } else if (ukuran === 'THERMAL_58') { 
                         widthStyle = 'width: 58mm;'; 
-                        containerClass = 'text-left text-[9px] leading-tight p-2'; 
+                        containerClass = 'text-left text-[9px] leading-tight p-2 mx-auto'; 
                     } else if (ukuran === 'POS_80_150') { 
                         widthStyle = 'width: 80mm; min-height: 150mm;'; 
-                        containerClass = 'text-left text-xs p-4'; 
+                        containerClass = 'text-left text-xs p-4 mx-auto flex flex-col justify-between'; 
                     }
 
                     // Tentukan Layout Konten Berdasarkan Lebar Kertas (Thermal 1 Kolom, Sisanya 2 Kolom)
-                    const gridClass = isThermal ? 'flex flex-col space-y-1' : 'grid grid-cols-2 gap-x-4';
+                    const gridClass = isThermal ? 'flex flex-col space-y-0.5' : 'grid grid-cols-2 gap-x-4';
 
                     // Buat Data Dummy Struk di bungkus ID "printable-area" untuk CSS media print
                     let dummyData = `
-                        <div id="printable-area" class="font-mono ${containerClass} border border-slate-300 shadow-md mx-auto bg-white text-black leading-snug" style="${widthStyle}">
+                        <div id="printable-area" class="font-mono ${containerClass} border border-slate-300 shadow-md bg-white text-black leading-snug" style="${widthStyle}">
                             
-                            <!-- HEADER -->
-                            <div class="flex items-center gap-2 mb-1">
+                            <div class="flex items-center gap-2 mb-0.5">
                                 <img src="../../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
                                 <span class="font-bold">GRIYAPAY</span>
                             </div>
-                            <div class="uppercase">${this.profile.nama}</div>
-                            <div class="uppercase mb-2">${this.profile.alamat}</div>
+                            <div class="uppercase leading-tight">${this.profile.nama}</div>
+                            <div class="uppercase mb-1 leading-tight text-[10px] sm:text-xs">${this.profile.alamat}</div>
                             
-                            <div class="flex flex-col sm:flex-row sm:justify-between border-b border-dashed border-black pb-1 mb-2 gap-1">
+                            <div class="flex flex-col sm:flex-row sm:justify-between border-b border-dashed border-black pb-0.5 mb-1.5 gap-1">
                                 <span>Tgl Bayar : 21-04-2026 18:32:30</span>
                                 <span>ID Transaksi : 3505086252</span>
                             </div>
                             
-                            <div class="text-center font-bold mb-2">Struk Pembelian Listrik Prabayar</div>
+                            <div class="text-center font-bold mb-1.5">Struk Pembelian Listrik Prabayar</div>
                             
-                            <!-- BODY VARIABEL TIPE KERTAS LEBAR/SEMPIT -->
                             <div class="${gridClass}">
                                 
-                                <!-- Kolom Kiri -->
-                                <div class="space-y-1">
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">No Meter</span><span>: 86047379853</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">ID Pelanggan</span><span>: 111500570806</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Nama</span><span>: M. NASIR YUSUF</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Tarif/Daya</span><span>: B1 / 450 VA</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">No Reff</span><span class="break-all">: 2BST21VS1835959E92F47F48715608A1</span></div>
+                                <div class="space-y-0.5">
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">No Meter</span><span class="mr-1">:</span><span class="font-semibold">86047379853</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">ID Pelanggan</span><span class="mr-1">:</span><span>111500570806</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Nama</span><span class="mr-1">:</span><span>M. NASIR YUSUF</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Tarif/Daya</span><span class="mr-1">:</span><span>B1 / 450 VA</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">No Reff</span><span class="mr-1">:</span><span class="break-all leading-tight">2BST21VS1835959E92F47F48715608A1</span></div>
                                     
-                                    
-                                </div>
+                                        
+                                        
+                                    </div>
 
-                                <!-- Kolom Kanan -->
-                                <div class="space-y-1">
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Jml Kwh</span><span>: 34</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Materai</span><span>: Rp 0</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PPN</span><span>: Rp 0</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PBJT-TL</span><span>: Rp 1.819</span></div>
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Token</span><span>: Rp 18.181</span></div>
-                                    
-                                    
-                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Admin Bank</span><span>: Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
+                                    <!-- Kolom Kanan -->
+                                    <div class="space-y-1">
+                                        <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Jml Kwh</span><span>: 34</span></div>
+                                        <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Materai</span><span>: Rp 0</span></div>
+                                        <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PPN</span><span>: Rp 0</span></div>
+                                        <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PBJT-TL</span><span>: Rp 1.819</span></div>
+                                        <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Token</span><span>: Rp 18.181</span></div>
+                                        
+                                        
+                                        <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Admin Bank</span><span>: Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
 
-                                    <div class="flex mt-2"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Bayar</span><span>: Rp 24.500</span></div>
-                                </div>
+                                        <div class="flex mt-2"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Bayar</span><span>: Rp 24.500</span></div>
+                                    </div>
+
 
                             </div>
                             
-                            <!-- TOKEN HIGHLIGHT -->
-                            <div class="mt-4">
-                                <div>Token :</div>
-                                <div class="font-bold text-base sm:text-lg tracking-widest leading-none mt-1">6008 9515 9995 1370 7681</div>
+                            <div class="mt-1">
+                                <div class="mb-0.5">Token :</div>
+                                <div class="font-bold text-base sm:text-lg tracking-widest leading-none">6008 9515 9995 1370 7681</div>
                             </div>
                             
-                            <!-- FOOTER -->
-                            <div class="text-center mt-4 uppercase opacity-90">${this.printerSettings.footer}</div>
+                            <div class="text-center mt-2 uppercase opacity-90">${this.printerSettings.footer}</div>
 
                         </div>
                     `;
