@@ -134,7 +134,7 @@
                 Topup E-Money
             </a>
             <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0-2.08.402-2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Deposit
             </a>
             <a href="../report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
@@ -588,7 +588,7 @@
                     }
 
                     // Tentukan Layout Konten Berdasarkan Lebar Kertas (Thermal 1 Kolom, Sisanya 2 Kolom)
-                    const gridClass = isThermal ? 'flex flex-col space-y-0.5' : 'grid grid-cols-2 gap-x-4';
+                    const gridClass = isThermal ? 'flex flex-col space-y-0.5' : 'flex justify-between gap-x-4';
 
                     // Buat Data Dummy Struk di bungkus ID "printable-area" untuk CSS media print
                     let dummyData = `
@@ -613,7 +613,7 @@
                             <div class="${gridClass}">
                                 
                                 <!-- Kolom Kiri -->
-                                <div class="space-y-0.5">
+                                <div class="space-y-0.5 w-full ${!isThermal ? 'pr-4' : ''}">
                                     <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">No Meter</span><span class="mr-1">:</span><span class="font-semibold">86047379853</span></div>
                                     <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">ID Pelanggan</span><span class="mr-1">:</span><span>111500570806</span></div>
                                     <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Nama</span><span class="mr-1">:</span><span>M. NASIR YUSUF</span></div>
@@ -624,22 +624,22 @@
                                 </div>
 
                                 <!-- Kolom Kanan -->
-                                <div class="space-y-0.5 ${isThermal ? 'mt-1' : 'ml-8 lg:ml-16'}">
-                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Jml Kwh</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">34</span></div>
-                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Materai</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 0</span></div>
-                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PPN</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 0</span></div>
-                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PBJT-TL</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 1.819</span></div>
-                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Token</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 18.181</span></div>
+                                <div class="space-y-0.5 w-full ${isThermal ? 'mt-1' : ''}">
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Jml Kwh</span><span class="mr-1">:</span><span>34</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Materai</span><span class="mr-1">:</span><span>Rp 0</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PPN</span><span class="mr-1">:</span><span>Rp 0</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PBJT-TL</span><span class="mr-1">:</span><span>Rp 1.819</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Token</span><span class="mr-1">:</span><span>Rp 18.181</span></div>
                                     
-                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Admin Bank</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Admin Bank</span><span class="mr-1">:</span><span>Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
                                 </div>
 
                             </div>
                             
                             <!-- TOKEN HIGHLIGHT -->
-                            <div class="mt-1" class="${!isThermal ? 'text-center w-full block' : ''}">
-                                <div class="mb-0.5">Token :</div>
-                                <div class="font-bold tracking-widest leading-none ${isThermal ? 'text-[13px] sm:text-base' : 'text-lg text-center mx-auto block'}">6008 9515 9995 1370 7681</div>
+                            <div class="mt-1 flex items-start ${!isThermal ? 'justify-center sm:justify-start' : ''}">
+                                <div class=" ${isThermal ? 'w-20' : 'w-28'} shrink-0">Token</div><div class="mr-1">:</div>
+                                <div class="font-bold tracking-widest leading-none text-base">6008 9515 9995 1370 7681</div>
                             </div>
                             
                             <!-- FOOTER -->
