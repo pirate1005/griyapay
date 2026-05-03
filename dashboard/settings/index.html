@@ -627,15 +627,15 @@
                                 </div>
 
                                 <!-- Kolom Kanan -->
-                                <div class="space-y-1 ${isThermal ? 'mt-1' : ''}">
-                                    <div class="flex justify-between mt-2"><span>Jml Kwh</span><span>: 34</span></div>
-                                    <div class="flex justify-between"><span>Materai</span><span>: Rp 0</span></div>
-                                    <div class="flex justify-between"><span>PPN</span><span>: Rp 0</span></div>
-                                    <div class="flex justify-between"><span>PBJT-TL</span><span>: Rp 1.819</span></div>
-                                    <div class="flex justify-between"><span>Rp Token</span><span>: Rp 18.181</span></div>
+                                <div class="space-y-1">
+                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Jml Kwh</span><span>: 34</span></div>
+                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Materai</span><span>: Rp 0</span></div>
+                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PPN</span><span>: Rp 0</span></div>
+                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PBJT-TL</span><span>: Rp 1.819</span></div>
+                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Token</span><span>: Rp 18.181</span></div>
                                     
                                     
-                                    <div class="flex justify-between"><span>Admin Bank</span><span>: Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
+                                    <div class="flex"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Admin Bank</span><span>: Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
 
                                     <div class="flex mt-2"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Bayar</span><span>: Rp 24.500</span></div>
                                 </div>
