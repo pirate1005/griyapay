@@ -30,100 +30,206 @@
             background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
                               linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
         }
+
+        /* ================== CSS UNTUK PRINT STRUK ================== */
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #printable-area, #printable-area * { visibility: visible; }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 10px;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .swal2-container { display: none !important; }
+        }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="dashboardLogic()">
 
+    <!-- Overlay Sidebar untuk Mobile -->
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false" style="display: none;"></div>
 
+    <!-- Sidebar Utama -->
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
-        <div class="p-6">
-            <a href="#" class="flex items-center gap-3 mb-6">
-                <img src="../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
-                <div class="text-2xl font-extrabold tracking-tight text-white">
+        
+        <!-- Logo & Profil Mitra -->
+        <div class="p-4">
+            <a href="../index.html" class="flex items-center gap-3 mb-4">
+                <img src="../assets/logo1.png" alt="Logo Griyapay" class="h-8 md:h-9 w-auto object-contain">
+                <div class="text-xl font-extrabold tracking-tight text-white">
                     GRIYA<span class="text-teal-300">PAY</span>
                 </div>
             </a>
             
-            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+            <div class="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/20 flex items-center justify-between shadow-inner">
                 <div>
-                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
-                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                    <p class="text-[9px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-xs font-black tracking-wider">GP-152334</p>
                 </div>
-                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-1.5 rounded-md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                 </button>
             </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
-            <a href="#" class="flex items-center gap-3 bg-white/20 text-white shadow-md border border-white/10 px-4 py-3.5 rounded-xl font-bold transition">
-                <svg class="w-5 h-5 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        <!-- Navigasi Menu -->
+        <!-- Ditambahkan pb-24 agar bagian bawah bisa discroll sampai tuntas -->
+        <nav class="flex-1 overflow-y-auto p-3 space-y-1 sidebar-scroll pb-24">
+            
+            <!-- Halaman Utama -->
+            <a href="../index.html" class="flex items-center gap-3 bg-white/20 text-white shadow-md border border-white/10 px-3 py-2.5 rounded-lg text-sm font-bold transition">
+                <svg class="w-[18px] h-[18px] opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 Halaman Utama
             </a>
 
-            <div x-data="{ open: false }">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+            <!-- Kategori: Pembayaran -->
+            <div x-data="{ open: true }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-white bg-white/10 shadow-sm border border-white/5 px-3 py-2.5 rounded-lg text-sm font-bold transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <svg class="w-[18px] h-[18px] text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         Pembayaran
                     </div>
-                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative" style="display: none;">
-                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
-                    <a href="pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
-                    <a href="pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    
+                    <!-- Sub-menu PLN -->
+                    <div x-data="{ openPln: false }">
+                        <button @click="openPln = !openPln" class="w-full flex items-center justify-between pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>
+                            PLN
+                            <svg class="w-3 h-3 transition-transform opacity-70" :class="openPln ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="openPln" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="pln/pasca.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">PLN Pasca</a>
+                            <a href="pln/token.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">PLN Prabayar</a>
+                            <a href="pln/nontaglis.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">PLN Nontaglis</a>
+                        </div>
+                    </div>
+                    
+                    <a href="pdam/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>PDAM</a>
+                    
+                    <!-- Sub-menu BPJS -->
+                    <div x-data="{ openBpjs: false }">
+                        <button @click="openBpjs = !openBpjs" class="w-full flex items-center justify-between pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>
+                            BPJS
+                            <svg class="w-3 h-3 transition-transform opacity-70" :class="openBpjs ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="openBpjs" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="bpjs/kesehatan.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">BPJS Kesehatan</a>
+                            <a href="bpjs/ketenagakerjaan.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">BPJS Tenaga Kerja</a>
+                        </div>
+                    </div>
+
+                    <a href="pgn/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>PGN</a>
+                    
+                    <!-- Sub-menu Internet -->
+                    <div x-data="{ openInternet: false }">
+                        <button @click="openInternet = !openInternet" class="w-full flex items-center justify-between pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>
+                            Internet
+                            <svg class="w-3 h-3 transition-transform opacity-70" :class="openInternet ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="openInternet" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="internet/indihome.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">Indihome / Telkom</a>
+                            <a href="internet/biznet.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">Biznet</a>
+                            <a href="internet/cbn.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">CBN</a>
+                            <a href="internet/myrepublic.html" class="block py-1 text-[11px] text-teal-300 hover:text-white transition">MyRepublic</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <a href="tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Tagihan Rutin
-            </a>
-            <a href="layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                Layanan Terbaru
-            </a>
-            <a href="transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                Transfer & Tarik
-            </a>
-            <a href="penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                Penjualan Barang
-            </a>
-            <a href="topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                Topup E-Money
-            </a>
-            <a href="deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Deposit
-            </a>
-            <a href="report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Report
-            </a>
-
-            <div x-data="{ open: false }" class="pt-2">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+            <!-- Kategori: Pembelian -->
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        Setting & Admin
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        Pembelian
                     </div>
                     <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative" style="display: none;">
-                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative" style="display: none;">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="pulsa/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>Pulsa</a>
+                    <a href="paket-data/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>Paket Data</a>
+                    <a href="voucher-game/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>Voucher Game</a>
+                    <a href="streaming/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>Streaming</a>
                 </div>
+            </div>
+
+            <!-- Kategori: Cicilan -->
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Cicilan
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative" style="display: none;">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="multifinance/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>Pembayaran Multifinance</a>
+                    <a href="kartu-kredit/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>Pembayaran Kartu Kredit</a>
+                </div>
+            </div>
+
+            <!-- Kategori: Top Up -->
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        Top Up
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative" style="display: none;">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="topup-emoney/index.html" class="block pl-6 py-1.5 text-xs text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white/30"></span>E-Wallet & E-Toll</a>
+                </div>
+            </div>
+
+            <!-- Menu Lainnya (Non-Dropdown) -->
+            <a href="tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            <a href="layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+            <a href="transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Transfer & Tarik
+            </a>
+            <a href="penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Penjualan Barang
+            </a>
+            
+            <a href="report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report & Laporan
+            </a>
+
+            <div class="pt-2 border-t border-teal-700/50 mt-2">
+                <a href="settings/index.html" class="w-full flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Setting & Admin
+                </a>
             </div>
         </nav>
     </aside>
-
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
         
         <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
@@ -218,7 +324,6 @@
                     <a href="topup-emoney/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/wallet.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">E-Wallet</span></a>
                     <a href="voucher-game/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/game.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Voucher Game</span></a>
                     <a href="streaming/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/streaming.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Streaming</span></a>
-                    <a href="e-toll/cek-saldo.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/cek-saldo.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Cek Saldo E-toll</span></a>
                     <a href="e-toll/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/e-tol.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">E-Toll</span></a>
                     <a href="bioskop/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/bioskop.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Bioskop</span></a>
                 </div>
@@ -232,8 +337,6 @@
                     <a href="pln/token.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/pln1.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">PLN</span></a>
                     <a href="pdam/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/air.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">PDAM</span></a>
                     <a href="bpjs/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/asuransi.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">BPJS</span></a>
-                    <a href="auto-debet/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/debet.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Auto Debet</span></a>
-                    <a href="bpjs/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/tenagakerja.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">BPJS Ketenagakerjaan</span></a>
                     <a href="indihome/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/telkom.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Telkom Indihome</span></a>
                     <a href="multifinance/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/finance.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Multifinance</span></a>
                     <a href="pasca-bayar/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[60px] h-[60px] bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] group-hover:shadow-md group-hover:-translate-y-1 group-hover:border-teal-300 transition duration-200 p-2.5"><img src="../assets/pascabayar.png" class="w-full h-full object-contain"></div><span class="text-[11px] font-semibold text-slate-600 text-center leading-tight">Telepon Pasca Bayar</span></a>
@@ -345,12 +448,9 @@
                     <div>
                         <h4 class="text-sm font-bold text-slate-500 mb-4 flex items-center gap-2">Transfer & QRIS</h4>
                         <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-y-6 gap-x-2">
-                            <a href="1klikpay/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[52px] h-[52px] bg-white border border-slate-200 rounded-[14px] flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:-translate-y-1 transition p-2"><img src="../assets/pay.png" class="w-full h-full object-contain"></div><span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">1KlikPay+</span></a>
                             <a href="transfer-tarik/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[52px] h-[52px] bg-white border border-slate-200 rounded-[14px] flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:-translate-y-1 transition p-2"><img src="../assets/transfer-saldo.png" class="w-full h-full object-contain"></div><span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Transfer Saldo</span></a>
                             <a href="transfer-tarik/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[52px] h-[52px] bg-white border border-slate-200 rounded-[14px] flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:-translate-y-1 transition p-2"><img src="../assets/transfer-bank.png" class="w-full h-full object-contain"></div><span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Transfer Bank</span></a>
                             <a href="transfer-tarik/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[52px] h-[52px] bg-white border border-slate-200 rounded-[14px] flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:-translate-y-1 transition p-2"><img src="../assets/tarik-tunai.png" class="w-full h-full object-contain"></div><span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Tarik Tunai</span></a>
-                            <a href="transfer-qr/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[52px] h-[52px] bg-white border border-slate-200 rounded-[14px] flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:-translate-y-1 transition p-2"><img src="../assets/transfer-qr.png" class="w-full h-full object-contain"></div><span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Transfer QR</span></a>
-                            <a href="merchant-qris/index.html" class="flex flex-col items-center gap-2 group"><div class="w-[52px] h-[52px] bg-white border border-slate-200 rounded-[14px] flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:-translate-y-1 transition p-2"><img src="../assets/transfer-qris.png" class="w-full h-full object-contain"></div><span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Merchant QRIS</span></a>
                         </div>
                     </div>
 
@@ -409,8 +509,31 @@
                 plnTokenNominal: '20000',
                 pulsaPhone: '',
 
+                // Seting Toko & Printer Standar
+                profile: {
+                    nama: 'TOKO GARUDA',
+                    alamat: 'JLN KUALA LANGSA NO 15 DSN SATRIA RT 03 SUNGAI PAUH KOTA LANGSA ACEH 24410 20'
+                },
+                printerSettings: {
+                    footer: 'Informasi Hubungi Call Center 123 Atau hubungi PLN Terdekat Download PLN Mobile'
+                },
+
                 formatRupiah(angka) {
                     return new Intl.NumberFormat('id-ID').format(angka);
+                },
+
+                // Logika Cetak Struk Bypass (General Function)
+                printStruk(dummyDataHtml) {
+                    const printContainer = document.createElement('div');
+                    printContainer.id = "print-container-temp";
+                    printContainer.innerHTML = dummyDataHtml;
+                    document.body.appendChild(printContainer);
+                    
+                    window.print();
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(printContainer);
+                    }, 500);
                 },
 
                 // Logika Cek PLN Pasca
@@ -456,9 +579,77 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 Swal.fire({ title: 'Memproses Pembayaran...', didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
+                                
                                 setTimeout(() => {
-                                    Swal.fire({ icon: 'success', title: 'Pembayaran Berhasil!', text: 'Tagihan PLN Anda telah dilunasi.', confirmButtonColor: '#f97316', customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-8 py-2.5 font-bold' } });
-                                    this.plnPascaId = '';
+                                    
+                                    let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
+                                    let randRef = '2B' + Math.floor(Math.random() * 1000) + 'VS' + Math.floor(Math.random() * 1000000) + 'E92F';
+                                    let standMeter = '00123400-00125400';
+
+                                    // HTML Struk Thermal 76mm
+                                    let strukHTML = `
+                                        <div id="printable-area" class="font-mono text-left text-xs p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <img src="../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
+                                                <span class="font-bold">GRIYAPAY.ID</span>
+                                            </div>
+                                            <div class="uppercase text-[11px]">${this.profile.nama}</div>
+                                            <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
+                                            
+                                            <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
+                                                <span>Tgl Bayar : ${dateStr}</span>
+                                                <span>ID Trans : ${Math.floor(Math.random() * 1000000000)}</span>
+                                            </div>
+                                            
+                                            <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Pembayaran Tagihan Listrik</div>
+                                            
+                                            <div class="flex flex-col space-y-1 text-[11px] uppercase">
+                                                <div class="flex justify-between"><span>ID PELANGGAN</span><span>${this.plnPascaId}</span></div>
+                                                <div class="flex justify-between"><span>NAMA</span><span>MOHAMMAD SUBAIRI</span></div>
+                                                <div class="flex justify-between"><span>TARIF/DAYA</span><span>R1 / 900 VA</span></div>
+                                                <div class="flex justify-between"><span>BLN/THN</span><span>APRIL 2026</span></div>
+                                                <div class="flex justify-between"><span>STAND METER</span><span>${standMeter}</span></div>
+                                                <div class="border-b border-dashed border-black my-1"></div>
+                                                <div class="flex justify-between"><span>RP TAGIHAN</span><span>Rp ${this.formatRupiah(tagihan)}</span></div>
+                                                <div class="flex justify-between"><span>JML TAGIHAN</span><span>1 BLN</span></div>
+                                                <div class="flex justify-between"><span>ADMIN BANK</span><span>Rp ${this.formatRupiah(admin)}</span></div>
+                                            </div>
+                                            
+                                            <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
+                                            <div class="flex justify-between font-black text-sm uppercase">
+                                                <span>TOTAL BAYAR</span>
+                                                <span>Rp ${this.formatRupiah(total)}</span>
+                                            </div>
+                                            <div class="border-b-2 border-dashed border-black my-2"></div>
+                                            
+                                            <div class="text-[9px] uppercase mt-2">
+                                                <span>NO REFF: <br>${randRef}</span>
+                                            </div>
+                                            
+                                            <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed">${this.printerSettings.footer}</div>
+                                        </div>
+                                    `;
+
+                                    Swal.fire({ 
+                                        icon: 'success', 
+                                        title: '<span class="text-slate-800 font-extrabold text-2xl">Pembayaran Berhasil!</span>', 
+                                        html: '<p class="text-slate-500 text-sm mb-4">Tagihan PLN Anda telah dilunasi.</p>' + strukHTML,
+                                        showCancelButton: true,
+                                        confirmButtonText: '🖨️ Cetak Struk',
+                                        cancelButtonText: 'Tutup',
+                                        confirmButtonColor: '#f97316', 
+                                        cancelButtonColor: '#cbd5e1',
+                                        customClass: { 
+                                            popup: 'rounded-[2rem] w-auto max-w-[95vw]', 
+                                            confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-orange-500/30',
+                                            cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
+                                        } 
+                                    }).then((printResult) => {
+                                        if (printResult.isConfirmed) {
+                                            this.printStruk(strukHTML);
+                                        }
+                                        this.plnPascaId = '';
+                                    });
                                 }, 1500);
                             }
                         });
@@ -499,15 +690,76 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             Swal.fire({ title: 'Memproses Pembelian...', didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
+                            
                             setTimeout(() => {
+                                let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
+                                let randRef = '2BST21VS1835959E92F47F48715608A1';
+                                let ppj = Math.floor(nominalAngka * 0.05); 
+                                let rpToken = nominalAngka - ppj; 
+                                let dummyToken = "6008 9515 9995 1370 7681";
+
+                                // HTML Struk Thermal 76mm
+                                let strukHTML = `
+                                    <div id="printable-area" class="font-mono text-left text-xs p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <img src="../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
+                                            <span class="font-bold">GRIYAPAY.ID</span>
+                                        </div>
+                                        <div class="uppercase text-[11px]">${this.profile.nama}</div>
+                                        <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
+                                        
+                                        <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
+                                            <span>Tgl Bayar : ${dateStr}</span>
+                                            <span>ID Trans : ${Math.floor(Math.random() * 1000000000)}</span>
+                                        </div>
+                                        
+                                        <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Pembelian Listrik Prabayar</div>
+                                        
+                                        <div class="flex flex-col space-y-1 text-[11px] uppercase">
+                                            <div class="flex justify-between"><span>NO METER</span><span>86047379853</span></div>
+                                            <div class="flex justify-between"><span>ID PELANGGAN</span><span>${this.plnTokenId}</span></div>
+                                            <div class="flex justify-between"><span>NAMA</span><span>M. NASIR YUSUF</span></div>
+                                            <div class="flex justify-between"><span>TARIF/DAYA</span><span>B1 / 450 VA</span></div>
+                                            <div class="flex justify-between"><span>NO REFF</span><span>${randRef}</span></div>
+                                            <div class="border-b border-dashed border-black my-1"></div>
+                                            <div class="flex justify-between"><span>JML KWH</span><span>34.5</span></div>
+                                            <div class="flex justify-between"><span>MATERAI</span><span>Rp 0</span></div>
+                                            <div class="flex justify-between"><span>PPN</span><span>Rp 0</span></div>
+                                            <div class="flex justify-between"><span>PBJT-TL</span><span>Rp ${this.formatRupiah(ppj)}</span></div>
+                                            <div class="flex justify-between"><span>RP TOKEN</span><span>Rp ${this.formatRupiah(rpToken)}</span></div>
+                                            <div class="flex justify-between"><span>ADMIN BANK</span><span>Rp ${this.formatRupiah(admin)}</span></div>
+                                            <div class="flex justify-between"><span>RP BAYAR</span><span>Rp ${this.formatRupiah(total)}</span></div>
+                                        </div>
+                                        
+                                        <div class="mt-3">
+                                            <div class="text-[11px] uppercase">TOKEN :</div>
+                                            <div class="font-bold text-sm tracking-widest leading-none mt-1">${dummyToken}</div>
+                                        </div>
+                                        
+                                        <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed">${this.printerSettings.footer}</div>
+                                    </div>
+                                `;
+
                                 Swal.fire({ 
                                     icon: 'success', 
-                                    title: 'Pembelian Berhasil!', 
-                                    html: `<p>Token Anda:</p><div class="text-xl font-mono font-black tracking-widest bg-yellow-50 text-yellow-700 py-3 mt-3 border border-yellow-200 border-dashed rounded-xl">1234 5678 9012 3456</div>`,
+                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Pembelian Berhasil!</span>', 
+                                    html: `<p class="mb-4">Token Anda:</p><div class="text-xl font-mono font-black tracking-widest bg-yellow-50 text-yellow-700 py-3 mt-3 mb-6 border border-yellow-200 border-dashed rounded-xl">${dummyToken}</div>` + strukHTML,
+                                    showCancelButton: true,
+                                    confirmButtonText: '🖨️ Cetak Struk',
+                                    cancelButtonText: 'Tutup',
                                     confirmButtonColor: '#eab308', 
-                                    customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-8 py-2.5 font-bold' } 
+                                    cancelButtonColor: '#cbd5e1',
+                                    customClass: { 
+                                        popup: 'rounded-[2rem] w-auto max-w-[95vw]', 
+                                        confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-yellow-500/30',
+                                        cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
+                                    } 
+                                }).then((printResult) => {
+                                    if (printResult.isConfirmed) {
+                                        this.printStruk(strukHTML);
+                                    }
+                                    this.plnTokenId = '';
                                 });
-                                this.plnTokenId = '';
                             }, 1500);
                         }
                     });
@@ -524,10 +776,10 @@
                         title: '<span class="text-slate-800 font-extrabold text-xl">Pilih Nominal Pulsa</span>',
                         input: 'select',
                         inputOptions: {
-                            '11000': 'Rp 10.000',
-                            '21000': 'Rp 20.000',
-                            '51000': 'Rp 50.000',
-                            '101000': 'Rp 100.000'
+                            '10500': 'Rp 10.000',
+                            '20500': 'Rp 20.000',
+                            '50500': 'Rp 50.000',
+                            '100500': 'Rp 100.000'
                         },
                         inputPlaceholder: '-- Pilih Nominal --',
                         showCancelButton: true,
@@ -546,6 +798,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             let harga = parseInt(result.value);
+                            
                             Swal.fire({
                                 title: '<span class="text-slate-800 font-extrabold text-lg">Konfirmasi Beli Pulsa</span>',
                                 html: `
@@ -566,9 +819,69 @@
                             }).then((confirmRes) => {
                                 if(confirmRes.isConfirmed) {
                                     Swal.fire({ title: 'Memproses Pengisian...', didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
+                                    
                                     setTimeout(() => {
-                                        Swal.fire({ icon: 'success', title: 'Pulsa Berhasil Diisi!', text: 'Pulsa akan segera masuk ke nomor tujuan.', confirmButtonColor: '#14b8a6', customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-8 py-2.5 font-bold' } });
-                                        this.pulsaPhone = '';
+                                        let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
+                                        let snRef = 'SN' + Math.floor(Math.random() * 10000000000000);
+
+                                        // HTML Struk Thermal 76mm
+                                        let strukHTML = `
+                                            <div id="printable-area" class="font-mono text-left text-xs p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <img src="../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
+                                                    <span class="font-bold">GRIYAPAY</span>
+                                                </div>
+                                                <div class="uppercase text-[11px]">${this.profile.nama}</div>
+                                                <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
+                                                
+                                                <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
+                                                    <span>Tgl Bayar : ${dateStr}</span>
+                                                    <span>ID Trans : ${Math.floor(Math.random() * 1000000000)}</span>
+                                                </div>
+                                                
+                                                <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Isi Ulang Pulsa / Data</div>
+                                                
+                                                <div class="flex flex-col space-y-1 text-[11px] uppercase">
+                                                    <div class="flex justify-between"><span>OPERATOR</span><span>Telkomsel</span></div>
+                                                    <div class="flex justify-between"><span>NO TUJUAN</span><span>${this.pulsaPhone}</span></div>
+                                                    <div class="flex justify-between"><span>PRODUK</span><span>Pulsa Reguler</span></div>
+                                                    <div class="flex justify-between"><span>SN/REF</span><span>${snRef}</span></div>
+                                                    <div class="flex justify-between"><span>STATUS</span><span>SUKSES</span></div>
+                                                </div>
+                                                
+                                                <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
+                                                <div class="flex justify-between font-black text-sm uppercase">
+                                                    <span>TOTAL BAYAR</span>
+                                                    <span>Rp ${this.formatRupiah(harga)}</span>
+                                                </div>
+                                                <div class="border-b-2 border-dashed border-black my-2"></div>
+                                                
+                                                <div class="text-[9px] uppercase mt-2 text-center opacity-80 leading-relaxed">
+                                                    Ket: Jika pulsa belum masuk dalam 1x24 jam harap hubungi call center kami.
+                                                </div>
+                                            </div>
+                                        `;
+
+                                        Swal.fire({ 
+                                            icon: 'success', 
+                                            title: '<span class="text-slate-800 font-extrabold text-2xl">Pulsa Berhasil Diisi!</span>', 
+                                            html: '<p class="text-slate-500 text-sm mb-4">Pulsa akan segera masuk ke nomor tujuan.</p>' + strukHTML, 
+                                            showCancelButton: true,
+                                            confirmButtonText: '🖨️ Cetak Struk',
+                                            cancelButtonText: 'Tutup',
+                                            confirmButtonColor: '#14b8a6', 
+                                            cancelButtonColor: '#cbd5e1',
+                                            customClass: { 
+                                                popup: 'rounded-[2rem] w-auto max-w-[95vw]', 
+                                                confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-teal-500/30',
+                                                cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
+                                            } 
+                                        }).then((printResult) => {
+                                            if (printResult.isConfirmed) {
+                                                this.printStruk(strukHTML);
+                                            }
+                                            this.pulsaPhone = '';
+                                        });
                                     }, 1500);
                                 }
                             })

@@ -524,7 +524,9 @@
                 },
                 
                 keteranganStruk: {
+                    'A6_POTRAIT': 'A6 - POTRAIT. Cocok untuk printer Dot Matrix / Inkjet / Laser. Panjang 14 cm dan lebar 10.5 cm.',
                     'A4_LANDSCAPE': 'A4 - LANDSCAPE. Cocok untuk printer Inkjet / Laser. Panjang 29.7 cm dan lebar 21 cm.',
+                    'QUARTO_3': 'QUARTO DIBAGI 3 - LANDSCAPE. Kertas Quarto dibagi 3 bagian, cocok untuk Dot Matrix. Panjang 9.3 cm dan lebar 21 cm.',
                     'QUARTO_4': 'QUARTO DIBAGI 4 - LANDSCAPE. Kertas Quarto dibagi 4 bagian, cocok untuk Dot Matrix. Panjang 7 cm dan lebar 21 cm.',
                     'THERMAL_80': 'THERMAL POS 80mm. Kertas gulung (roll) standar untuk printer kasir / thermal ukuran lebar 80mm.',
                     'THERMAL_76': 'THERMAL POS 76mm. Kertas gulung (roll) standar untuk printer kasir / thermal ukuran lebar 76mm.',
@@ -564,15 +566,9 @@
                     if (ukuran === 'A6_POTRAIT') { 
                         widthStyle = 'width: 10.5cm; min-height: 14cm;'; 
                         containerClass = 'text-left text-xs p-6 mx-auto'; 
-                    } else if (ukuran === 'A4_LANDSCAPE') { 
-                        widthStyle = 'width: 100%; min-height: 19cm; padding-left: 1.5cm; padding-right: 2cm;'; 
-                        containerClass = 'text-left text-sm pt-4 pb-4 mx-auto'; 
                     } else if (ukuran === 'QUARTO_3') { 
-                        widthStyle = 'width: 21cm; min-height: 9.3cm; padding-left: 1cm; padding-right: 1.5cm;'; 
+                        widthStyle = 'width: 20cm; min-height: 9.3cm; padding-left: 1cm; padding-right: 1.5cm;'; 
                         containerClass = 'text-left text-xs py-2 mx-auto'; 
-                    } else if (ukuran === 'QUARTO_4') { 
-                        widthStyle = 'width: 19.5cm; min-height: 6.2cm; padding-left: 1cm; padding-right: 2cm;'; 
-                        containerClass = 'text-left text-[10px] sm:text-xs pt-1 pb-1 mx-auto leading-tight'; 
                     } else if (ukuran === 'THERMAL_80') { 
                         widthStyle = 'width: 80mm;'; 
                         containerClass = 'text-left text-xs p-4 mx-auto'; 
@@ -582,9 +578,10 @@
                     } else if (ukuran === 'THERMAL_58') { 
                         widthStyle = 'width: 58mm;'; 
                         containerClass = 'text-left text-[9px] leading-tight p-2 mx-auto'; 
-                    } else if (ukuran === 'POS_80_150') { 
-                        widthStyle = 'width: 80mm; min-height: 150mm;'; 
-                        containerClass = 'text-left text-xs p-4 mx-auto flex flex-col justify-between'; 
+                    } else if (ukuran === 'QUARTO_4' || ukuran === 'A4_LANDSCAPE' || ukuran === 'POS_80_150') { 
+                        // Disamakan persis dengan QUARTO_4
+                        widthStyle = 'width: 19.5cm; min-height: 6.2cm; padding-left: 1cm; padding-right: 2cm;'; 
+                        containerClass = 'text-left text-[10px] sm:text-xs pt-1 pb-1 mx-auto leading-tight'; 
                     }
 
                     // Tentukan Layout Konten Berdasarkan Lebar Kertas (Thermal 1 Kolom, Sisanya 2 Kolom)
@@ -618,20 +615,20 @@
                                     <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">ID Pelanggan</span><span class="mr-1">:</span><span>111500570806</span></div>
                                     <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Nama</span><span class="mr-1">:</span><span>M. NASIR YUSUF</span></div>
                                     <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Tarif/Daya</span><span class="mr-1">:</span><span>B1 / 450 VA</span></div>
-                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">No Reff</span><span class="mr-1">:</span><span class="break-all leading-tight">2BST21VS1835959E92F47F48715608A1</span></div>
+                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">No Reff</span><span class="mr-1">:</span><div class="break-all leading-tight w-full">2BST21VS1835959E92F47F48715608A1</div></div>
                                     
                                     <div class="flex items-start mt-1"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Bayar</span><span class="mr-1">:</span><span>Rp 24.500</span></div>
                                 </div>
 
                                 <!-- Kolom Kanan -->
-                                <div class="space-y-0.5 w-full ${isThermal ? 'mt-1' : ''}">
-                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Jml Kwh</span><span class="mr-1">:</span><span>34</span></div>
-                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Materai</span><span class="mr-1">:</span><span>Rp 0</span></div>
-                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PPN</span><span class="mr-1">:</span><span>Rp 0</span></div>
-                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PBJT-TL</span><span class="mr-1">:</span><span>Rp 1.819</span></div>
-                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Token</span><span class="mr-1">:</span><span>Rp 18.181</span></div>
+                                <div class="space-y-0.5 w-full ${isThermal ? 'mt-1' : 'ml-8 lg:ml-16'}">
+                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Jml Kwh</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">34</span></div>
+                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Materai</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 0</span></div>
+                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PPN</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 0</span></div>
+                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">PBJT-TL</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 1.819</span></div>
+                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Rp Token</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp 18.181</span></div>
                                     
-                                    <div class="flex items-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Admin Bank</span><span class="mr-1">:</span><span>Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
+                                    <div class="flex items-start justify-between sm:justify-start"><span class="${isThermal ? 'w-20' : 'w-28'} shrink-0">Admin Bank</span><span class="hidden sm:inline mr-1">:</span><span class="sm:w-32 text-right sm:text-left">Rp ${this.adminFees.pln.toLocaleString('id-ID')}</span></div>
                                 </div>
 
                             </div>
@@ -708,6 +705,5 @@
             }
         }
     </script>
-
 </body>
 </html>

@@ -34,12 +34,30 @@
         }
         
         .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+
+        /* ================== CSS UNTUK PRINT STRUK ================== */
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #printable-area, #printable-area * { visibility: visible; }
+            #printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 10px;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .swal2-container { display: none !important; }
+        }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
 
-    <!-- ================= SIDEBAR (KONSISTEN) ================= -->
+    <!-- ================= SIDEBAR ================= -->
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
 
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
@@ -70,13 +88,13 @@
                 Halaman Utama
             </a>
 
-            <div x-data="{ open: false }">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+            <div x-data="{ open: true }">
+                <button @click="open = !open" class="w-full flex items-center justify-between text-white bg-white/10 shadow-sm border border-white/5 px-4 py-3.5 rounded-xl font-bold transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <svg class="w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         Pembayaran
                     </div>
-                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
                     <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
@@ -95,11 +113,11 @@
                 Layanan Terbaru
             </a>
             <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 Transfer & Tarik
             </a>
             <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 Penjualan Barang
             </a>
             <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
@@ -123,7 +141,7 @@
                     </div>
                     <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
+                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative" style="display: none;">
                     <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
                     <a href="../settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
                 </div>
@@ -157,116 +175,118 @@
         </header>
 
         <!-- KONTEN HALAMAN MULTIFINANCE -->
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="multifinanceLogic()">
+        <div class="flex-1 flex flex-col relative z-10 overflow-hidden" x-data="multifinanceLogic()">
             
-            <div class="max-w-4xl mx-auto space-y-8 pb-24">
+            <!-- AREA SCROLLABLE (Dipisah dari wrapper utama) -->
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar w-full">
+                <!-- Tambahkan pb-32 agar konten terbawah bisa di-scroll melewati bottom bar -->
+                <div class="max-w-4xl mx-auto space-y-8 pb-32">
                 
-                <!-- 1. PILIH PROVIDER -->
-                <div>
-                    <h2 class="text-lg font-bold text-slate-900 mb-4 px-2">1. Pilih Penyedia Leasing / Finance</h2>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
-                        <template x-for="provider in providers" :key="provider.id">
-                            <button @click="pilihProvider(provider)" 
-                                    class="relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-200 group overflow-hidden bg-white"
-                                    :class="selectedProvider && selectedProvider.id === provider.id ? 'border-teal-500 bg-teal-50 shadow-md ring-4 ring-teal-500/10' : 'border-slate-200 hover:border-teal-300 hover:shadow-sm hover:-translate-y-1'">
-                                
-                                <div class="w-14 h-14 mb-2 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 p-1">
-                                    <img :src="provider.logo" :alt="provider.name" class="w-full h-full object-contain">
-                                </div>
-                                <span class="text-[11px] font-bold text-slate-700 text-center leading-tight" x-text="provider.name"></span>
-                                
-                                <!-- Checklist Overlay if selected -->
-                                <div x-show="selectedProvider && selectedProvider.id === provider.id" class="absolute top-2 right-2 w-5 h-5 bg-teal-500 rounded-full text-white flex items-center justify-center">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                </div>
-                            </button>
-                        </template>
-                    </div>
-                </div>
-
-                <!-- 2. INPUT NOMOR KONTRAK -->
-                <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 relative overflow-hidden transition-opacity duration-300" :class="!selectedProvider ? 'opacity-50 pointer-events-none' : ''">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
-                    
-                    <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xl">📄</span>
-                        Cek Tagihan Angsuran
-                    </h2>
-
-                    <div class="flex flex-col sm:flex-row gap-5 mb-6">
-                        <div class="flex-1 relative">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Kontrak / Pelanggan</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                </div>
-                                <input type="text" x-model="noKontrak" @input="resetData()" placeholder="Contoh: 123456789012" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold text-slate-800 tracking-wide focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition">
-                            </div>
-                        </div>
+                    <!-- 1. PILIH PROVIDER -->
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 mb-4 px-2">1. Pilih Penyedia Leasing / Finance</h2>
                         
-                        <div class="flex items-end pb-1 sm:pb-0">
-                            <button @click="cekTagihan()" :disabled="noKontrak.length < 8" :class="noKontrak.length < 8 ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg hover:-translate-y-0.5'" class="w-full sm:w-auto px-10 py-4 rounded-xl font-bold transition duration-300 flex justify-center items-center gap-2">
-                                <span x-show="!isLoading">Cek Tagihan</span>
-                                <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                            </button>
+                        <div class="relative mb-6">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            </div>
+                            <select x-model="selectedProvider" @change="resetData()" class="w-full pl-12 pr-10 py-4 bg-white border border-slate-200 rounded-xl text-md font-bold text-slate-800 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition appearance-none cursor-pointer">
+                                <option value="" disabled selected>-- Pilih Perusahaan Multifinance / Leasing --</option>
+                                <template x-for="prov in providers" :key="prov.id">
+                                    <option :value="prov.name" x-text="prov.name"></option>
+                                </template>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. INPUT NOMOR KONTRAK -->
+                    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 relative overflow-hidden transition-opacity duration-300" :class="!selectedProvider ? 'opacity-50 pointer-events-none' : ''">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
+                        
+                        <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xl">📄</span>
+                            Cek Tagihan Angsuran
+                        </h2>
+
+                        <div class="flex flex-col sm:flex-row gap-5 mb-6">
+                            <div class="flex-1 relative">
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Kontrak / Pelanggan</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    </div>
+                                    <input type="text" x-model="noKontrak" @input="resetData()" placeholder="Contoh: 123456789012" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold text-slate-800 tracking-wide focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition">
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-end pb-1 sm:pb-0">
+                                <button @click="cekTagihan()" :disabled="noKontrak.length < 8" :class="noKontrak.length < 8 ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg hover:-translate-y-0.5'" class="w-full sm:w-auto px-10 py-4 rounded-xl font-bold transition duration-300 flex justify-center items-center gap-2">
+                                    <span x-show="!isLoading">Cek Tagihan</span>
+                                    <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. RINCIAN TAGIHAN (Muncul setelah Cek Tagihan) -->
+                    <div x-show="isVerified" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
+                        
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 px-2">Rincian Tagihan Angsuran</h3>
+                        
+                        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+                            <!-- Head Info -->
+                            <div class="bg-blue-50 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-blue-100">
+                                <div>
+                                    <p class="text-xs font-bold text-blue-700 uppercase mb-1">Nama Nasabah</p>
+                                    <p class="text-xl font-black text-slate-800" x-text="billData.nama"></p>
+                                </div>
+                                <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-blue-100 text-right">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-0.5">Angsuran Ke</p>
+                                    <p class="text-sm font-bold text-slate-800" x-text="billData.angsuranKe + ' dari ' + billData.tenor + ' Bulan'"></p>
+                                </div>
+                            </div>
+
+                            <!-- Body List -->
+                            <div class="p-6 space-y-4">
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Penyedia Layanan</span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="selectedProvider"></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Nomor Kontrak</span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="billData.noKontrak"></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Tagihan Pokok</span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + formatRupiah(billData.tagihan)"></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Denda Keterlambatan</span>
+                                    <span class="text-sm font-bold text-red-500" x-text="'Rp ' + formatRupiah(billData.denda)"></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Biaya Admin</span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + formatRupiah(billData.admin)"></span>
+                                </div>
+                            </div>
+
+                            <!-- Footer Total -->
+                            <div class="bg-slate-50 p-6 flex justify-between items-center border-t border-slate-200">
+                                <span class="text-sm font-bold text-slate-600 uppercase tracking-wider">Total Tagihan</span>
+                                <span class="text-2xl font-black text-blue-600" x-text="'Rp ' + formatRupiah(billData.total)"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 3. RINCIAN TAGIHAN (Muncul setelah Cek Tagihan) -->
-                <div x-show="isVerified" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
-                    
-                    <h3 class="text-lg font-bold text-slate-900 mb-4 px-2">Rincian Tagihan Angsuran</h3>
-                    
-                    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-                        <!-- Head Info -->
-                        <div class="bg-blue-50 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-blue-100">
-                            <div>
-                                <p class="text-xs font-bold text-blue-700 uppercase mb-1">Nama Nasabah</p>
-                                <p class="text-xl font-black text-slate-800" x-text="billData.nama"></p>
-                            </div>
-                            <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-blue-100 text-right">
-                                <p class="text-[10px] font-bold text-slate-500 uppercase mb-0.5">Angsuran Ke</p>
-                                <p class="text-sm font-bold text-slate-800" x-text="billData.angsuranKe + ' dari ' + billData.tenor + ' Bulan'"></p>
-                            </div>
-                        </div>
-
-                        <!-- Body List -->
-                        <div class="p-6 space-y-4">
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Penyedia Layanan</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="selectedProvider ? selectedProvider.name : ''"></span>
-                            </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Nomor Kontrak</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="billData.noKontrak"></span>
-                            </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Tagihan Pokok</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + formatRupiah(billData.tagihan)"></span>
-                            </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Denda Keterlambatan</span>
-                                <span class="text-sm font-bold text-red-500" x-text="'Rp ' + formatRupiah(billData.denda)"></span>
-                            </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Biaya Admin</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + formatRupiah(billData.admin)"></span>
-                            </div>
-                        </div>
-
-                        <!-- Footer Total -->
-                        <div class="bg-slate-50 p-6 flex justify-between items-center border-t border-slate-200">
-                            <span class="text-sm font-bold text-slate-600 uppercase tracking-wider">Total Tagihan</span>
-                            <span class="text-2xl font-black text-blue-600" x-text="'Rp ' + formatRupiah(billData.total)"></span>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
+            
+
             <!-- BOTTOM BAR CHECKOUT -->
-            <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
+            <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-15px_30px_-15px_rgba(0,0,0,0.15)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
                  :class="isVerified ? 'translate-y-0' : 'translate-y-full'">
                 <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-4 w-full sm:w-auto">
@@ -291,21 +311,54 @@
     <script>
         function multifinanceLogic() {
             return {
-                selectedProvider: null,
+                selectedProvider: '',
                 noKontrak: '',
                 isLoading: false,
                 isVerified: false,
                 
-                // Daftar Provider Multifinance
+                // Variabel Sistem (Biasa ditarik dari backend)
+                profile: {
+                    nama: 'TOKO GARUDA',
+                    alamat: 'JLN KUALA LANGSA NO 15 DSN SATRIA RT 03 SUNGAI PAUH KOTA LANGSA ACEH 24410 20'
+                },
+                printerSettings: {
+                    footer: 'Terima kasih. Simpan struk ini sebagai bukti pembayaran yang sah.'
+                },
+                
+                // Daftar Provider Multifinance Lengkap dari Data Excel
                 providers: [
-                    { id: 'fif', name: 'FIF Group', logo: 'https://img.icons8.com/fluency/96/money-bag-rupee.png' },
-                    { id: 'adira', name: 'Adira Finance', logo: 'https://img.icons8.com/fluency/96/motorcycle.png' },
-                    { id: 'baf', name: 'BAF (Bussan)', logo: 'https://img.icons8.com/fluency/96/car.png' },
-                    { id: 'wom', name: 'WOM Finance', logo: 'https://img.icons8.com/fluency/96/cash-in-hand.png' },
-                    { id: 'mega', name: 'Mega Auto Finance', logo: 'https://img.icons8.com/fluency/96/bank-cards.png' },
-                    { id: 'homecredit', name: 'Home Credit', logo: 'https://img.icons8.com/fluency/96/home.png' },
-                    { id: 'bfi', name: 'BAF Finance', logo: 'https://img.icons8.com/fluency/96/museum.png' },
-                    { id: 'kreditplus', name: 'Kredit Plus', logo: 'https://img.icons8.com/fluency/96/bank-building.png' }
+                    { id: 'adira', name: 'ADIRA FINANCE' },
+                    { id: 'alif', name: 'ALIF / AMITRA MULTIFINANCE' },
+                    { id: 'baf', name: 'BAF FINANCE' },
+                    { id: 'bima', name: 'BIMA MULTIFINANCE' },
+                    { id: 'bpk', name: 'BPKBMULTIFINANCE' },
+                    { id: 'bpr', name: 'BPRKS MULTIFINANCE' },
+                    { id: 'buanagold', name: 'BUANA GOLD MULTIFINANCE' },
+                    { id: 'buana', name: 'BUANA MULTIFINANCE' },
+                    { id: 'capella', name: 'CAPELLA MULTIFINANCE' },
+                    { id: 'cimb', name: 'CIMB NIAGA AUTO FINANCE' },
+                    { id: 'columbia', name: 'COLUMBIA MULTIFINANCE' },
+                    { id: 'fif', name: 'FIF' },
+                    { id: 'indomobil', name: 'INDOMOBIL MULTIFINANCE' },
+                    { id: 'kredivo', name: 'KREDIVO' },
+                    { id: 'mcf', name: 'MCF FINANCE' },
+                    { id: 'megacentral', name: 'MEGA CENTRAL FINANCE (MCF)' },
+                    { id: 'megamulti', name: 'MEGA MULTI FINANCE' },
+                    { id: 'maf', name: 'MEGA AUTO FINANCE (MAF)' },
+                    { id: 'mpm', name: 'MPM MULTIFINANCE' },
+                    { id: 'nsc', name: 'NSC MULTIFINANCE' },
+                    { id: 'omege', name: 'OMEGA MULTIFINANCE' },
+                    { id: 'oto', name: 'OTO FINANCE' },
+                    { id: 'pegadaian', name: 'PEGADAIAN' },
+                    { id: 'pmc', name: 'PMC MULTIFINANCE' },
+                    { id: 'radana', name: 'RADANA MULTIFINANCE' },
+                    { id: 'suzuki', name: 'SUZUKI FINANCE' },
+                    { id: 'smart', name: 'SMART MULTIFINANCE' },
+                    { id: 'tf', name: 'TF MULTIFINANCE' },
+                    { id: 'wom', name: 'WOM FINANCE' },
+                    { id: 'womspm', name: 'WOM FINANCE (SPM)' },
+                    { id: 'wommobil', name: 'WOM MOBIL FINANCE' },
+                    { id: 'yeo', name: 'YEO MULTIFINANCE' }
                 ],
 
                 // Data Mockup Tagihan
@@ -318,11 +371,6 @@
                     denda: 0,
                     admin: 0,
                     total: 0
-                },
-
-                pilihProvider(provider) {
-                    this.selectedProvider = provider;
-                    this.resetData();
                 },
 
                 resetData() {
@@ -375,7 +423,7 @@
                             <div class="text-left text-sm space-y-2 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                                 <div class="flex justify-between border-b border-slate-200 pb-3">
                                     <span class="text-slate-500 font-medium">Leasing</span>
-                                    <span class="font-bold text-slate-800">${this.selectedProvider.name}</span>
+                                    <span class="font-bold text-slate-800 text-right w-1/2">${this.selectedProvider}</span>
                                 </div>
                                 <div class="flex justify-between border-b border-slate-200 py-3">
                                     <span class="text-slate-500 font-medium">Nama Nasabah</span>
@@ -420,26 +468,94 @@
                             });
 
                             setTimeout(() => {
-                                Swal.fire({
-                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Pembayaran Berhasil!</span>',
-                                    html: `
-                                        <p class="text-slate-500 mb-4">Angsuran ${this.selectedProvider.name} atas nama <b>${this.billData.nama}</b> telah dilunasi.</p>
-                                        <div class="bg-blue-50 text-blue-700 font-mono font-bold text-lg py-3 rounded-xl border border-blue-200 border-dashed">
-                                            Reff: MFC-${Math.floor(Math.random() * 100000000)}
+                                // Variable Dummy Struk
+                                let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
+                                let randIdTrans = Math.floor(Math.random() * 1000000000);
+                                let randRef = 'MFC' + Math.floor(Math.random() * 10000000000);
+
+                                // HTML Struk Thermal 76mm untuk Multifinance
+                                let dummyStrukHTML = `
+                                    <div id="printable-area" class="font-mono text-left p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
+                                        
+                                        <!-- HEADER STRUK -->
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <img src="../../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
+                                            <span class="font-bold">GRIYAPAY</span>
                                         </div>
-                                    `,
+                                        <div class="uppercase text-[11px]">${this.profile.nama}</div>
+                                        <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
+                                        
+                                        <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
+                                            <span>Tgl Bayar : ${dateStr}</span>
+                                            <span>ID Trans : ${randIdTrans}</span>
+                                        </div>
+                                        
+                                        <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Pembayaran Angsuran<br><span class="text-[11px] font-normal">${this.selectedProvider}</span></div>
+                                        
+                                        <!-- BODY VARIABEL 1 KOLOM STANDAR -->
+                                        <div class="flex flex-col space-y-1 text-[11px] uppercase">
+                                            <div class="flex justify-between"><span>NO KONTRAK</span><span>${this.billData.noKontrak}</span></div>
+                                            <div class="flex justify-between"><span>NAMA</span><span>${this.billData.nama}</span></div>
+                                            <div class="flex justify-between"><span>ANGSURAN KE</span><span>${this.billData.angsuranKe}</span></div>
+                                            <div class="flex justify-between"><span>SISA TENOR</span><span>${this.billData.tenor - this.billData.angsuranKe} Bulan</span></div>
+                                            
+                                            <div class="border-b border-dashed border-black my-1"></div>
+                                            
+                                            <div class="flex justify-between"><span>ANGSURAN</span><span>Rp ${this.billData.tagihan.toLocaleString('id-ID')}</span></div>
+                                            <div class="flex justify-between"><span>DENDA</span><span>Rp ${this.billData.denda.toLocaleString('id-ID')}</span></div>
+                                            <div class="flex justify-between"><span>ADMIN BANK</span><span>Rp ${this.billData.admin.toLocaleString('id-ID')}</span></div>
+                                        </div>
+                                        
+                                        <!-- TOTAL -->
+                                        <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
+                                        <div class="flex justify-between font-black text-sm uppercase">
+                                            <span>TOTAL BAYAR</span>
+                                            <span>Rp ${this.billData.total.toLocaleString('id-ID')}</span>
+                                        </div>
+                                        <div class="border-b-2 border-dashed border-black my-2"></div>
+                                        
+                                        <div class="text-[9px] uppercase mt-2">
+                                            <span>NO REFF: <br>${randRef}</span>
+                                        </div>
+                                        
+                                        <!-- FOOTER -->
+                                        <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed">${this.printerSettings.footer}</div>
+
+                                    </div>
+                                `;
+
+                                Swal.fire({
                                     icon: 'success',
-                                    iconColor: '#10b981',
+                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Pembayaran Berhasil!</span>',
+                                    html: `<p class="text-slate-500 text-sm mb-4">Angsuran Anda atas nama <b>${this.billData.nama}</b> telah dilunasi.</p>` + dummyStrukHTML,
+                                    showCancelButton: true,
+                                    confirmButtonText: '🖨️ Cetak Struk',
+                                    cancelButtonText: 'Tutup',
                                     confirmButtonColor: '#2563eb',
-                                    confirmButtonText: 'Selesai',
+                                    cancelButtonColor: '#cbd5e1',
                                     customClass: {
-                                        popup: 'rounded-[2rem] border border-slate-100 shadow-2xl',
-                                        confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-blue-500/30'
+                                        popup: 'rounded-[2rem] border border-slate-100 shadow-2xl w-auto max-w-[95vw]',
+                                        confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-blue-500/30',
+                                        cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
                                     }
-                                }).then(() => {
+                                }).then((printResult) => {
+                                    if(printResult.isConfirmed) {
+                                        // Pemicu Print Browser Langsung
+                                        const printContainer = document.createElement('div');
+                                        printContainer.id = "print-container-temp";
+                                        printContainer.innerHTML = dummyStrukHTML;
+                                        document.body.appendChild(printContainer);
+                                        
+                                        window.print();
+                                        
+                                        setTimeout(() => {
+                                            document.body.removeChild(printContainer);
+                                        }, 500);
+                                    }
+                                    
                                     this.resetData();
                                     this.noKontrak = '';
-                                    this.selectedProvider = null;
+                                    this.selectedProvider = '';
                                 });
                                 
                             }, 2000);
