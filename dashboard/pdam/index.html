@@ -6,9 +6,8 @@
     <title>PDAM - Griyapay Dashboard</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -53,113 +52,195 @@
 
 <body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
 
-    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false" style="display: none;"></div>
 
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
         
-        <div class="p-6">
-            <a href="../index.html" class="flex items-center gap-3 mb-6">
-                <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
-                <div class="text-2xl font-extrabold tracking-tight text-white">
+        <div class="p-4">
+            <a href="../index.html" class="flex items-center gap-3 mb-4">
+                <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-8 md:h-9 w-auto object-contain">
+                <div class="text-xl font-extrabold tracking-tight text-white">
                     GRIYA<span class="text-teal-300">PAY</span>
                 </div>
             </a>
             
-            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+            <div class="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/20 flex items-center justify-between shadow-inner">
                 <div>
-                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
-                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                    <p class="text-[9px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-xs font-black tracking-wider">GP-152334</p>
                 </div>
-                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-1.5 rounded-md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                 </button>
             </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
+        <nav class="flex-1 overflow-y-auto p-3 space-y-1 sidebar-scroll pb-24"
+             x-data="{
+                 path: window.location.href,
+                 isActive(keyword) {
+                     return this.path.includes(keyword);
+                 },
+                 isHome() {
+                     // Jika URL tidak mengandung folder menu di bawah ini, berarti sedang di Dashboard Home
+                     const subFolders = ['/pln/', '/pdam/', '/bpjs/', '/pgn/', '/internet/', '/pulsa/', '/paket-data/', '/voucher-game/', '/streaming/', '/multifinance/', '/kartu-kredit/', '/topup-emoney/', '/tagihan-rutin/', '/layanan-terbaru/', '/transfer-tarik/', '/penjualan-barang/', '/report/', '/settings/'];
+                     return !subFolders.some(folder => this.path.includes(folder));
+                 }
+             }">
             
-            <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <a href="../index.html" 
+               :class="isHome() ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+               class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-bold transition">
+                <svg class="w-[18px] h-[18px] opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 Halaman Utama
             </a>
 
-            <div x-data="{ open: true }">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-white bg-white/10 shadow-sm border border-white/5 px-4 py-3.5 rounded-xl font-bold transition">
+            <div x-data="{ open: isActive('/pln/') || isActive('/pdam/') || isActive('/bpjs/') || isActive('/pgn/') || isActive('/internet/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-bold transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <svg class="w-[18px] h-[18px] text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         Pembayaran
                     </div>
                     <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
-                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
                     
-                    <div x-data="{ openPln: false }" class="mb-1">
-                        <button @click="openPln = !openPln" class="w-full flex items-center justify-between pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative">
-                            <span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>
-                            <span class="flex items-center gap-2">
-                                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"></path></svg>
-                                Layanan PLN
-                            </span>
+                    <div x-data="{ openPln: isActive('/pln/') }">
+                        <button @click="openPln = !openPln" 
+                                :class="isActive('/pln/') ? 'text-white font-bold' : 'text-teal-200 hover:text-white'"
+                                class="w-full flex items-center justify-between pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pln/') ? 'bg-white' : 'bg-white/30'"></span>
+                            PLN
                             <svg class="w-3 h-3 transition-transform opacity-70" :class="openPln ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div x-show="openPln" x-collapse class="pl-12 py-1 space-y-1" style="display: none;">
-                            <a href="../pln/token.html" class="block py-1.5 text-xs text-teal-300 hover:text-white transition font-medium">PLN Prabayar (Token)</a>
-                            <a href="../pln/pasca.html" class="block py-1.5 text-xs text-teal-300 hover:text-white transition font-medium">PLN Pascabayar</a>
-                            <a href="../pln/nontaglis.html" class="block py-1.5 text-xs text-teal-300 hover:text-white transition font-medium">PLN Nontaglis</a>
+                        <div x-show="openPln" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="../pln/pasca.html" :class="isActive('/pln/pasca') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">PLN Pasca</a>
+                            <a href="../pln/token.html" :class="isActive('/pln/token') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">PLN Prabayar</a>
+                            <a href="../pln/nontaglis.html" :class="isActive('/pln/nontaglis') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">PLN Nontaglis</a>
+                        </div>
+                    </div>
+                    
+                    <a href="../pdam/index.html" :class="isActive('/pdam/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pdam/') ? 'bg-white' : 'bg-white/30'"></span>PDAM</a>
+                    
+                    <div x-data="{ openBpjs: isActive('/bpjs/') }">
+                        <button @click="openBpjs = !openBpjs" 
+                                :class="isActive('/bpjs/') ? 'text-white font-bold' : 'text-teal-200 hover:text-white'"
+                                class="w-full flex items-center justify-between pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/bpjs/') ? 'bg-white' : 'bg-white/30'"></span>
+                            BPJS
+                            <svg class="w-3 h-3 transition-transform opacity-70" :class="openBpjs ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="openBpjs" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="../bpjs/index.html" :class="isActive('/bpjs/kesehatan') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">BPJS Kesehatan</a>
+                            <a href="../bpjs/ketenagakerjaan.html" :class="isActive('/bpjs/ketenagakerjaan') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">BPJS Tenaga Kerja</a>
                         </div>
                     </div>
 
-                    <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
+                    <a href="../pgn/index.html" :class="isActive('/pgn/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pgn/') ? 'bg-white' : 'bg-white/30'"></span>PGN</a>
                     
-                    <a href="index.html" class="block pl-8 py-2 text-sm text-white font-bold transition relative">
-                        <span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.8)]"></span>
-                        PDAM
-                    </a>
+                    <div x-data="{ openInternet: isActive('/internet/') }">
+                        <button @click="openInternet = !openInternet" 
+                                :class="isActive('/internet/') ? 'text-white font-bold' : 'text-teal-200 hover:text-white'"
+                                class="w-full flex items-center justify-between pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/internet/') ? 'bg-white' : 'bg-white/30'"></span>
+                            Internet
+                            <svg class="w-3 h-3 transition-transform opacity-70" :class="openInternet ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="openInternet" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="../internet/indihome.html" :class="isActive('/internet/indihome') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">Indihome / Telkom</a>
+                            <a href="../internet/biznet.html" :class="isActive('/internet/biznet') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">Biznet</a>
+                            <a href="../internet/cbn.html" :class="isActive('/internet/cbn') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">CBN</a>
+                            <a href="../internet/myrepublic.html" :class="isActive('/internet/myrepublic') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">MyRepublic</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Tagihan Rutin
-            </a>
-            <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                Layanan Terbaru
-            </a>
-            <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                Transfer & Tarik
-            </a>
-            <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                Penjualan Barang
-            </a>
-            <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                Topup E-Money
-            </a>
-            <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Deposit
-            </a>
-            <a href="../report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Report
-            </a>
-
-            <div x-data="{ open: false }" class="pt-2">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+            <div x-data="{ open: isActive('/pulsa/') || isActive('/paket-data/') || isActive('/voucher-game/') || isActive('/streaming/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-medium transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        Setting & Admin
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        Pembelian
                     </div>
                     <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative" style="display: none;">
-                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="../settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="../pulsa/index.html" :class="isActive('/pulsa/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pulsa/') ? 'bg-white' : 'bg-white/30'"></span>Pulsa</a>
+                    <a href="../paket-data/index.html" :class="isActive('/paket-data/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/paket-data/') ? 'bg-white' : 'bg-white/30'"></span>Paket Data</a>
+                    <a href="../voucher-game/index.html" :class="isActive('/voucher-game/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/voucher-game/') ? 'bg-white' : 'bg-white/30'"></span>Voucher Game</a>
+                    <a href="../streaming/index.html" :class="isActive('/streaming/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/streaming/') ? 'bg-white' : 'bg-white/30'"></span>Streaming</a>
                 </div>
+            </div>
+
+            <div x-data="{ open: isActive('/multifinance/') || isActive('/kartu-kredit/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Cicilan
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="../multifinance/index.html" :class="isActive('/multifinance/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/multifinance/') ? 'bg-white' : 'bg-white/30'"></span>Pembayaran Multifinance</a>
+                    <a href="../kartu-kredit/index.html" :class="isActive('/kartu-kredit/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/kartu-kredit/') ? 'bg-white' : 'bg-white/30'"></span>Pembayaran Kartu Kredit</a>
+                </div>
+            </div>
+
+            <div x-data="{ open: isActive('/topup-emoney/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        Top Up
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="../topup-emoney/index.html" :class="isActive('/topup-emoney/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/topup-emoney/') ? 'bg-white' : 'bg-white/30'"></span>E-Wallet & E-Toll</a>
+                </div>
+            </div>
+
+            <a href="../tagihan-rutin/index.html" :class="isActive('/tagihan-rutin/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            <a href="../layanan-terbaru/index.html" :class="isActive('/layanan-terbaru/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+            <a href="../transfer-tarik/index.html" :class="isActive('/transfer-tarik/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Transfer & Tarik
+            </a>
+            <a href="../penjualan-barang/index.html" :class="isActive('/penjualan-barang/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Penjualan Barang
+            </a>
+            
+            <a href="../report/index.html" :class="isActive('/report/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report & Laporan
+            </a>
+
+            <div class="pt-2 border-t border-teal-700/50 mt-2">
+                <a href="../settings/index.html" :class="isActive('/settings/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="w-full flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Setting & Admin
+                </a>
             </div>
         </nav>
     </aside>
@@ -188,110 +269,114 @@
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="pdamLogic()">
+        <div class="flex-1 flex flex-col relative z-10 overflow-hidden" x-data="pdamLogic()">
             
-            <div class="max-w-4xl mx-auto space-y-8 pb-10">
-                
-                <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-bl-full -z-10"></div>
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar w-full">
+                <div class="max-w-4xl mx-auto space-y-8 pb-32">
                     
-                    <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl">💧</span>
-                        Cek Tagihan Air
-                    </h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-                        <div class="relative">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Wilayah / Kabupaten</label>
+                    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-bl-full -z-10"></div>
+                        
+                        <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl">💧</span>
+                            Cek Tagihan Air PDAM
+                        </h2>
+                        
+                        <div x-show="locationStatus" class="mb-4 text-xs font-bold px-3 py-2 rounded-lg bg-slate-100 text-slate-600 inline-block" x-text="locationStatus" style="display: none;"></div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Wilayah / Kabupaten</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    </div>
+                                    <select x-model="selectedWilayah" @change="resetData()" class="w-full pl-12 pr-10 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition appearance-none cursor-pointer">
+                                        <option value="" disabled selected>-- Pilih Wilayah PDAM --</option>
+                                        <template x-for="pdam in daftarPdam" :key="pdam.id">
+                                            <option :value="pdam.name" x-text="pdam.name"></option>
+                                        </template>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
                                 </div>
-                                <select x-model="selectedWilayah" @change="resetData()" class="w-full pl-12 pr-10 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition appearance-none cursor-pointer">
-                                    <option value="" disabled selected>-- Pilih Wilayah PDAM --</option>
-                                    <option value="PDAM Kota Langsa">PDAM Kota Langsa</option>
-                                    <option value="PDAM Tirta Daroy Banda Aceh">PDAM Tirta Daroy Banda Aceh</option>
-                                    <option value="PDAM Tirta Tamiang">PDAM Tirta Tamiang</option>
-                                    <option value="PDAM Tirta Mon Pase">PDAM Tirta Mon Pase</option>
-                                    <option value="PDAM Kota Medan">PDAM Kota Medan</option>
-                                    <option value="PDAM Tirtanadi Sumut">PDAM Tirtanadi Sumut</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+
+                            <div class="relative">
+                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Pelanggan</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
+                                    </div>
+                                    <input type="text" x-model="idPelanggan" @input="resetData()" placeholder="Contoh: 123456789" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold text-slate-800 tracking-wide focus:outline-none focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="relative">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Pelanggan</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
+                        <button @click="cekTagihan()" :disabled="!isReadyToCheck()" :class="!isReadyToCheck() ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg hover:-translate-y-0.5'" class="w-full md:w-auto px-10 py-4 rounded-xl font-bold transition duration-300 flex justify-center items-center gap-2">
+                            <span x-show="!isLoading">Cek Tagihan Saya</span>
+                            <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        </button>
+                    </div>
+
+                    <div x-show="isVerified" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
+                        
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 px-2">Rincian Tagihan</h3>
+                        
+                        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+                            <div class="bg-cyan-50 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-cyan-100">
+                                <div>
+                                    <p class="text-xs font-bold text-cyan-700 uppercase mb-1">Nama Pelanggan</p>
+                                    <p class="text-xl font-black text-slate-800" x-text="billData.nama"></p>
                                 </div>
-                                <input type="text" x-model="idPelanggan" @input="resetData()" placeholder="Contoh: 123456789" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold text-slate-800 tracking-wide focus:outline-none focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition">
+                                <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-cyan-100 text-right md:text-left">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-0.5">Periode Tagihan</p>
+                                    <p class="text-sm font-bold text-slate-800" x-text="billData.periode"></p>
+                                </div>
+                            </div>
+
+                            <div class="p-6 space-y-4">
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Pemakaian Air</span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="billData.pemakaian + ' m³'"></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Tagihan Pokok</span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + billData.tagihan.toLocaleString('id-ID')"></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Denda / Tunggakan</span>
+                                    <span class="text-sm font-bold text-red-500" x-text="'Rp ' + billData.denda.toLocaleString('id-ID')"></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
+                                    <span class="text-sm font-medium text-slate-500">Biaya Admin Bank</span>
+                                    <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + adminFees.pdam.toLocaleString('id-ID')"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <button @click="cekTagihan()" :disabled="!isReadyToCheck()" :class="!isReadyToCheck() ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg hover:-translate-y-0.5'" class="w-full md:w-auto px-10 py-4 rounded-xl font-bold transition duration-300 flex justify-center items-center gap-2">
-                        <span x-show="!isLoading">Cek Tagihan Saya</span>
-                        <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <div class="absolute bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 md:px-8 shadow-[0_-15px_30px_-15px_rgba(0,0,0,0.15)] lg:rounded-bl-[2.5rem] z-20 transition-transform duration-300"
+                 :class="isVerified ? 'translate-y-0' : 'translate-y-full'">
+                <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4 w-full sm:w-auto">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center text-cyan-600 text-xl font-bold">💳</div>
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Tagihan</span>
+                            <span class="text-2xl font-black text-cyan-600 leading-none" x-text="'Rp ' + (billData.total + adminFees.pdam).toLocaleString('id-ID')"></span>
+                        </div>
+                    </div>
+                    
+                    <button @click="bayarSekarang()" class="w-full sm:w-auto bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
+                        Bayar Sekarang
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </button>
                 </div>
-
-                <div x-show="isVerified" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;">
-                    
-                    <h3 class="text-lg font-bold text-slate-900 mb-4 px-2">Rincian Tagihan</h3>
-                    
-                    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="bg-cyan-50 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-cyan-100">
-                            <div>
-                                <p class="text-xs font-bold text-cyan-700 uppercase mb-1">Nama Pelanggan</p>
-                                <p class="text-xl font-black text-slate-800" x-text="billData.nama"></p>
-                            </div>
-                            <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-cyan-100 text-right md:text-left">
-                                <p class="text-[10px] font-bold text-slate-500 uppercase mb-0.5">Periode Tagihan</p>
-                                <p class="text-sm font-bold text-slate-800" x-text="billData.periode"></p>
-                            </div>
-                        </div>
-
-                        <div class="p-6 space-y-4">
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Pemakaian Air</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="billData.pemakaian + ' m³'"></span>
-                            </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Tagihan Pokok</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + billData.tagihan.toLocaleString('id-ID')"></span>
-                            </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Denda / Tunggakan</span>
-                                <span class="text-sm font-bold text-red-500" x-text="'Rp ' + billData.denda.toLocaleString('id-ID')"></span>
-                            </div>
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100/80">
-                                <span class="text-sm font-medium text-slate-500">Biaya Admin Bank</span>
-                                <span class="text-sm font-bold text-slate-800" x-text="'Rp ' + adminFees.pdam.toLocaleString('id-ID')"></span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-center border-t border-slate-200 gap-4">
-                            <div class="flex items-center gap-4 w-full sm:w-auto">
-                                <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center text-cyan-600 text-xl font-bold">💳</div>
-                                <div>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Tagihan</span>
-                                    <span class="text-2xl font-black text-cyan-600 leading-none" x-text="'Rp ' + (billData.total + adminFees.pdam).toLocaleString('id-ID')"></span>
-                                </div>
-                            </div>
-                            
-                            <button @click="bayarSekarang()" class="w-full sm:w-auto bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
-                                Bayar Sekarang
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+            
         </div>
 
     </main>
@@ -303,6 +388,7 @@
                 idPelanggan: '',
                 isLoading: false,
                 isVerified: false,
+                locationStatus: 'Mencari lokasi PDAM terdekat...',
 
                 // Variabel Sistem (Biasa ditarik dari backend)
                 profile: {
@@ -310,11 +396,120 @@
                     alamat: 'JLN KUALA LANGSA NO 15 DSN SATRIA RT 03 SUNGAI PAUH KOTA LANGSA ACEH 24410 20'
                 },
                 adminFees: {
-                    pdam: 4500 // Biaya admin PDAM (mengikuti setting admin sebelumnya)
+                    pdam: 4500 // Biaya admin PDAM (mengikuti setting admin)
                 },
                 printerSettings: {
                     footer: 'Terima kasih. Simpan struk ini sebagai bukti pembayaran yang sah.'
                 },
+                
+                // Daftar Lengkap PDAM berdasarkan file Excel (Diurutkan Abjad)
+                daftarPdam: [
+                    { id: 'PDAM001', name: 'PDAM AETRA KOTA TANGERANG' },
+                    { id: 'PDAM002', name: 'PDAM KAB ASAHAN' },
+                    { id: 'PDAM003', name: 'PDAM KAB BANDUNG' },
+                    { id: 'PDAM004', name: 'PDAM KAB BANDUNG BARAT' },
+                    { id: 'PDAM005', name: 'PDAM KAB BANGKALAN' },
+                    { id: 'PDAM006', name: 'PDAM KAB BANYUMAS' },
+                    { id: 'PDAM007', name: 'PDAM KAB BANYUWANGI' },
+                    { id: 'PDAM008', name: 'PDAM KAB BATANG' },
+                    { id: 'PDAM009', name: 'PDAM KAB BATANGHARI' },
+                    { id: 'PDAM010', name: 'PDAM KAB BEKASI' },
+                    { id: 'PDAM011', name: 'PDAM KAB BERAU' },
+                    { id: 'PDAM012', name: 'PDAM KAB BOGOR' },
+                    { id: 'PDAM013', name: 'PDAM KAB BOJONEGORO' },
+                    { id: 'PDAM014', name: 'PDAM KAB BONDOWOSO' },
+                    { id: 'PDAM015', name: 'PDAM KAB BOYOLALI' },
+                    { id: 'PDAM016', name: 'PDAM KAB BREBES' },
+                    { id: 'PDAM017', name: 'PDAM KAB BULELENG' },
+                    { id: 'PDAM018', name: 'PDAM KAB CIANJUR' },
+                    { id: 'PDAM019', name: 'PDAM KAB CILACAP' },
+                    { id: 'PDAM020', name: 'PDAM KAB CIREBON' },
+                    { id: 'PDAM021', name: 'PDAM KAB DEMAK' },
+                    { id: 'PDAM022', name: 'PDAM KAB GARUT' },
+                    { id: 'PDAM023', name: 'PDAM KAB GIANYAR' },
+                    { id: 'PDAM024', name: 'PDAM KAB GORONTALO' },
+                    { id: 'PDAM025', name: 'PDAM KAB GRESIK' },
+                    { id: 'PDAM026', name: 'PDAM KAB GROBOGAN' },
+                    { id: 'PDAM027', name: 'PDAM KAB JEMBER' },
+                    { id: 'PDAM028', name: 'PDAM KAB JEPARA' },
+                    { id: 'PDAM029', name: 'PDAM KAB JOMBANG' },
+                    { id: 'PDAM030', name: 'PDAM KAB KARANGANYAR' },
+                    { id: 'PDAM031', name: 'PDAM KAB KARAWANG' },
+                    { id: 'PDAM032', name: 'PDAM KAB KEBUMEN' },
+                    { id: 'PDAM033', name: 'PDAM KAB KENDAL' },
+                    { id: 'PDAM034', name: 'PDAM KAB KLATEN' },
+                    { id: 'PDAM035', name: 'PDAM KAB KUDUS' },
+                    { id: 'PDAM036', name: 'PDAM KAB LAMONGAN' },
+                    { id: 'PDAM037', name: 'PDAM KAB LUMAJANG' },
+                    { id: 'PDAM038', name: 'PDAM KAB MADIUN' },
+                    { id: 'PDAM039', name: 'PDAM KAB MAGELANG' },
+                    { id: 'PDAM040', name: 'PDAM KAB MALANG' },
+                    { id: 'PDAM041', name: 'PDAM KAB MOJOKERTO' },
+                    { id: 'PDAM042', name: 'PDAM KAB PASURUAN' },
+                    { id: 'PDAM043', name: 'PDAM KAB PATI' },
+                    { id: 'PDAM044', name: 'PDAM KAB PEKALONGAN' },
+                    { id: 'PDAM045', name: 'PDAM KAB PEMALANG' },
+                    { id: 'PDAM046', name: 'PDAM KAB PROBOLINGGO' },
+                    { id: 'PDAM047', name: 'PDAM KAB PURBALINGGA' },
+                    { id: 'PDAM048', name: 'PDAM KAB PURWAKARTA' },
+                    { id: 'PDAM049', name: 'PDAM KAB PURWOREJO' },
+                    { id: 'PDAM050', name: 'PDAM KAB REMBANG' },
+                    { id: 'PDAM051', name: 'PDAM KAB SEMARANG' },
+                    { id: 'PDAM052', name: 'PDAM KAB SIDOARJO' },
+                    { id: 'PDAM053', name: 'PDAM KAB SITUBONDO' },
+                    { id: 'PDAM054', name: 'PDAM KAB SLEMAN' },
+                    { id: 'PDAM055', name: 'PDAM KAB SRAGEN' },
+                    { id: 'PDAM056', name: 'PDAM KAB SUBANG' },
+                    { id: 'PDAM057', name: 'PDAM KAB SUKABUMI' },
+                    { id: 'PDAM058', name: 'PDAM KAB SUKOHARJO' },
+                    { id: 'PDAM059', name: 'PDAM KAB SUMEDANG' },
+                    { id: 'PDAM060', name: 'PDAM KAB TABALONG' },
+                    { id: 'PDAM061', name: 'PDAM KAB TANGERANG' },
+                    { id: 'PDAM062', name: 'PDAM KAB TANGGAMUS' },
+                    { id: 'PDAM063', name: 'PDAM KAB TEGAL' },
+                    { id: 'PDAM064', name: 'PDAM KAB TEMANGGUNG' },
+                    { id: 'PDAM065', name: 'PDAM KAB TUBAN' },
+                    { id: 'PDAM066', name: 'PDAM KAB TULUNGAGUNG' },
+                    { id: 'PDAM067', name: 'PDAM KAB WONOGIRI' },
+                    { id: 'PDAM068', name: 'PDAM KAB WONOSOBO' },
+                    { id: 'PDAM069', name: 'PDAM KOTA BALIKPAPAN' },
+                    { id: 'PDAM070', name: 'PDAM KOTA BANDUNG' },
+                    { id: 'PDAM071', name: 'PDAM KOTA BANJARBARU' },
+                    { id: 'PDAM072', name: 'PDAM KOTA BATAM' },
+                    { id: 'PDAM073', name: 'PDAM KOTA BEKASI' },
+                    { id: 'PDAM074', name: 'PDAM KOTA BOGOR' },
+                    { id: 'PDAM075', name: 'PDAM KOTA BONTANG' },
+                    { id: 'PDAM076', name: 'PDAM KOTA CIREBON' },
+                    { id: 'PDAM077', name: 'PDAM KOTA DEPOK' },
+                    { id: 'PDAM078', name: 'PDAM KOTA GORONTALO' },
+                    { id: 'PDAM079', name: 'PDAM KOTA JAMBI' },
+                    { id: 'PDAM080', name: 'PDAM KOTA LANGSA' },
+                    { id: 'PDAM081', name: 'PDAM KOTA MADIUN' },
+                    { id: 'PDAM082', name: 'PDAM KOTA MAGELANG' },
+                    { id: 'PDAM083', name: 'PDAM KOTA MAKASSAR' },
+                    { id: 'PDAM084', name: 'PDAM KOTA MALANG' },
+                    { id: 'PDAM085', name: 'PDAM KOTA MANADO' },
+                    { id: 'PDAM086', name: 'PDAM KOTA MATARAM' },
+                    { id: 'PDAM087', name: 'PDAM KOTA MEDAN' },
+                    { id: 'PDAM088', name: 'PDAM KOTA MOJOKERTO' },
+                    { id: 'PDAM089', name: 'PDAM KOTA PADANG' },
+                    { id: 'PDAM090', name: 'PDAM KOTA PALEMBANG' },
+                    { id: 'PDAM091', name: 'PDAM KOTA PASURUAN' },
+                    { id: 'PDAM092', name: 'PDAM KOTA PEKALONGAN' },
+                    { id: 'PDAM093', name: 'PDAM KOTA PONTIANAK' },
+                    { id: 'PDAM094', name: 'PDAM KOTA PROBOLINGGO' },
+                    { id: 'PDAM095', name: 'PDAM KOTA SALATIGA' },
+                    { id: 'PDAM096', name: 'PDAM KOTA SAMARINDA' },
+                    { id: 'PDAM097', name: 'PDAM KOTA SEMARANG' },
+                    { id: 'PDAM098', name: 'PDAM KOTA SUKABUMI' },
+                    { id: 'PDAM099', name: 'PDAM KOTA SURABAYA' },
+                    { id: 'PDAM100', name: 'PDAM KOTA SURAKARTA' },
+                    { id: 'PDAM101', name: 'PDAM KOTA TANGERANG' },
+                    { id: 'PDAM102', name: 'PDAM KOTA TARAKAN' },
+                    { id: 'PDAM103', name: 'PDAM KOTA TEGAL' },
+                    { id: 'PDAM104', name: 'PDAM KOTA YOGYAKARTA' },
+                    { id: 'PDAM105', name: 'PDAM TIRTANADI SUMUT' }
+                ],
                 
                 // Data Mockup Tagihan
                 billData: {
@@ -326,8 +521,54 @@
                     total: 0 // Tagihan Pokok + Denda
                 },
 
+                init() {
+                    // Coba mendeteksi lokasi pengguna saat pertama kali komponen diload
+                    this.detectLocation();
+                },
+
+                detectLocation() {
+                    if ("geolocation" in navigator) {
+                        navigator.geolocation.getCurrentPosition(
+                            async (position) => {
+                                try {
+                                    // Reverse Geocoding via API gratis (contoh menggunakan BigDataCloud)
+                                    // Pada praktek nyatanya Anda bisa menyesuaikan API yang dipakai
+                                    const lat = position.coords.latitude;
+                                    const lon = position.coords.longitude;
+                                    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`);
+                                    const data = await response.json();
+                                    
+                                    // Ambil nama kota/kabupaten
+                                    let city = data.city || data.locality || "";
+                                    
+                                    if(city) {
+                                        // Bersihkan string (misal: "Kota Administrasi Jakarta Selatan" jadi "Jakarta Selatan")
+                                        city = city.toUpperCase().replace('KOTA ADMINISTRASI ', '').replace('KABUPATEN ', 'KAB ');
+                                        
+                                        // Cari pencocokan terdekat di array daftarPdam
+                                        const match = this.daftarPdam.find(p => p.name.includes(city) || p.name.includes(city.replace('KOTA ', '')));
+                                        
+                                        if (match) {
+                                            this.selectedWilayah = match.name;
+                                            this.locationStatus = `✅ Lokasi terdeteksi: ${city}`;
+                                        } else {
+                                            this.locationStatus = `⚠️ Lokasi terdeteksi (${city}), namun PDAM tidak ditemukan di daftar.`;
+                                        }
+                                    }
+                                } catch (error) {
+                                    this.locationStatus = "Gagal memproses nama wilayah.";
+                                }
+                            },
+                            (error) => {
+                                // Jika user menolak izin lokasi
+                                this.locationStatus = ''; 
+                            }
+                        );
+                    }
+                },
+
                 isReadyToCheck() {
-                    return this.selectedWilayah !== '' && this.idPelanggan.length >= 6;
+                    return this.selectedWilayah !== '' && this.idPelanggan.length >= 5;
                 },
 
                 resetData() {
