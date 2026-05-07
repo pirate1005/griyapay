@@ -7,9 +7,7 @@
     <title>Daftar Akun - Griyapay</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
@@ -22,32 +20,22 @@
             background-size: 24px 24px;
         }
 
-        /* Custom Scrollbar untuk Dropdown */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 
-<body class="bg-pattern text-slate-800 antialiased min-h-screen flex items-center justify-center p-4 md:p-6">
+<body class="bg-pattern text-slate-800 antialiased min-h-screen flex items-center justify-center p-4 md:p-6" x-data="registerForm()">
 
     <a href="index.html" class="absolute top-6 left-6 flex items-center gap-2 text-slate-500 hover:text-teal-600 transition font-medium bg-white/80 backdrop-blur px-4 py-2 rounded-full shadow-sm border border-slate-100 z-20">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         Kembali
     </a>
 
-    <div class="max-w-4xl w-full bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10 my-10">
+    <div class="max-w-5xl w-full bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10 my-10">
         
         <div class="hidden md:flex md:w-5/12 bg-slate-900 relative p-10 flex-col justify-between overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
@@ -62,12 +50,8 @@
                     </div>
                 </a>
 
-                <h1 class="text-4xl font-black text-white leading-tight mb-6">
-                    Mulai Langkah Suksesmu Hari Ini.
-                </h1>
-                <p class="text-slate-400 text-sm leading-relaxed mb-8">
-                    Bergabung dengan ribuan agen lainnya. Pendaftaran 100% GRATIS tanpa biaya admin tersembunyi.
-                </p>
+                <h1 class="text-4xl font-black text-white leading-tight mb-6">Mulai Langkah Suksesmu Hari Ini.</h1>
+                <p class="text-slate-400 text-sm leading-relaxed mb-8">Bergabung dengan ribuan agen lainnya. Pendaftaran 100% GRATIS tanpa biaya admin tersembunyi.</p>
 
                 <ul class="space-y-4">
                     <li class="flex items-center gap-3">
@@ -96,7 +80,7 @@
             </div>
         </div>
 
-        <div class="w-full md:w-7/12 p-6 sm:p-10 md:p-12 bg-white overflow-y-auto" style="max-height: 90vh;">
+        <div class="w-full md:w-7/12 p-6 sm:p-10 md:p-12 bg-white overflow-y-auto custom-scrollbar" style="max-height: 90vh;">
             
             <div class="mb-8">
                 <div class="md:hidden flex items-center gap-2 mb-6">
@@ -107,7 +91,7 @@
                 <p class="text-slate-500 text-sm">Lengkapi data diri Anda di bawah ini dengan benar.</p>
             </div>
 
-            <form action="#" method="POST" x-data="registerForm()" @submit.prevent="submitForm">
+            <form action="#" method="POST" @submit.prevent="submitForm">
                 
                 <div class="mb-5">
                     <label for="nama" class="block text-sm font-bold text-slate-700 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
@@ -149,36 +133,46 @@
 
                 <div class="mb-6">
                     <label for="alamat" class="block text-sm font-bold text-slate-700 mb-1.5">Alamat Lengkap <span class="text-red-500">*</span></label>
-                    <textarea id="alamat" x-model="formData.alamat" rows="3" placeholder="Contoh: Jl. Sudirman No. 123, RT 01 / RW 02" required
+                    <textarea id="alamat" x-model="formData.alamat" rows="2" placeholder="Contoh: Jl. Sudirman No. 123, RT 01 / RW 02" required
                         class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400 resize-none"></textarea>
-                    
-                    <div class="mt-2 bg-blue-50 border border-blue-100 p-3 rounded-lg flex items-start gap-2">
-                        <svg class="w-4 h-4 text-blue-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <p class="text-[11px] text-blue-700 leading-relaxed">
-                            Isikan dengan detail alamat lengkap Anda. Isikan Alamat Anda dengan benar untuk mempercepat pengiriman paket starterkit PPOB ke Alamat Anda.
-                        </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
+                    <div>
+                        <label for="kodeKorwil" class="block text-sm font-bold text-slate-700 mb-1.5">Kode Korwil <span class="text-slate-400 font-normal">(Opsional)</span></label>
+                        <input type="text" id="kodeKorwil" x-model="formData.kodeKorwil" placeholder="KORWIL01"
+                            class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-bold uppercase focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400 placeholder:normal-case">
+                    </div>
+                    <div>
+                        <label for="markup" class="block text-sm font-bold text-slate-700 mb-1.5">Markup Harga <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span class="text-slate-500 font-bold">Rp</span>
+                            </div>
+                            <input type="number" id="markup" x-model.number="formData.markup" placeholder="0" required
+                                class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-black focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400">
+                        </div>
                     </div>
                 </div>
 
                 <div class="mb-8">
-                    <label class="flex items-start gap-3 cursor-pointer group">
-                        <div class="relative flex items-center justify-center mt-0.5">
-                            <input type="checkbox" x-model="formData.isAgreed" required class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md checked:bg-teal-600 checked:border-teal-600 transition-all cursor-pointer">
+                    <div class="flex items-start gap-3 group">
+                        <div class="relative flex items-center justify-center mt-0.5 cursor-pointer" @click="toggleAgreement()">
+                            <input type="checkbox" :checked="formData.isAgreed" class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md checked:bg-teal-600 checked:border-teal-600 transition-all pointer-events-none">
                             <svg class="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                         </div>
                         <span class="text-xs text-slate-600 leading-relaxed pt-0.5">
                             Dengan melanjutkan, saya menyatakan telah membaca, memahami dan menyetujui seluruh 
-                            <a href="#" class="text-teal-600 font-bold hover:underline">Syarat dan Ketentuan</a> serta 
-                            <a href="#" class="text-teal-600 font-bold hover:underline">Kebijakan Privasi</a> Griyapay.
+                            <button type="button" @click="openTermsModal()" class="text-teal-600 font-bold hover:underline bg-transparent border-none p-0 cursor-pointer">Syarat & Ketentuan serta Kebijakan Privasi</button> Griyapay.
                         </span>
-                    </label>
+                    </div>
                 </div>
 
                 <button type="submit" 
                     :disabled="!isFormValid()"
                     :class="isFormValid() ? 'bg-teal-600 hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-500/30 hover:-translate-y-0.5 text-white' : 'bg-slate-200 text-slate-400 cursor-not-allowed'"
                     class="w-full font-bold text-lg py-4 rounded-xl transition-all duration-300 active:scale-95 flex justify-center items-center gap-2">
-                    Lanjutkan
+                    Daftar Sekarang
                     <svg x-show="isFormValid()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </button>
             </form>
@@ -191,6 +185,40 @@
         </div>
     </div>
 
+    <div x-show="showTerms" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" style="display: none;">
+        <div x-show="showTerms" x-transition.scale.90 x-transition.opacity class="bg-white w-full max-w-2xl rounded-[2rem] shadow-2xl flex flex-col max-h-[85vh] overflow-hidden" @click.outside="showTerms = false">
+            
+            <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="font-black text-slate-800 text-lg">Syarat, Ketentuan & Privasi</h3>
+                <button @click="showTerms = false" class="text-slate-400 hover:text-slate-700 bg-slate-200 hover:bg-slate-300 p-2 rounded-full transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div id="termsContent" class="p-6 overflow-y-auto custom-scrollbar flex-1 text-sm text-slate-600 space-y-4 leading-relaxed" @scroll="checkScroll($event)">
+                <p><strong>1. Pendahuluan</strong><br>Selamat datang di Griyapay. Syarat dan Ketentuan ini mengatur penggunaan layanan keagenan PPOB yang disediakan oleh Griyapay.</p>
+                <p><strong>2. Pendaftaran Akun</strong><br>Dengan mendaftar sebagai agen, Anda menjamin bahwa semua data yang Anda berikan adalah akurat, sah, dan dapat dipertanggungjawabkan secara hukum. Kode Korwil yang diisikan (jika ada) akan menempatkan Anda di bawah koordinator wilayah terkait.</p>
+                <p><strong>3. Penggunaan Layanan</strong><br>Agen wajib menggunakan platform ini hanya untuk tujuan transaksi pembayaran yang sah. Griyapay berhak menangguhkan akun jika terdeteksi aktivitas mencurigakan atau penipuan.</p>
+                <p><strong>4. Kebijakan Saldo dan Transaksi</strong><br>Semua transaksi yang berstatus BERHASIL tidak dapat dibatalkan atau ditarik (refund). Pastikan nomor tujuan selalu benar sebelum melakukan pembayaran.</p>
+                <p><strong>5. Kebijakan Privasi</strong><br>Kami berkomitmen melindungi data pribadi Anda. Data yang dikumpulkan (Nama, Nomor HP, Alamat) hanya digunakan untuk kelancaran transaksi, pengiriman paket keagenan, dan peningkatan mutu layanan.</p>
+                <p><strong>6. Penambahan Markup Harga</strong><br>Bila Anda menetapkan *Markup Harga*, keuntungan dari selisih tersebut akan diakumulasikan sesuai dengan sistem distribusi margin Griyapay kepada upline atau referal Anda.</p>
+                <p><strong>7. Perubahan Syarat dan Ketentuan</strong><br>Griyapay berhak mengubah Syarat & Ketentuan ini kapan saja tanpa pemberitahuan sebelumnya. Pengguna diharapkan memeriksa halaman ini secara berkala.</p>
+                <br>
+                <p class="text-center italic text-slate-400 pb-4">-- Akhir dari Dokumen --</p>
+            </div>
+            
+            <div class="p-5 border-t border-slate-100 bg-white">
+                <button @click="agreeTerms()" 
+                        :disabled="!isScrolledToBottom"
+                        :class="isScrolledToBottom ? 'bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/30' : 'bg-slate-200 text-slate-400 cursor-not-allowed'"
+                        class="w-full font-bold py-3.5 rounded-xl transition-all duration-300 flex justify-center items-center gap-2">
+                    <svg x-show="!isScrolledToBottom" class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    <span x-text="isScrolledToBottom ? 'Saya Telah Membaca & Setuju' : 'Scroll ke bawah untuk menyetujui'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function registerForm() {
             return {
@@ -199,20 +227,22 @@
                     phone: '',
                     kelurahan: '',
                     alamat: '',
+                    kodeKorwil: '', // Baru
+                    markup: '',     // Baru
                     isAgreed: false
                 },
-                showKelurahanList: false,
                 
-                // Mock Data Kelurahan (Bisa diganti API dinamis nanti)
+                showKelurahanList: false,
+                showTerms: false,
+                isScrolledToBottom: false,
+                
+                // Mock Data Kelurahan
                 daftarKelurahan: [
                     'Paya Bujok Seulemak, Langsa Baro, Kota Langsa',
                     'Gampong Jawa, Langsa Kota, Kota Langsa',
                     'Alue Dua, Langsa Baro, Kota Langsa',
                     'Pondok Pabrik, Langsa Lama, Kota Langsa',
-                    'Sungai Pauh, Langsa Barat, Kota Langsa',
-                    'Kebayoran Baru, Jakarta Selatan, DKI Jakarta',
-                    'Setiabudi, Jakarta Selatan, DKI Jakarta',
-                    'Menteng, Jakarta Selatan, DKI Jakarta'
+                    'Sungai Pauh, Langsa Barat, Kota Langsa'
                 ],
                 
                 filteredKelurahan() {
@@ -227,23 +257,69 @@
                     this.showKelurahanList = false;
                 },
 
+                // Fungsi Pop Up Syarat & Ketentuan
+                openTermsModal() {
+                    this.showTerms = true;
+                    // Reset deteksi scroll setiap dibuka ulang (jika belum disetujui)
+                    if(!this.formData.isAgreed) {
+                        this.isScrolledToBottom = false;
+                        setTimeout(() => {
+                            const el = document.getElementById('termsContent');
+                            if(el) {
+                                el.scrollTop = 0;
+                                // Jika layar besar dan teksnya pendek (tidak butuh scroll)
+                                if (el.scrollHeight <= el.clientHeight + 5) {
+                                    this.isScrolledToBottom = true;
+                                }
+                            }
+                        }, 50);
+                    } else {
+                        this.isScrolledToBottom = true;
+                    }
+                },
+
+                // Fungsi untuk Klik Icon Checkbox secara langsung
+                toggleAgreement() {
+                    if(this.formData.isAgreed) {
+                        // Jika sudah dicentang, klik lagi artinya Batal Setuju
+                        this.formData.isAgreed = false;
+                    } else {
+                        // Jika belum dicentang, wajib buka Modal
+                        this.openTermsModal();
+                    }
+                },
+
+                checkScroll(e) {
+                    const el = e.target;
+                    // Deteksi jika jarak sisa scroll kurang dari 15px (sudah mentok bawah)
+                    if (el.scrollHeight - el.scrollTop <= el.clientHeight + 15) {
+                        this.isScrolledToBottom = true;
+                    }
+                },
+
+                agreeTerms() {
+                    if(this.isScrolledToBottom) {
+                        this.formData.isAgreed = true;
+                        this.showTerms = false;
+                    }
+                },
+
                 isFormValid() {
                     return this.formData.nama.length > 2 && 
                            this.formData.phone.length > 8 && 
                            this.formData.kelurahan.length > 3 &&
                            this.formData.alamat.length > 10 &&
+                           this.formData.markup !== '' &&
                            this.formData.isAgreed;
                 },
 
                 submitForm() {
                     if(this.isFormValid()){
-                        // Simulasi loading atau pindah halaman
                         let btn = event.target.querySelector('button[type="submit"]');
                         let originalText = btn.innerHTML;
                         btn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memproses...';
                         
                         setTimeout(() => {
-                            // Redirect ke halaman sukses / OTP (contoh)
                             alert('Pendaftaran Berhasil! Lanjut ke Verifikasi OTP.');
                             btn.innerHTML = originalText;
                         }, 1500);
