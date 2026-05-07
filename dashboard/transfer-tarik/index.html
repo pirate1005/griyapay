@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transfer & Tarik - Griyapay Dashboard</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
-        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
         .bg-grid-slate {
             background-size: 40px 40px;
             background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+                linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
         }
-        
+
         .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
 
         /* ================== CSS UNTUK PRINT STRUK ================== */
@@ -37,14 +41,8 @@
             body * { visibility: hidden; }
             #printable-area, #printable-area * { visibility: visible; }
             #printable-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                margin: 0;
-                padding: 10px;
-                box-shadow: none !important;
-                border: none !important;
+                position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 10px;
+                box-shadow: none !important; border: none !important;
             }
             .swal2-container { display: none !important; }
         }
@@ -246,8 +244,8 @@
         </nav>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
-        
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0" x-data="transferLogic()">
+
         <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
 
         <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 py-4 px-6 flex items-center justify-between shrink-0 z-10 lg:rounded-tl-[2.5rem]">
@@ -256,143 +254,148 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <div>
-                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Transfer & Tarik Dana</h1>
-                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Kelola perpindahan saldo Anda</p>
+                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Transfer & Tarik Tunai</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Kirim uang, Topup Bank, dan Tarik Tunai Instan</p>
                 </div>
             </div>
             <div class="flex items-center gap-4 md:gap-6">
                 <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
                     <div>
                         <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
-                        <p class="text-sm font-black tracking-tight drop-shadow-sm" id="headerSaldo">Rp 1.278.441</p>
+                        <p class="text-sm font-black tracking-tight drop-shadow-sm">Rp 1.278.441</p>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="transferTarikLogic()">
-            
-            <div class="max-w-3xl mx-auto pb-10">
-                
-                <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200 flex mb-8 mx-auto w-full md:w-fit">
-                    <button @click="activeTab = 'transfer'" class="flex-1 md:w-48 py-3 rounded-xl font-bold text-sm transition-all duration-300" :class="activeTab === 'transfer' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'">
-                        Kirim Saldo
-                    </button>
-                    <button @click="activeTab = 'tarik'" class="flex-1 md:w-48 py-3 rounded-xl font-bold text-sm transition-all duration-300" :class="activeTab === 'tarik' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'">
-                        Tarik ke Bank
-                    </button>
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10">
+            <div class="max-w-4xl mx-auto space-y-6 pb-24">
+
+                <div class="flex flex-nowrap gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-200 overflow-x-auto hide-scroll">
+                    <button @click="activeTab = 'saldo'" :class="activeTab === 'saldo' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600'" class="px-5 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap flex-1 text-center">Transfer Saldo</button>
+                    <button @click="activeTab = 'bank'" :class="activeTab === 'bank' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600'" class="px-5 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap flex-1 text-center">Transfer Bank</button>
+                    <button @click="activeTab = 'va'" :class="activeTab === 'va' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600'" class="px-5 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap flex-1 text-center">Transfer VA</button>
+                    <button @click="activeTab = 'indomaret'" :class="activeTab === 'indomaret' ? 'bg-teal-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50 hover:text-teal-600'" class="px-5 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap flex-1 text-center">Tarik Indomaret</button>
                 </div>
 
-                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-                    
-                    <div x-show="activeTab === 'transfer'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="p-6 md:p-8">
-                        <div class="mb-6 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">💸</div>
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-900 leading-tight">Transfer Saldo</h2>
-                                <p class="text-xs text-slate-500">Kirim saldo ke sesama mitra Griyapay (Gratis Admin)</p>
-                            </div>
-                        </div>
-
-                        <div class="space-y-6">
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">ID Mitra / No HP Tujuan</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                    </div>
-                                    <input type="text" x-model="transfer.tujuan" placeholder="Contoh: GP-12345 / 0812..." class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nominal Transfer (Rp)</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <span class="text-slate-400 font-bold">Rp</span>
-                                    </div>
-                                    <input type="number" x-model="transfer.nominal" placeholder="0" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-black text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition" min="10000">
-                                </div>
-                                <div class="flex flex-wrap gap-2 mt-3">
-                                    <button @click="transfer.nominal = 50000" class="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 text-xs font-bold rounded-lg transition border border-slate-200">50.000</button>
-                                    <button @click="transfer.nominal = 100000" class="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 text-xs font-bold rounded-lg transition border border-slate-200">100.000</button>
-                                    <button @click="transfer.nominal = 500000" class="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 text-xs font-bold rounded-lg transition border border-slate-200">500.000</button>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Catatan (Opsional)</label>
-                                <input type="text" x-model="transfer.catatan" placeholder="Bayar utang..." class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition">
-                            </div>
-
-                            <button @click="prosesTransfer()" :disabled="!transfer.tujuan || !transfer.nominal" :class="(!transfer.tujuan || !transfer.nominal) ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/30 hover:-translate-y-1 active:scale-95'" class="w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex justify-center items-center gap-2">
-                                Lanjut Transfer
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </button>
+                <div x-show="activeTab === 'saldo'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                        <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-2xl">💸</div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Transfer Saldo Antar Mitra</h2>
+                            <p class="text-xs text-slate-500">Gratis biaya admin transfer sesama mitra Griyapay.</p>
                         </div>
                     </div>
-
-                    <div x-show="activeTab === 'tarik'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="p-6 md:p-8">
-                        <div class="mb-6 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center text-xl">🏦</div>
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-900 leading-tight">Tarik Saldo ke Bank</h2>
-                                <p class="text-xs text-slate-500">Pindahkan saldo Griyapay Anda ke Rekening Bank Pribadi</p>
-                            </div>
+                    <div class="space-y-5">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">No. HP / ID Mitra Tujuan</label>
+                            <input type="text" x-model="formSaldo.tujuan" placeholder="Contoh: 081234567890" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold focus:outline-none focus:bg-white focus:border-teal-500 transition">
                         </div>
-
-                        <div class="space-y-6">
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Bank Tujuan</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
-                                    </div>
-                                    <select x-model="tarik.bank" class="w-full pl-12 pr-10 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition appearance-none cursor-pointer">
-                                        <option value="" disabled selected>Pilih Bank</option>
-                                        <option value="BCA">Bank BCA</option>
-                                        <option value="BRI">Bank BRI</option>
-                                        <option value="BNI">Bank BNI</option>
-                                        <option value="Mandiri">Bank Mandiri</option>
-                                        <option value="BSI">Bank Syariah Indonesia (BSI)</option>
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Rekening</label>
-                                <input type="number" x-model="tarik.rekening" placeholder="Contoh: 1234567890" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition">
-                            </div>
-
-                            <div>
-                                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nominal Penarikan (Rp)</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <span class="text-slate-400 font-bold">Rp</span>
-                                    </div>
-                                    <input type="number" x-model="tarik.nominal" placeholder="0" class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-black text-slate-800 focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition" min="50000">
-                                </div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <p class="text-xs text-slate-500">Min. Penarikan: Rp 50.000</p>
-                                    <p class="text-xs font-bold text-orange-500">Biaya Admin: Rp 2.500</p>
-                                </div>
-                            </div>
-
-                            <button @click="prosesTarik()" :disabled="!tarik.bank || !tarik.rekening || !tarik.nominal" :class="(!tarik.bank || !tarik.rekening || !tarik.nominal) ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800 text-white shadow-lg hover:-translate-y-1 active:scale-95'" class="w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex justify-center items-center gap-2">
-                                Tarik Sekarang
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            </button>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nominal Transfer (Rp)</label>
+                            <input type="number" x-model.number="formSaldo.nominal" placeholder="0" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-xl font-black focus:outline-none focus:bg-white focus:border-teal-500 transition">
                         </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pesan / Berita (Opsional)</label>
+                            <input type="text" x-model="formSaldo.pesan" placeholder="Tuliskan pesan..." class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:bg-white focus:border-teal-500 transition">
+                        </div>
+                        <button @click="proses('saldo')" :disabled="!formSaldo.tujuan || !formSaldo.nominal" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-teal-600 transition-colors disabled:bg-slate-300 mt-2">Lanjutkan Proses Transfer</button>
                     </div>
-
                 </div>
-                
-                <div class="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
-                    <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    Semua transaksi dilindungi sistem keamanan enkripsi ujung-ke-ujung.
+
+                <div x-show="activeTab === 'bank'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-2xl">🏦</div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Transfer ke Rekening Bank</h2>
+                            <p class="text-xs text-slate-500">Kirim uang ke semua bank nasional.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Bank Tujuan</label>
+                            <select x-model="formBank.bank" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold focus:outline-none focus:bg-white focus:border-blue-500 transition appearance-none cursor-pointer">
+                                <option value="" disabled selected>-- Pilih Bank --</option>
+                                <option value="BCA">Bank BCA</option>
+                                <option value="BRI">Bank BRI</option>
+                                <option value="BNI">Bank BNI</option>
+                                <option value="MANDIRI">Bank Mandiri</option>
+                                <option value="BSI">Bank Syariah Indonesia (BSI)</option>
+                                <option value="BCA_SYARIAH">BCA Syariah</option>
+                                <option value="CIMB">CIMB Niaga</option>
+                                <option value="PERMATA">Bank Permata</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">No. Rekening Tujuan</label>
+                            <input type="number" x-model="formBank.rekening" placeholder="Contoh: 1234567890" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold focus:outline-none focus:bg-white focus:border-blue-500 transition">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nominal Transfer (Rp)</label>
+                            <input type="number" x-model.number="formBank.nominal" placeholder="0" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-xl font-black focus:outline-none focus:bg-white focus:border-blue-500 transition">
+                        </div>
+                        <button @click="proses('bank')" :disabled="!formBank.bank || !formBank.rekening || !formBank.nominal" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-colors disabled:bg-slate-300 mt-2 shadow-md shadow-blue-500/30">Cek & Transfer</button>
+                    </div>
+                </div>
+
+                <div x-show="activeTab === 'va'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                        <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-2xl">📟</div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Pembayaran Virtual Account (VA)</h2>
+                            <p class="text-xs text-slate-500">Bayar tagihan e-commerce dan merchant lainnya via VA.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Biller / Bank VA</label>
+                            <select x-model="formVa.bank" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold focus:outline-none focus:bg-white focus:border-purple-500 transition appearance-none cursor-pointer">
+                                <option value="" disabled selected>-- Pilih Layanan VA --</option>
+                                <option value="BCA">VA BCA</option>
+                                <option value="BRI">BRIVA</option>
+                                <option value="BNI">VA BNI</option>
+                                <option value="MANDIRI">Mandiri Bill Payment</option>
+                                <option value="PERMATA">VA Permata</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nomor Virtual Account</label>
+                            <input type="number" x-model="formVa.rekening" placeholder="Contoh: 800012345678" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-md font-bold focus:outline-none focus:bg-white focus:border-purple-500 transition">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nominal (Opsional Jika Open Amount)</label>
+                            <input type="number" x-model.number="formVa.nominal" placeholder="0" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-xl font-black focus:outline-none focus:bg-white focus:border-purple-500 transition">
+                            <p class="text-[10px] text-slate-400 mt-1">Biarkan kosong jika nominal otomatis ditarik dari sistem.</p>
+                        </div>
+                        <button @click="proses('va')" :disabled="!formVa.bank || !formVa.rekening" class="w-full bg-purple-600 text-white py-4 rounded-xl font-bold hover:bg-purple-700 transition-colors disabled:bg-slate-300 mt-2 shadow-md shadow-purple-500/30">Cek Tagihan VA</button>
+                    </div>
+                </div>
+
+                <div x-show="activeTab === 'indomaret'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                        <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center text-2xl">🏪</div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Tarik Tunai via Indomaret</h2>
+                            <p class="text-xs text-slate-500">Cairkan saldo di kasir Indomaret terdekat tanpa kartu.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                            <p class="text-xs font-medium text-red-800">1. Pilih nominal tarik tunai.<br>2. Tunjukkan <b>KODE PENARIKAN (TOKEN)</b> yang muncul di struk ke Kasir Indomaret.<br>3. Batas waktu kode adalah 2 Jam.</p>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Pilih Nominal Tarik</label>
+                            <select x-model.number="formIndomaret.nominal" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl text-xl font-black focus:outline-none focus:bg-white focus:border-red-500 transition appearance-none cursor-pointer text-slate-800">
+                                <option value="0" disabled selected>-- Pilih Nominal --</option>
+                                <option value="50000">Rp 50.000</option>
+                                <option value="100000">Rp 100.000</option>
+                                <option value="200000">Rp 200.000</option>
+                                <option value="500000">Rp 500.000</option>
+                                <option value="1000000">Rp 1.000.000</option>
+                            </select>
+                        </div>
+                        <button @click="proses('indomaret')" :disabled="!formIndomaret.nominal" class="w-full bg-red-600 text-white py-4 rounded-xl font-bold hover:bg-red-700 transition-colors disabled:bg-slate-300 mt-2 shadow-md shadow-red-500/30">Buat Token Penarikan</button>
+                    </div>
                 </div>
 
             </div>
@@ -400,243 +403,202 @@
     </main>
 
     <script>
-        function transferTarikLogic() {
+        function transferLogic() {
             return {
-                activeTab: 'transfer',
-                saldo: 1278441,
+                activeTab: 'saldo',
                 
-                transfer: { tujuan: '', nominal: '', catatan: '' },
-                tarik: { bank: '', rekening: '', nominal: '' },
+                // Form Data
+                formSaldo: { tujuan: '', nominal: '', pesan: '' },
+                formBank: { bank: '', rekening: '', nominal: '' },
+                formVa: { bank: '', rekening: '', nominal: '' },
+                formIndomaret: { nominal: 0 },
 
-                // Pengaturan Print & Toko
+                // Config Sistem
+                adminFees: {
+                    saldo: 0,
+                    bank: 2500,
+                    va: 2500,
+                    indomaret: 5000
+                },
                 profile: {
                     nama: 'TOKO GARUDA',
-                    alamat: 'JLN KUALA LANGSA NO 15 DSN SATRIA RT 03 SUNGAI PAUH KOTA LANGSA ACEH 24410 20'
-                },
-                printerSettings: {
-                    footer: 'Terima kasih. Simpan struk ini sebagai bukti transaksi yang sah.'
+                    alamat: 'JLN KUALA LANGSA NO 15 DSN SATRIA RT 03 SUNGAI PAUH ACEH'
                 },
 
                 formatRupiah(angka) {
+                    if (!angka) return 0;
                     return new Intl.NumberFormat('id-ID').format(angka);
                 },
 
-                prosesTransfer() {
-                    if(!this.transfer.tujuan || !this.transfer.nominal) return;
-                    if(this.transfer.nominal > this.saldo) {
-                        Swal.fire({ icon: 'error', title: 'Oops...', text: 'Saldo tidak mencukupi.', customClass: { popup: 'rounded-[2rem]' } });
-                        return;
+                // Fungsi Proses Universal
+                proses(type) {
+                    let titleStr = '';
+                    let rincianHTML = '';
+                    let dataStruk = {};
+                    let totalBayar = 0;
+                    let iconColor = '';
+                    let btnColor = '';
+
+                    // 1. SETUP DATA BERDASARKAN TIPE
+                    if (type === 'saldo') {
+                        totalBayar = this.formSaldo.nominal + this.adminFees.saldo;
+                        iconColor = '#0d9488'; // teal
+                        btnColor = 'shadow-teal-500/30';
+                        titleStr = 'Konfirmasi Transfer Saldo';
+                        rincianHTML = `
+                            <div class="flex justify-between border-b border-slate-200 pb-2"><span class="text-slate-500">Tujuan</span><span class="font-bold">${this.formSaldo.tujuan}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Penerima</span><span class="font-bold text-teal-600">AGEN MITRA 01</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Nominal</span><span class="font-bold">Rp ${this.formatRupiah(this.formSaldo.nominal)}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Biaya Admin</span><span class="font-bold">Rp ${this.formatRupiah(this.adminFees.saldo)}</span></div>
+                            <div class="flex justify-between pt-2"><span class="text-slate-500">Total Potongan</span><span class="font-black text-teal-600 text-lg">Rp ${this.formatRupiah(totalBayar)}</span></div>
+                        `;
+                        dataStruk = { layanan: 'TRANSFER SALDO', tujuan: this.formSaldo.tujuan, nama: 'AGEN MITRA 01', nominal: this.formSaldo.nominal, admin: this.adminFees.saldo, total: totalBayar };
+                    } 
+                    else if (type === 'bank') {
+                        totalBayar = this.formBank.nominal + this.adminFees.bank;
+                        iconColor = '#2563eb'; // blue
+                        btnColor = 'shadow-blue-500/30';
+                        titleStr = 'Konfirmasi Transfer Bank';
+                        rincianHTML = `
+                            <div class="flex justify-between border-b border-slate-200 pb-2"><span class="text-slate-500">Bank</span><span class="font-bold">${this.formBank.bank}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Rekening</span><span class="font-bold">${this.formBank.rekening}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Atas Nama</span><span class="font-bold text-blue-600">JOHN DOE</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Nominal</span><span class="font-bold">Rp ${this.formatRupiah(this.formBank.nominal)}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Admin</span><span class="font-bold">Rp ${this.formatRupiah(this.adminFees.bank)}</span></div>
+                            <div class="flex justify-between pt-2"><span class="text-slate-500">Total Potongan</span><span class="font-black text-blue-600 text-lg">Rp ${this.formatRupiah(totalBayar)}</span></div>
+                        `;
+                        dataStruk = { layanan: 'TRANSFER BANK ' + this.formBank.bank, tujuan: this.formBank.rekening, nama: 'JOHN DOE', nominal: this.formBank.nominal, admin: this.adminFees.bank, total: totalBayar };
+                    }
+                    else if (type === 'va') {
+                        let nomVA = this.formVa.nominal ? this.formVa.nominal : 255000; // Auto fill jika kosong (simulasi tagihan)
+                        totalBayar = nomVA + this.adminFees.va;
+                        iconColor = '#9333ea'; // purple
+                        btnColor = 'shadow-purple-500/30';
+                        titleStr = 'Konfirmasi Bayar VA';
+                        rincianHTML = `
+                            <div class="flex justify-between border-b border-slate-200 pb-2"><span class="text-slate-500">Biller</span><span class="font-bold">${this.formVa.bank}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">No. VA</span><span class="font-bold">${this.formVa.rekening}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Detail Tagihan</span><span class="font-bold text-purple-600">INV/2026/XYZ</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Nominal</span><span class="font-bold">Rp ${this.formatRupiah(nomVA)}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Admin</span><span class="font-bold">Rp ${this.formatRupiah(this.adminFees.va)}</span></div>
+                            <div class="flex justify-between pt-2"><span class="text-slate-500">Total Potongan</span><span class="font-black text-purple-600 text-lg">Rp ${this.formatRupiah(totalBayar)}</span></div>
+                        `;
+                        dataStruk = { layanan: 'VIRTUAL ACCOUNT ' + this.formVa.bank, tujuan: this.formVa.rekening, nama: 'INV/2026/XYZ', nominal: nomVA, admin: this.adminFees.va, total: totalBayar };
+                    }
+                    else if (type === 'indomaret') {
+                        totalBayar = this.formIndomaret.nominal + this.adminFees.indomaret;
+                        iconColor = '#dc2626'; // red
+                        btnColor = 'shadow-red-500/30';
+                        titleStr = 'Konfirmasi Tarik Tunai';
+                        rincianHTML = `
+                            <div class="flex justify-between border-b border-slate-200 pb-2"><span class="text-slate-500">Metode</span><span class="font-bold">KASIR INDOMARET</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Nominal Tarik</span><span class="font-bold">Rp ${this.formatRupiah(this.formIndomaret.nominal)}</span></div>
+                            <div class="flex justify-between border-b border-slate-200 py-2"><span class="text-slate-500">Biaya Layanan</span><span class="font-bold text-red-500">Rp ${this.formatRupiah(this.adminFees.indomaret)}</span></div>
+                            <div class="flex justify-between pt-2"><span class="text-slate-500">Total Potongan</span><span class="font-black text-red-600 text-lg">Rp ${this.formatRupiah(totalBayar)}</span></div>
+                        `;
+                        dataStruk = { layanan: 'TARIK TUNAI INDOMARET', tujuan: 'GERAI INDOMARET', nama: this.profile.nama, nominal: this.formIndomaret.nominal, admin: this.adminFees.indomaret, total: totalBayar };
                     }
 
+                    // 2. MUNCULKAN SWEETALERT KONFIRMASI
                     Swal.fire({
-                        title: '<span class="text-slate-800 font-extrabold text-xl">Konfirmasi Transfer</span>',
-                        html: `
-                            <div class="text-left text-sm space-y-2 mt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                                <div class="flex justify-between border-b border-slate-200 pb-2">
-                                    <span class="text-slate-500">Tujuan</span><span class="font-bold text-slate-800">${this.transfer.tujuan}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-200 py-2">
-                                    <span class="text-slate-500">Nominal</span><span class="font-black text-teal-600">Rp ${this.formatRupiah(this.transfer.nominal)}</span>
-                                </div>
-                                <div class="flex justify-between pt-2">
-                                    <span class="text-slate-500">Catatan</span><span class="text-slate-800 italic">${this.transfer.catatan || '-'}</span>
-                                </div>
-                            </div>
-                        `,
+                        title: `<span class="text-slate-800 font-extrabold text-xl">${titleStr}</span>`,
+                        html: `<div class="text-left text-sm mt-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">${rincianHTML}</div>`,
                         icon: 'question',
+                        iconColor: iconColor,
                         showCancelButton: true,
-                        confirmButtonColor: '#0d9488',
-                        cancelButtonColor: '#ef4444',
-                        confirmButtonText: 'Kirim Sekarang',
+                        confirmButtonText: 'Ya, Lanjutkan',
                         cancelButtonText: 'Batal',
-                        reverseButtons: true,
-                        customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-teal-500/30', cancelButton: 'rounded-xl px-6 py-2.5 font-bold' }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire({ title: 'Memproses...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
-                            
-                            setTimeout(() => {
-                                this.saldo -= parseInt(this.transfer.nominal);
-                                document.getElementById('headerSaldo').innerText = 'Rp ' + this.formatRupiah(this.saldo);
-                                
-                                // Siapkan Template HTML Struk 76mm Transfer
-                                let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
-                                let randIdTrans = Math.floor(Math.random() * 1000000000);
-                                let nominalTransfer = this.transfer.nominal;
-                                
-                                let dummyStrukHTML = `
-                                    <div id="printable-area" class="font-mono text-left p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
-                                        <div class="flex items-center gap-2 mb-1">
-                                            <img src="../../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
-                                            <span class="font-bold">GRIYAPAY</span>
-                                        </div>
-                                        <div class="uppercase text-[11px]">${this.profile.nama}</div>
-                                        <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
-                                        
-                                        <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
-                                            <span>Tgl Bayar : ${dateStr}</span>
-                                            <span>ID Trans : ${randIdTrans}</span>
-                                        </div>
-                                        
-                                        <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Transfer Saldo</div>
-                                        
-                                        <div class="flex flex-col space-y-1 text-[11px] uppercase">
-                                            <div class="flex justify-between"><span>TUJUAN</span><span>${this.transfer.tujuan}</span></div>
-                                            <div class="flex justify-between"><span>NOMINAL</span><span>Rp ${this.formatRupiah(nominalTransfer)}</span></div>
-                                            <div class="flex justify-between"><span>ADMIN</span><span>Rp 0</span></div>
-                                            <div class="flex justify-between"><span>CATATAN</span><span class="text-right ml-4">${this.transfer.catatan || '-'}</span></div>
-                                            <div class="flex justify-between"><span>STATUS</span><span>SUKSES</span></div>
-                                        </div>
-                                        
-                                        <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
-                                        <div class="flex justify-between font-black text-sm uppercase">
-                                            <span>TOTAL TRANSFER</span>
-                                            <span>Rp ${this.formatRupiah(nominalTransfer)}</span>
-                                        </div>
-                                        <div class="border-b-2 border-dashed border-black my-2"></div>
-                                        
-                                        <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed">${this.printerSettings.footer}</div>
-                                    </div>
-                                `;
-                                
-                                this.transfer = { tujuan: '', nominal: '', catatan: '' }; // Reset Form
-
-                                Swal.fire({
-                                    icon: 'success', 
-                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Transfer Berhasil!</span>', 
-                                    html: `<p class="text-slate-500 mb-4">Dana telah masuk ke akun tujuan.</p>` + dummyStrukHTML, 
-                                    showCancelButton: true,
-                                    confirmButtonText: '🖨️ Cetak Struk',
-                                    cancelButtonText: 'Tutup',
-                                    confirmButtonColor: '#0d9488', 
-                                    cancelButtonColor: '#cbd5e1',
-                                    customClass: { 
-                                        popup: 'rounded-[2rem] w-auto max-w-[95vw]',
-                                        confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-teal-500/30',
-                                        cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
-                                    }
-                                }).then((printResult) => {
-                                    if(printResult.isConfirmed) {
-                                        const printContainer = document.createElement('div');
-                                        printContainer.id = "print-container-temp";
-                                        printContainer.innerHTML = dummyStrukHTML;
-                                        document.body.appendChild(printContainer);
-                                        
-                                        window.print();
-                                        
-                                        setTimeout(() => {
-                                            document.body.removeChild(printContainer);
-                                        }, 500);
-                                    }
-                                });
-                            }, 1500);
-                        }
-                    });
-                },
-
-                prosesTarik() {
-                    if(!this.tarik.bank || !this.tarik.rekening || !this.tarik.nominal) return;
-                    let totalTarik = parseInt(this.tarik.nominal) + 2500; // + Admin
-                    
-                    if(totalTarik > this.saldo) {
-                        Swal.fire({ icon: 'error', title: 'Oops...', text: 'Saldo beserta admin tidak mencukupi.', customClass: { popup: 'rounded-[2rem]' } });
-                        return;
-                    }
-
-                    Swal.fire({
-                        title: '<span class="text-slate-800 font-extrabold text-xl">Konfirmasi Penarikan</span>',
-                        html: `
-                            <div class="text-left text-sm space-y-2 mt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                                <div class="flex justify-between border-b border-slate-200 pb-2">
-                                    <span class="text-slate-500">Bank</span><span class="font-bold text-slate-800">${this.tarik.bank}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-200 py-2">
-                                    <span class="text-slate-500">No. Rekening</span><span class="font-bold text-slate-800">${this.tarik.rekening}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-200 py-2">
-                                    <span class="text-slate-500">Nominal Tarik</span><span class="font-bold text-slate-800">Rp ${this.formatRupiah(this.tarik.nominal)}</span>
-                                </div>
-                                <div class="flex justify-between border-b border-slate-200 py-2">
-                                    <span class="text-slate-500">Biaya Admin</span><span class="font-bold text-orange-500">Rp 2.500</span>
-                                </div>
-                                <div class="flex justify-between pt-2 items-center">
-                                    <span class="text-slate-500 font-bold">Total Potong Saldo</span><span class="font-black text-slate-900 text-lg">Rp ${this.formatRupiah(totalTarik)}</span>
-                                </div>
-                            </div>
-                        `,
-                        icon: 'warning',
-                        iconColor: '#f59e0b',
-                        showCancelButton: true,
-                        confirmButtonColor: '#0f172a',
+                        confirmButtonColor: iconColor,
                         cancelButtonColor: '#cbd5e1',
-                        confirmButtonText: 'Tarik Dana',
-                        cancelButtonText: 'Batal',
                         reverseButtons: true,
-                        customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-lg', cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800' }
+                        customClass: {
+                            popup: 'rounded-[2rem]',
+                            confirmButton: `rounded-xl px-6 py-2.5 font-bold shadow-md ${btnColor}`,
+                            cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
+                        }
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            Swal.fire({ title: 'Memproses Penarikan...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'rounded-[2rem]' } });
                             
+                            // 3. LOADING
+                            Swal.fire({
+                                title: '<span class="text-slate-800 font-extrabold">Memproses...</span>',
+                                html: '<p class="text-slate-500">Sistem sedang memproses permintaan Anda.</p>',
+                                allowOutsideClick: false,
+                                didOpen: () => { Swal.showLoading(); },
+                                customClass: { popup: 'rounded-[2rem]' }
+                            });
+
+                            // 4. SIMULASI SUKSES + CETAK STRUK
                             setTimeout(() => {
-                                this.saldo -= totalTarik;
-                                document.getElementById('headerSaldo').innerText = 'Rp ' + this.formatRupiah(this.saldo);
-                                
-                                // Siapkan Template HTML Struk 76mm Tarik
                                 let dateStr = new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'medium' }).replace(/\./g, ':');
-                                let randIdTrans = Math.floor(Math.random() * 1000000000);
-                                let tarikNominal = this.tarik.nominal;
-                                let tarikBank = this.tarik.bank;
-                                let tarikRek = this.tarik.rekening;
+                                let refCode = 'TRX' + Math.floor(Math.random() * 1000000000);
                                 
+                                // Khusus indomaret, munculkan token
+                                let tokenHtml = '';
+                                if(type === 'indomaret') {
+                                    let randToken = Math.floor(10000000 + Math.random() * 90000000); // 8 digit token
+                                    tokenHtml = `
+                                        <div class="mt-4 border-2 border-dashed border-red-500 bg-red-50 p-3 text-center rounded-xl">
+                                            <p class="text-[10px] font-bold text-red-600 uppercase mb-1">KODE PENARIKAN (TOKEN) :</p>
+                                            <h2 class="text-xl font-black tracking-widest text-red-700">${randToken}</h2>
+                                        </div>
+                                        <p class="text-[9px] text-center mt-1 font-bold text-slate-500">*Berikan kode di atas ke Kasir Indomaret</p>
+                                    `;
+                                }
+
                                 let dummyStrukHTML = `
                                     <div id="printable-area" class="font-mono text-left p-4 mx-auto bg-white text-black leading-snug" style="width: 76mm;">
-                                        <div class="flex items-center gap-2 mb-1">
-                                            <img src="../../assets/logo1.png" style="height: 16px; filter: grayscale(100%) brightness(0);">
-                                            <span class="font-bold">GRIYAPAY</span>
-                                        </div>
-                                        <div class="uppercase text-[11px]">${this.profile.nama}</div>
-                                        <div class="uppercase text-[11px] mb-2">${this.profile.alamat}</div>
-                                        
-                                        <div class="flex flex-col sm:flex-row justify-between text-[10px] border-b border-dashed border-black pb-1 mb-2">
-                                            <span>Tgl Tarik : ${dateStr}</span>
-                                            <span>ID Trans : ${randIdTrans}</span>
+                                        <div class="flex items-center gap-2 mb-1 justify-center border-b border-black pb-2 border-dashed">
+                                            <span class="font-bold text-lg uppercase tracking-wider">GRIYAPAY</span>
                                         </div>
                                         
-                                        <div class="text-center font-bold mb-3 text-[13px] uppercase">Struk Penarikan Dana</div>
+                                        <div class="text-center font-bold my-2 text-[12px] uppercase">BUKTI TRANSAKSI LUNAS</div>
+                                        
+                                        <div class="flex justify-between text-[10px] mb-2">
+                                            <span>Tanggal</span><span>${dateStr}</span>
+                                        </div>
+                                        <div class="flex justify-between text-[10px] mb-3 border-b border-black pb-2 border-dashed">
+                                            <span>Reff</span><span>${refCode}</span>
+                                        </div>
                                         
                                         <div class="flex flex-col space-y-1 text-[11px] uppercase">
-                                            <div class="flex justify-between"><span>BANK TUJUAN</span><span>${tarikBank}</span></div>
-                                            <div class="flex justify-between"><span>NO. REKENING</span><span>${tarikRek}</span></div>
-                                            <div class="flex justify-between"><span>NOMINAL TARIK</span><span>Rp ${this.formatRupiah(tarikNominal)}</span></div>
-                                            <div class="flex justify-between"><span>BIAYA ADMIN</span><span>Rp 2.500</span></div>
-                                            <div class="flex justify-between"><span>STATUS</span><span>DIPROSES</span></div>
+                                            <div class="flex justify-between items-start"><span class="w-1/3">LAYANAN</span><span class="w-2/3 text-right font-bold">${dataStruk.layanan}</span></div>
+                                            <div class="flex justify-between items-start"><span class="w-1/3">TUJUAN</span><span class="w-2/3 text-right">${dataStruk.tujuan}</span></div>
+                                            <div class="flex justify-between items-start"><span class="w-1/3">NAMA</span><span class="w-2/3 text-right">${dataStruk.nama}</span></div>
+                                            
+                                            <div class="border-b border-dashed border-black my-1"></div>
+                                            
+                                            <div class="flex justify-between"><span>NOMINAL</span><span>Rp ${this.formatRupiah(dataStruk.nominal)}</span></div>
+                                            <div class="flex justify-between"><span>BIAYA ADMIN</span><span>Rp ${this.formatRupiah(dataStruk.admin)}</span></div>
                                         </div>
                                         
                                         <div class="border-b-2 border-dashed border-black mt-3 mb-2"></div>
                                         <div class="flex justify-between font-black text-sm uppercase">
-                                            <span>TOTAL POTONGAN</span>
-                                            <span>Rp ${this.formatRupiah(totalTarik)}</span>
+                                            <span>TOTAL TRX</span>
+                                            <span>Rp ${this.formatRupiah(dataStruk.total)}</span>
                                         </div>
-                                        <div class="border-b-2 border-dashed border-black my-2"></div>
                                         
-                                        <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed">${this.printerSettings.footer}</div>
+                                        ${tokenHtml}
+                                        
+                                        <div class="text-center mt-5 uppercase opacity-90 text-[10px] leading-relaxed border-t border-dashed border-black pt-3">
+                                            Terima kasih telah bertransaksi.<br>Simpan struk ini sebagai bukti sah.
+                                        </div>
                                     </div>
                                 `;
 
-                                this.tarik = { bank: '', rekening: '', nominal: '' }; // Reset Form
-                                
                                 Swal.fire({
-                                    icon: 'success', 
-                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Penarikan Diproses!</span>', 
-                                    html: `<p class="text-slate-500 mb-4">Dana akan masuk ke rekening Anda maksimal 1x24 jam kerja.</p>` + dummyStrukHTML, 
+                                    title: '<span class="text-slate-800 font-extrabold text-2xl">Transaksi Berhasil!</span>',
+                                    html: dummyStrukHTML,
+                                    icon: 'success',
+                                    iconColor: iconColor,
                                     showCancelButton: true,
+                                    confirmButtonColor: iconColor,
+                                    cancelButtonColor: '#cbd5e1',
                                     confirmButtonText: '🖨️ Cetak Struk',
                                     cancelButtonText: 'Tutup',
-                                    confirmButtonColor: '#0f172a', 
-                                    cancelButtonColor: '#cbd5e1',
                                     customClass: { 
                                         popup: 'rounded-[2rem] w-auto max-w-[95vw]',
-                                        confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md',
+                                        confirmButton: `rounded-xl px-6 py-2.5 font-bold shadow-md ${btnColor}`,
                                         cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
                                     }
                                 }).then((printResult) => {
@@ -648,11 +610,15 @@
                                         
                                         window.print();
                                         
-                                        setTimeout(() => {
-                                            document.body.removeChild(printContainer);
-                                        }, 500);
+                                        setTimeout(() => { document.body.removeChild(printContainer); }, 500);
                                     }
+                                    // Reset form
+                                    this.formSaldo = { tujuan: '', nominal: '', pesan: '' };
+                                    this.formBank = { bank: '', rekening: '', nominal: '' };
+                                    this.formVa = { bank: '', rekening: '', nominal: '' };
+                                    this.formIndomaret = { nominal: 0 };
                                 });
+
                             }, 2000);
                         }
                     });
@@ -660,6 +626,5 @@
             }
         }
     </script>
-
 </body>
 </html>
