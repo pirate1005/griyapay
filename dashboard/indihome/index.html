@@ -35,94 +35,195 @@
 
 <body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
 
-    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false"></div>
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false" style="display: none;"></div>
 
+    <!-- Sidebar Utama -->
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-800 lg:bg-transparent transition-transform duration-300 lg:translate-x-0 lg:static lg:block flex flex-col h-full text-white">
         
-        <div class="p-6">
-            <a href="../index.html" class="flex items-center gap-3 mb-6">
-                <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-9 md:h-10 w-auto object-contain">
-                <div class="text-2xl font-extrabold tracking-tight text-white">
+        <!-- Logo & Profil Mitra -->
+        <div class="p-4">
+            <a href="../index.html" class="flex items-center gap-3 mb-4">
+                <img src="../../assets/logo1.png" alt="Logo Griyapay" class="h-8 md:h-9 w-auto object-contain">
+                <div class="text-xl font-extrabold tracking-tight text-white">
                     GRIYA<span class="text-teal-300">PAY</span>
                 </div>
             </a>
             
-            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-between shadow-inner">
+            <div class="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/20 flex items-center justify-between shadow-inner">
                 <div>
-                    <p class="text-[10px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
-                    <p class="text-sm font-black tracking-wider">GP-152334</p>
+                    <p class="text-[9px] text-teal-100 font-bold uppercase tracking-widest mb-0.5">ID MITRA</p>
+                    <p class="text-xs font-black tracking-wider">GP-152334</p>
                 </div>
-                <button class="text-teal-200 hover:text-white transition bg-white/10 p-2 rounded-lg">
+                <button class="text-teal-200 hover:text-white transition bg-white/10 p-1.5 rounded-md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                 </button>
             </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-1.5 sidebar-scroll">
+        <!-- Navigasi Menu Dinamis (Auto Active Detection) -->
+        <nav class="flex-1 overflow-y-auto p-3 space-y-1 sidebar-scroll pb-24"
+             x-data="{
+                 path: window.location.href,
+                 isActive(keyword) {
+                     return this.path.includes(keyword);
+                 },
+                 isHome() {
+                     // Jika URL tidak mengandung folder menu di bawah ini, berarti sedang di Dashboard Home
+                     const subFolders = ['/pln/', '/pdam/', '/bpjs/', '/pgn/', '/internet/', '/pulsa/', '/paket-data/', '/voucher-game/', '/streaming/', '/multifinance/', '/kartu-kredit/', '/topup-emoney/', '/tagihan-rutin/', '/layanan-terbaru/', '/transfer-tarik/', '/penjualan-barang/', '/report/', '/settings/'];
+                     return !subFolders.some(folder => this.path.includes(folder));
+                 }
+             }">
             
-            <a href="../index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <!-- Halaman Utama -->
+            <a href="../index.html" 
+               :class="isHome() ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+               class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-bold transition">
+                <svg class="w-[18px] h-[18px] opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 Halaman Utama
             </a>
 
-            <div x-data="{ open: false }">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+            <!-- Kategori: Pembayaran -->
+            <div x-data="{ open: isActive('/pln/') || isActive('/pdam/') || isActive('/bpjs/') || isActive('/pgn/') || isActive('/internet/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-bold transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <svg class="w-[18px] h-[18px] text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         Pembayaran
                     </div>
-                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
-                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="../pln/token.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PLN / Token</a>
-                    <a href="../pulsa/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pulsa & Data</a>
-                    <a href="../pdam/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>PDAM</a>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    
+                    <!-- Sub-menu PLN -->
+                    <div x-data="{ openPln: isActive('/pln/') }">
+                        <button @click="openPln = !openPln" 
+                                :class="isActive('/pln/') ? 'text-white font-bold' : 'text-teal-200 hover:text-white'"
+                                class="w-full flex items-center justify-between pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pln/') ? 'bg-white' : 'bg-white/30'"></span>
+                            PLN
+                            <svg class="w-3 h-3 transition-transform opacity-70" :class="openPln ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="openPln" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="../pln/pasca.html" :class="isActive('/pln/pasca') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">PLN Pasca</a>
+                            <a href="../pln/token.html" :class="isActive('/pln/token') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">PLN Prabayar</a>
+                            <a href="../pln/nontaglis.html" :class="isActive('/pln/nontaglis') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">PLN Nontaglis</a>
+                        </div>
+                    </div>
+                    
+                    <a href="../pdam/index.html" :class="isActive('/pdam/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pdam/') ? 'bg-white' : 'bg-white/30'"></span>PDAM</a>
+                    
+                    <!-- Sub-menu BPJS -->
+                    <div x-data="{ openBpjs: isActive('/bpjs/') }">
+                        <button @click="openBpjs = !openBpjs" 
+                                :class="isActive('/bpjs/') ? 'text-white font-bold' : 'text-teal-200 hover:text-white'"
+                                class="w-full flex items-center justify-between pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/bpjs/') ? 'bg-white' : 'bg-white/30'"></span>
+                            BPJS
+                            <svg class="w-3 h-3 transition-transform opacity-70" :class="openBpjs ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="openBpjs" x-collapse class="pl-8 space-y-0.5 pb-1">
+                            <a href="../bpjs/kesehatan.html" :class="isActive('/bpjs/kesehatan') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">BPJS Kesehatan</a>
+                            <a href="../bpjs/ketenagakerjaan.html" :class="isActive('/bpjs/ketenagakerjaan') ? 'text-white font-bold bg-white/20' : 'text-teal-300 hover:bg-white/5 hover:text-white'" class="block py-1.5 px-2 -ml-2 text-[11px] transition rounded-md">BPJS Tenaga Kerja</a>
+                        </div>
+                    </div>
+
+                    <a href="../pgn/index.html" :class="isActive('/pgn/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pgn/') ? 'bg-white' : 'bg-white/30'"></span>PGN</a>
+                    
+                    <!-- Sub-menu Internet -->
+                    <a href="../internet/index.html" :class="isActive('/internet/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/internet/') ? 'bg-white' : 'bg-white/30'"></span>Internet</a>
                 </div>
             </div>
 
-            <a href="../tagihan-rutin/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Tagihan Rutin
-            </a>
-            <a href="../layanan-terbaru/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                Layanan Terbaru
-            </a>
-            <a href="../transfer-tarik/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                Transfer & Tarik
-            </a>
-            <a href="../penjualan-barang/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                Penjualan Barang
-            </a>
-            <a href="../topup-emoney/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                Topup E-Money
-            </a>
-
-            <a href="../deposit/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Deposit
-            </a>
-            <a href="../report/index.html" class="flex items-center gap-3 text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
-                <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Report
-            </a>
-
-            <div x-data="{ open: false }" class="pt-2">
-                <button @click="open = !open" class="w-full flex items-center justify-between text-teal-100 hover:bg-white/10 hover:text-white px-4 py-3.5 rounded-xl font-medium transition">
+            <!-- Kategori: Pembelian -->
+            <div x-data="{ open: isActive('/pulsa/') || isActive('/paket-data/') || isActive('/voucher-game/') || isActive('/streaming/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-medium transition">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        Setting & Admin
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        Pembelian
                     </div>
                     <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div x-show="open" x-collapse class="px-4 py-2 space-y-1 relative">
-                    <div class="absolute left-6 top-0 bottom-4 w-px bg-white/20"></div>
-                    <a href="settings/index.html" class="block pl-8 py-2 text-sm text-teal-200 hover:text-white transition font-medium relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/30"></span>Pengaturan Akun</a>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="../pulsa/index.html" :class="isActive('/pulsa/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/pulsa/') ? 'bg-white' : 'bg-white/30'"></span>Pulsa & Paket Data</a>
+                    <a href="../voucher-game/index.html" :class="isActive('/voucher-game/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/voucher-game/') ? 'bg-white' : 'bg-white/30'"></span>Voucher Game</a>
+                    <a href="../streaming/index.html" :class="isActive('/streaming/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/streaming/') ? 'bg-white' : 'bg-white/30'"></span>Streaming</a>
                 </div>
+            </div>
+
+            <!-- Kategori: Cicilan -->
+            <div x-data="{ open: isActive('/multifinance/') || isActive('/kartu-kredit/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Cicilan
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="../multifinance/index.html" :class="isActive('/multifinance/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/multifinance/') ? 'bg-white' : 'bg-white/30'"></span>Pembayaran Multifinance</a>
+                    <a href="../kartu-kredit/index.html" :class="isActive('/kartu-kredit/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/kartu-kredit/') ? 'bg-white' : 'bg-white/30'"></span>Pembayaran Kartu Kredit</a>
+                </div>
+            </div>
+
+            <!-- Kategori: Top Up -->
+            <div x-data="{ open: isActive('/topup-emoney/') }">
+                <button @click="open = !open" 
+                        :class="open ? 'bg-white/10 text-white shadow-sm border-white/5' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'"
+                        class="w-full flex items-center justify-between border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        Top Up
+                    </div>
+                    <svg class="w-4 h-4 transition-transform opacity-70" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-collapse class="px-3 py-1 space-y-0.5 relative">
+                    <div class="absolute left-5 top-0 bottom-2 w-px bg-white/20"></div>
+                    <a href="../topup-emoney/index.html" :class="isActive('/topup-emoney/') ? 'text-white font-bold bg-white/10' : 'text-teal-200 hover:text-white'" class="block pl-6 pr-2 py-1.5 text-xs transition font-medium relative rounded-lg"><span class="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full" :class="isActive('/topup-emoney/') ? 'bg-white' : 'bg-white/30'"></span>E-Wallet & E-Toll</a>
+                </div>
+            </div>
+
+            <a href="../transfer-tarik/index.html" :class="isActive('/transfer-tarik/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Layanan Keuangan
+            </a>
+
+            <a href="../perjalanan/index.html" :class="isActive('/perjalanan/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.974 4.974 0 003 15z"></path></svg>
+                Perjalanan
+            </a>
+
+            <!-- Menu Single (Non-Dropdown) -->
+            <a href="../tagihan-rutin/index.html" :class="isActive('/tagihan-rutin/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Tagihan Rutin
+            </a>
+            <a href="../layanan-terbaru/index.html" :class="isActive('/layanan-terbaru/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Layanan Terbaru
+            </a>
+            
+            <a href="../penjualan-barang/index.html" :class="isActive('/penjualan-barang/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                Penjualan Barang
+            </a>
+            <a href="../report/index.html" :class="isActive('/report/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Report & Laporan
+            </a>
+
+            <div class="pt-2 border-t border-teal-700/50 mt-2">
+                <a href="../settings/index.html" :class="isActive('/settings/') ? 'bg-white/20 text-white shadow-md border-white/10' : 'text-teal-100 hover:bg-white/10 hover:text-white border-transparent'" class="w-full flex items-center gap-3 border px-3 py-2.5 rounded-lg text-sm font-medium transition">
+                    <svg class="w-[18px] h-[18px] opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Setting & Admin
+                </a>
             </div>
         </nav>
     </aside>
