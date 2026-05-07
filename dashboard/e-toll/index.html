@@ -281,13 +281,16 @@
                     
                     <div class="flex gap-2 mb-8 overflow-x-auto hide-scroll pb-2 border-b border-slate-100">
                         <button @click="pilihKartu('mandiri')" :class="jenisKartu === 'mandiri' ? 'border-yellow-500 text-yellow-600 bg-yellow-50' : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-yellow-600'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap flex items-center gap-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Mandiri_e-money_logo.png/640px-Mandiri_e-money_logo.png" class="h-4 object-contain mix-blend-multiply"> Mandiri E-Money
+                            <img src="../../assets/e-money.png" class="h-4 object-contain mix-blend-multiply"> Mandiri E-Money
                         </button>
                         <button @click="pilihKartu('flazz')" :class="jenisKartu === 'flazz' ? 'border-blue-600 text-blue-700 bg-blue-50' : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-blue-700'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap flex items-center gap-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/BCA_Flazz_logo.svg/2560px-BCA_Flazz_logo.svg.png" class="h-4 object-contain mix-blend-multiply"> BCA Flazz
+                            <img src="../../assets/flaz.png" class="h-4 object-contain mix-blend-multiply"> BCA Flazz
                         </button>
                         <button @click="pilihKartu('tapcash')" :class="jenisKartu === 'tapcash' ? 'border-orange-500 text-orange-600 bg-orange-50' : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-orange-600'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap flex items-center gap-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1200px-BNI_logo.svg.png" class="h-4 object-contain mix-blend-multiply"> BNI TapCash
+                            <img src="../../assets/bni.png" class="h-4 object-contain mix-blend-multiply"> BNI TapCash
+                        </button>
+                        <button @click="pilihKartu('BRI')" :class="jenisKartu === 'BRI' ? 'border-green-500 text-green-600 bg-green-50' : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-green-600'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap flex items-center gap-2">
+                            <img src="../../assets/bri.png" class="h-4 object-contain mix-blend-multiply"> BRI E-Money
                         </button>
                     </div>
 
