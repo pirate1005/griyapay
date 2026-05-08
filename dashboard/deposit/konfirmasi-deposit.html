@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penjualan Barang - Griyapay Dashboard</title>
+    <title>Konfirmasi Deposit - Griyapay Dashboard</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -19,24 +16,18 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
         .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
         .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
-
         .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
         .bg-grid-slate {
             background-size: 40px 40px;
             background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
                               linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
         }
-        
         .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
     </style>
 </head>
-
-<body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="{ sidebarOpen: false }">
+<body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="konfirmasiData()">
 
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" @click="sidebarOpen = false" style="display: none;"></div>
 
@@ -255,108 +246,133 @@
             </div>
         </nav>
     </aside>
-    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-2xl relative z-0">
-        
-        <div class="absolute inset-0 bg-grid-slate z-[-2]"></div>
 
-        <header class="bg-white/90 backdrop-blur-sm border-b border-slate-200 py-4 px-6 flex items-center justify-between shrink-0 z-10 lg:rounded-tl-[2.5rem]">
-            <div class="flex items-center gap-4 flex-1">
-                <button @click="sidebarOpen = true" class="lg:hidden text-slate-800 hover:text-teal-600 transition p-1 bg-slate-100 rounded-lg">
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-[0_0_50px_rgba(0,0,0,0.3)] relative z-0">
+        <div class="absolute inset-0 z-[-2] bg-grid-slate"></div>
+
+        <header class="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 py-4 px-6 flex items-center justify-between shrink-0 z-20 lg:rounded-tl-[2.5rem]">
+            <div class="flex items-center gap-4">
+                <button @click="sidebarOpen = true" class="lg:hidden text-slate-600 hover:text-teal-600 transition p-1.5 bg-slate-100 hover:bg-teal-50 rounded-lg active:scale-95">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <div>
-                    <h1 class="text-xl font-extrabold text-slate-800 hidden sm:block">Toko Perlengkapan Agen</h1>
-                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Beli alat & atribut untuk mendukung usaha Anda</p>
+                    <h1 class="text-xl font-black text-slate-800 tracking-tight">Konfirmasi Deposit</h1>
+                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Lampirkan bukti transfer jika saldo belum masuk.</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4 md:gap-6">
-                <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-4 py-2 rounded-xl flex items-center gap-3 shadow-md shadow-teal-500/30 border border-teal-600">
-                    <div>
-                        <p class="text-[10px] font-bold text-teal-100 uppercase tracking-wider">Saldo Tersedia</p>
-                        <p class="text-sm font-black tracking-tight drop-shadow-sm">Rp 1.278.441</p>
+            
+            <div class="flex items-center gap-3 sm:gap-5">
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Saldo Saat Ini</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-slate-800">Rp</span>
+                        <span class="text-xl font-black text-teal-600 tracking-tight drop-shadow-sm">1.250.000</span>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 custom-scrollbar relative z-10" x-data="penjualanLogic()">
-            
-            <div class="max-w-6xl mx-auto space-y-6 pb-10">
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 hide-scroll relative z-10">
+            <div class="max-w-4xl mx-auto space-y-6 pb-10">
                 
-                <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-[2rem] p-6 md:p-10 relative overflow-hidden shadow-lg flex flex-col md:flex-row items-center gap-6">
-                    <div class="absolute right-0 top-0 w-64 h-64 bg-blue-500 rounded-full blur-[80px] opacity-30 translate-x-1/3 -translate-y-1/4"></div>
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 sm:p-8 border-b border-slate-100 bg-slate-50/50">
+                        <h2 class="text-lg font-bold text-slate-800 border-l-4 border-teal-500 pl-3">Kirim Bukti Pembayaran</h2>
+                        <p class="text-sm text-slate-500 ml-4 mt-1">Isi data di bawah ini sesuai dengan struk/bukti transfer yang Anda miliki.</p>
+                    </div>
                     
-                    <div class="flex-1 relative z-10 text-center md:text-left">
-                        <span class="bg-blue-500 text-white text-[10px] font-black tracking-widest px-3 py-1.5 rounded-md mb-4 inline-block">GRATIS ONGKIR</span>
-                        <h2 class="text-2xl md:text-4xl font-black text-white leading-tight mb-2">Paket Starter Kit Agen</h2>
-                        <p class="text-blue-200 text-sm mb-0">Beli Printer Bluetooth + Spanduk sekarang, dapat potongan langsung 15%.</p>
-                    </div>
-                    <div class="relative z-10 shrink-0">
-                        <div class="w-32 h-32 md:w-40 md:h-40 bg-white/10 backdrop-blur rounded-2xl border border-white/20 p-4 flex items-center justify-center">
-                            <img src="https://placehold.co/200x200/ffffff/1e40af?text=Paket+Agen" alt="Promo" class="object-contain hover:scale-110 transition duration-300">
+                    <form @submit.prevent="submitKonfirmasi" class="p-6 sm:p-8">
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Kode Loket</label>
+                                <input type="text" x-model="formData.kodeLoket" readonly class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 font-bold cursor-not-allowed">
+                                <p class="text-[10px] text-slate-400 mt-1">*Terisi otomatis berdasarkan akun login</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Nama Loket</label>
+                                <input type="text" x-model="formData.namaLoket" readonly class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 font-bold cursor-not-allowed">
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="flex gap-2 w-full md:w-auto overflow-x-auto hide-scroll pb-1">
-                        <button @click="kategoriAktif = 'Semua'" :class="kategoriAktif === 'Semua' ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-2.5 rounded-full font-bold text-sm transition whitespace-nowrap shadow-sm">Semua</button>
-                        <button @click="kategoriAktif = 'Mesin & EDC'" :class="kategoriAktif === 'Mesin & EDC' ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-2.5 rounded-full font-bold text-sm transition whitespace-nowrap shadow-sm">Mesin & EDC</button>
-                        <button @click="kategoriAktif = 'Perlengkapan'" :class="kategoriAktif === 'Perlengkapan' ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-2.5 rounded-full font-bold text-sm transition whitespace-nowrap shadow-sm">Perlengkapan</button>
-                        <button @click="kategoriAktif = 'Promosi'" :class="kategoriAktif === 'Promosi' ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-5 py-2.5 rounded-full font-bold text-sm transition whitespace-nowrap shadow-sm">Atribut & Promosi</button>
-                    </div>
-
-                    <div class="relative w-full md:w-64">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        </div>
-                        <input type="text" x-model="search" placeholder="Cari barang..." class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition shadow-sm">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-                    
-                    <template x-for="item in filteredProduk" :key="item.id">
-                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden group hover:shadow-xl transition-all duration-300 flex flex-col h-full relative">
-                            
-                            <span x-show="item.diskon" class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-black tracking-wider px-2.5 py-1 rounded-md shadow-sm z-10">SALE</span>
-                            <span x-show="item.stok < 10 && item.stok > 0" class="absolute top-3 right-3 bg-orange-100 text-orange-700 border border-orange-200 text-[10px] font-bold px-2 py-0.5 rounded z-10">Sisa <span x-text="item.stok"></span></span>
-
-                            <div class="relative bg-slate-50 aspect-square p-6 flex items-center justify-center border-b border-slate-100 overflow-hidden">
-                                <img :src="item.gambar" :alt="item.nama" class="object-contain w-full h-full group-hover:scale-110 transition duration-500 mix-blend-multiply">
-                                
-                                <div x-show="item.stok === 0" class="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex items-center justify-center z-20">
-                                    <span class="bg-slate-800 text-white font-bold text-xs px-3 py-1.5 rounded-full shadow-md transform -rotate-12">STOK HABIS</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Jumlah Transfer (Sesuai Bukti)</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-800 font-bold">Rp</span>
+                                    <input type="text" x-model="formData.jumlahTransfer" @input="formatRupiahInput($event)" placeholder="Contoh: 100.234" required class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 focus:outline-none transition-all font-black text-slate-800">
                                 </div>
                             </div>
-                            
-                            <div class="p-4 md:p-5 flex-1 flex flex-col">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1" x-text="item.kategori"></p>
-                                <h3 class="font-bold text-slate-800 text-sm leading-snug mb-3 line-clamp-2 group-hover:text-teal-600 transition flex-1" x-text="item.nama"></h3>
-                                
-                                <div class="mt-auto">
-                                    <div class="flex items-center gap-2 mb-4">
-                                        <p class="font-black text-slate-900 text-lg" x-text="'Rp ' + formatRupiah(item.harga)"></p>
-                                        <p x-show="item.diskon" class="text-xs text-slate-400 line-through" x-text="'Rp ' + formatRupiah(item.hargaNormal)"></p>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Bank Tujuan Transfer</label>
+                                <div class="relative">
+                                    <select x-model="formData.bankTujuan" required class="w-full pl-4 pr-10 py-3.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 focus:outline-none transition-all font-bold text-slate-800 appearance-none cursor-pointer">
+                                        <option value="" disabled selected>-- Pilih Bank Tujuan --</option>
+                                        <option value="BCA">Bank BCA</option>
+                                        <option value="BRI">Bank BRI</option>
+                                        <option value="MANDIRI">Bank Mandiri</option>
+                                        <option value="BSI">Bank BSI (Virtual Account)</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </div>
-                                    
-                                    <button @click="beliProduk(item)" :disabled="item.stok === 0" 
-                                            :class="item.stok === 0 ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-teal-50 text-teal-700 hover:bg-teal-600 hover:text-white border border-teal-100 hover:border-teal-600 shadow-sm'" 
-                                            class="w-full py-2.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-95 flex justify-center items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                                        Beli Sekarang
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </template>
 
-                    <div x-show="filteredProduk.length === 0" class="col-span-full py-16 text-center">
-                        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-2xl mx-auto mb-3">🔍</div>
-                        <h3 class="font-bold text-slate-700 mb-1">Barang tidak ditemukan</h3>
-                        <p class="text-sm text-slate-500">Coba cari dengan kata kunci atau kategori lain.</p>
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Waktu Transfer (Tanggal & Jam)</label>
+                            <input type="datetime-local" x-model="formData.waktuTransfer" required class="w-full px-4 py-3.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 focus:outline-none transition-all font-bold text-slate-800">
+                        </div>
+
+                        <div class="mb-8">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Lampirkan Bukti (Foto/Screenshot)</label>
+                            
+                            <div class="w-full relative border-2 border-dashed border-slate-300 rounded-2xl p-8 hover:bg-slate-50 transition-colors text-center group" :class="fileName ? 'bg-teal-50 border-teal-300' : 'bg-white'">
+                                <input type="file" @change="handleFileChange($event)" accept="image/*" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                
+                                <div x-show="!fileName" class="flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center group-hover:text-teal-500 group-hover:bg-teal-50 transition-colors">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-600">Klik atau Tarik file ke area ini</p>
+                                    <p class="text-xs text-slate-400">Format JPG, PNG (Maks. 2MB)</p>
+                                </div>
+
+                                <div x-show="fileName" class="flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    </div>
+                                    <p class="text-sm font-bold text-teal-700" x-text="fileName"></p>
+                                    <p class="text-xs text-teal-500 underline cursor-pointer relative z-20">Ganti file</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" 
+                                    :disabled="isLoading"
+                                    class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-black text-lg py-4 px-10 rounded-xl shadow-lg shadow-teal-500/30 transition-all active:scale-95 flex items-center justify-center gap-3 disabled:opacity-70">
+                                <span x-show="!isLoading">Kirim Konfirmasi</span>
+                                <span x-show="isLoading">Mengirim...</span>
+                                <svg x-show="!isLoading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                                <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-3xl p-6 flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl shrink-0 mt-0.5">💡</div>
+                    <div>
+                        <h4 class="font-bold text-blue-800 mb-1">Catatan Penting</h4>
+                        <ul class="text-sm text-blue-700/80 space-y-1 list-disc pl-4">
+                            <li>Form konfirmasi ini hanya digunakan jika saldo Anda belum masuk otomatis setelah lebih dari 15 menit sejak melakukan transfer.</li>
+                            <li>Pastikan bukti transfer yang diunggah jelas, menampilkan <strong>Tanggal</strong>, <strong>Jam</strong>, dan <strong>Nominal Transfer</strong> (termasuk kode unik jika ada).</li>
+                            <li>Proses verifikasi manual memakan waktu maksimal 1x24 jam kerja.</li>
+                        </ul>
                     </div>
-
                 </div>
 
             </div>
@@ -364,132 +380,71 @@
     </main>
 
     <script>
-        function penjualanLogic() {
+        function konfirmasiData() {
             return {
-                search: '',
-                kategoriAktif: 'Semua',
+                sidebarOpen: false,
+                isLoading: false,
+                fileName: '',
                 
-                // Database Mockup Barang
-                produk: [
-                    { id: 1, nama: 'Mini Printer Thermal Bluetooth 58mm ZJ-5809', harga: 185000, hargaNormal: 250000, diskon: true, stok: 24, kategori: 'Perlengkapan', gambar: 'https://placehold.co/300x300/f8fafc/334155?text=Printer+Thermal' },
-                    { id: 2, nama: 'Kertas Struk Thermal Ukuran 58x30mm (1 Roll)', harga: 3500, hargaNormal: 0, diskon: false, stok: 150, kategori: 'Perlengkapan', gambar: 'https://placehold.co/300x300/f8fafc/334155?text=Kertas+Struk' },
-                    { id: 3, nama: 'Mesin EDC Android Pintar (Support QRIS & Card)', harga: 1450000, hargaNormal: 0, diskon: false, stok: 5, kategori: 'Mesin & EDC', gambar: 'https://placehold.co/300x300/f8fafc/334155?text=Mesin+EDC' },
-                    { id: 4, nama: 'Spanduk Agen Resmi Griyapay (Ukuran 2x1 Meter)', harga: 45000, hargaNormal: 65000, diskon: true, stok: 0, kategori: 'Promosi', gambar: 'https://placehold.co/300x300/f8fafc/334155?text=Spanduk' },
-                    { id: 5, nama: 'Lanyard & ID Card Holder Resmi Griyapay', harga: 25000, hargaNormal: 0, diskon: false, stok: 45, kategori: 'Promosi', gambar: 'https://placehold.co/300x300/f8fafc/334155?text=Lanyard' },
-                    { id: 6, nama: 'Barcode Scanner Handheld USB untuk Kasir', harga: 125000, hargaNormal: 0, diskon: false, stok: 12, kategori: 'Perlengkapan', gambar: 'https://placehold.co/300x300/f8fafc/334155?text=Scanner' },
-                ],
-
-                formatRupiah(angka) {
-                    return new Intl.NumberFormat('id-ID').format(angka);
+                // Data Form
+                formData: {
+                    kodeLoket: 'LOKET-C112', // Auto-filled (Simulasi)
+                    namaLoket: 'Agus Cell',  // Auto-filled (Simulasi)
+                    jumlahTransfer: '',
+                    bankTujuan: '',
+                    waktuTransfer: ''
                 },
 
-                get filteredProduk() {
-                    return this.produk.filter(item => {
-                        // Filter Kategori
-                        let matchKategori = this.kategoriAktif === 'Semua' || item.kategori === this.kategoriAktif;
-                        // Filter Search
-                        let matchSearch = item.nama.toLowerCase().includes(this.search.toLowerCase());
+                // Format Inputan Jumlah agar jadi format Rupiah (ex: 100.000)
+                formatRupiahInput(event) {
+                    let val = event.target.value.replace(/\D/g, ''); // Hapus non-angka
+                    if(val !== '') {
+                        val = new Intl.NumberFormat('id-ID').format(val);
+                    }
+                    this.formData.jumlahTransfer = val;
+                },
+
+                handleFileChange(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        // Validasi ukuran (contoh: maks 2MB)
+                        if(file.size > 2 * 1024 * 1024) {
+                            Swal.fire({ icon: 'error', title: 'File Terlalu Besar', text: 'Maksimal ukuran file adalah 2MB.', confirmButtonColor: '#0d9488' });
+                            event.target.value = '';
+                            this.fileName = '';
+                            return;
+                        }
+                        this.fileName = file.name;
+                    } else {
+                        this.fileName = '';
+                    }
+                },
+
+                submitKonfirmasi() {
+                    this.isLoading = true;
+
+                    // Simulasi Pengiriman Data ke Server
+                    setTimeout(() => {
+                        this.isLoading = false;
                         
-                        return matchKategori && matchSearch;
-                    });
-                },
-
-                beliProduk(item) {
-                    Swal.fire({
-                        title: '<span class="text-slate-800 font-extrabold text-xl">Beli Barang</span>',
-                        html: `
-                            <div class="mt-4 flex flex-col items-center gap-4">
-                                <div class="w-24 h-24 bg-slate-50 border border-slate-100 rounded-xl p-2">
-                                    <img src="${item.gambar}" class="w-full h-full object-contain mix-blend-multiply">
-                                </div>
-                                <div class="text-center">
-                                    <h4 class="font-bold text-slate-800 text-sm leading-snug mb-1">${item.nama}</h4>
-                                    <p class="font-black text-teal-600 text-lg">Rp ${this.formatRupiah(item.harga)}</p>
-                                </div>
-                                
-                                <div class="w-full mt-2 bg-slate-50 p-4 rounded-2xl border border-slate-200 flex justify-between items-center">
-                                    <span class="text-sm font-bold text-slate-600">Jumlah:</span>
-                                    <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm h-10">
-                                        <button id="btn-minus" class="w-10 h-full flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-teal-600 transition">-</button>
-                                        <input type="number" id="input-qty" value="1" min="1" max="${item.stok}" readonly class="w-12 h-full text-center text-sm font-bold text-slate-800 border-x border-slate-200 outline-none">
-                                        <button id="btn-plus" class="w-10 h-full flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-teal-600 transition">+</button>
-                                    </div>
-                                </div>
-                                <div class="w-full flex justify-between items-center pt-2">
-                                    <span class="text-xs text-slate-500">Sisa Stok: ${item.stok}</span>
-                                    <span class="text-sm font-bold text-slate-800">Total: <span id="text-total" class="font-black text-teal-600 ml-1">Rp ${this.formatRupiah(item.harga)}</span></span>
-                                </div>
-                            </div>
-                        `,
-                        showCancelButton: true,
-                        confirmButtonText: 'Checkout Sekarang',
-                        cancelButtonText: 'Batal',
-                        confirmButtonColor: '#0d9488',
-                        cancelButtonColor: '#cbd5e1',
-                        reverseButtons: true,
-                        customClass: {
-                            popup: 'rounded-[2rem]',
-                            confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md shadow-teal-500/30',
-                            cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-800'
-                        },
-                        didOpen: () => {
-                            // Logic untuk tombol + dan - di dalam SweetAlert
-                            const btnMinus = document.getElementById('btn-minus');
-                            const btnPlus = document.getElementById('btn-plus');
-                            const inputQty = document.getElementById('input-qty');
-                            const textTotal = document.getElementById('text-total');
-                            const price = item.harga;
-                            const max = item.stok;
-
-                            btnMinus.addEventListener('click', () => {
-                                let val = parseInt(inputQty.value);
-                                if(val > 1) {
-                                    inputQty.value = val - 1;
-                                    textTotal.innerText = 'Rp ' + this.formatRupiah((val - 1) * price);
-                                }
-                            });
-
-                            btnPlus.addEventListener('click', () => {
-                                let val = parseInt(inputQty.value);
-                                if(val < max) {
-                                    inputQty.value = val + 1;
-                                    textTotal.innerText = 'Rp ' + this.formatRupiah((val + 1) * price);
-                                }
-                            });
-                        },
-                        preConfirm: () => {
-                            const qty = parseInt(document.getElementById('input-qty').value);
-                            return { qty: qty, total: qty * item.harga };
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Simulasi Proses Pembelian
-                            Swal.fire({
-                                title: 'Memproses Pesanan...',
-                                allowOutsideClick: false,
-                                didOpen: () => { Swal.showLoading(); },
-                                customClass: { popup: 'rounded-[2rem]' }
-                            });
-
-                            setTimeout(() => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: '<span class="text-slate-800 font-extrabold">Pesanan Berhasil Dibuat!</span>',
-                                    html: `<p class="text-sm text-slate-500 mb-2">Anda membeli <b>${result.value.qty}x ${item.nama}</b></p><p class="text-xs bg-slate-100 p-2 rounded-lg">Total potong saldo: Rp ${this.formatRupiah(result.value.total)}</p>`,
-                                    confirmButtonColor: '#0d9488',
-                                    confirmButtonText: 'Tutup',
-                                    customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-8 py-2.5 font-bold' }
-                                }).then(() => {
-                                    // Kurangi Stok Secara Lokal (Simulasi UI)
-                                    item.stok -= result.value.qty;
-                                });
-                            }, 1500);
-                        }
-                    });
+                        Swal.fire({
+                            icon: 'success',
+                            title: '<span class="text-slate-800 font-extrabold text-2xl">Berhasil Terkirim</span>',
+                            html: '<p class="text-slate-500 text-sm">Bukti konfirmasi deposit Anda telah kami terima dan akan segera diproses oleh tim CS kami.</p>',
+                            confirmButtonColor: '#0d9488',
+                            confirmButtonText: 'Selesai',
+                            customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-teal-500/30' }
+                        }).then(() => {
+                            // Reset Form
+                            this.formData.jumlahTransfer = '';
+                            this.formData.bankTujuan = '';
+                            this.formData.waktuTransfer = '';
+                            this.fileName = '';
+                        });
+                    }, 2000); // Simulasi delay 2 detik
                 }
             }
         }
     </script>
-
 </body>
 </html>
