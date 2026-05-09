@@ -8,31 +8,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
         .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
-        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
-
         .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .bg-grid-slate {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
-        }
-        
+        .bg-grid-slate { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px); }
         .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        
+        /* Custom radio button styles for cards */
+        .bank-radio:checked + div { border-color: #0d9488; background-color: #f0fdfa; }
+        .bank-radio:checked + div .check-icon { display: block; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-teal-900 via-teal-700 to-cyan-800 text-slate-800 antialiased overflow-hidden flex h-screen" x-data="depositData()">
@@ -258,148 +251,202 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 lg:rounded-l-[2.5rem] lg:my-3 lg:mr-3 shadow-[0_0_50px_rgba(0,0,0,0.3)] relative z-0">
         <div class="absolute inset-0 z-[-2] bg-grid-slate"></div>
 
-        <header class="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 py-4 px-6 flex items-center justify-between shrink-0 z-20 lg:rounded-tl-[2.5rem]">
+        <header class="bg-white/80 backdrop-blur-xl border-b border-slate-200/80 py-3 px-6 flex items-center justify-between shrink-0 z-20 lg:rounded-tl-[2.5rem]">
             <div class="flex items-center gap-4">
                 <button @click="sidebarOpen = true" class="lg:hidden text-slate-600 hover:text-teal-600 transition p-1.5 bg-slate-100 hover:bg-teal-50 rounded-lg active:scale-95">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
                 <div>
                     <h1 class="text-xl font-black text-slate-800 tracking-tight">Top Up Deposit</h1>
-                    <p class="text-xs text-slate-500 font-medium hidden sm:block">Isi saldo akun Griyapay Anda via transfer bank.</p>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-3 sm:gap-5">
-                <div class="flex flex-col items-end">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Saldo Saat Ini</span>
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm font-bold text-slate-800">Rp</span>
-                        <span class="text-xl font-black text-teal-600 tracking-tight drop-shadow-sm" x-text="formatRupiah(saldoUser)">0</span>
-                    </div>
+            <div class="flex flex-col items-end">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Saldo Saat Ini</span>
+                <div class="flex items-center gap-1">
+                    <span class="text-sm font-bold text-slate-800">Rp</span>
+                    <span class="text-lg font-black text-teal-600 tracking-tight" x-text="formatRupiah(saldoUser)">0</span>
                 </div>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 hide-scroll relative z-10">
-            <div class="max-w-4xl mx-auto space-y-6 pb-10">
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 hide-scroll relative z-10">
+            <div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-6 pb-6">
                 
-                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 sm:p-8 border-b border-slate-100 bg-slate-50/50">
-                        <h2 class="text-lg font-bold text-slate-800 border-l-4 border-teal-500 pl-3">Formulir Pengisian Saldo</h2>
-                        <p class="text-sm text-slate-500 ml-4 mt-1">Pilih nominal dan bank tujuan transfer yang Anda inginkan.</p>
-                    </div>
-                    
-                    <div class="p-6 sm:p-8">
-                        <div class="mb-8">
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Nominal Top Up</label>
-                            
+                <div class="w-full lg:w-1/3 flex flex-col gap-6">
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-5 border-b border-slate-100 bg-slate-50/50">
+                            <h2 class="text-base font-bold text-slate-800 border-l-4 border-teal-500 pl-3">Nominal Top Up</h2>
+                        </div>
+                        <div class="p-5">
                             <div class="relative mb-4">
                                 <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-800 font-bold">Rp</span>
-                                <input type="text" x-model="formattedNominal" @input="handleNominalInput($event)" placeholder="Masukkan Jumlah" class="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 focus:outline-none transition-all font-black text-slate-800 text-xl md:text-2xl">
+                                <input type="text" x-model="formattedNominal" @input="handleNominalInput($event)" placeholder="0" class="w-full pl-12 pr-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 focus:outline-none transition-all font-black text-slate-800 text-xl">
                             </div>
-
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <button @click="setNominal(50000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm">50.000</button>
-                                <button @click="setNominal(100000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm">100.000</button>
-                                <button @click="setNominal(250000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm text-teal-600 border-teal-200">250.000</button>
-                                <button @click="setNominal(500000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm">500.000</button>
-                                <button @click="setNominal(1000000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm">1.000.000</button>
-                                <button @click="setNominal(2000000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm">2.000.000</button>
-                                <button @click="setNominal(5000000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm text-orange-500 border-orange-200">5.000.000</button>
-                                <button @click="setNominal(10000000)" type="button" class="py-3 px-2 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-xl text-sm font-bold text-slate-700 transition active:scale-95 shadow-sm text-orange-600 border-orange-300">10.000.000</button>
-                            </div>
-                        </div>
-
-                        <div class="mb-8">
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Pilih Bank Tujuan Transfer</label>
-                            
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <label class="relative flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:border-teal-400 hover:bg-teal-50/50 transition group shadow-sm" :class="selectedMethod === 'BCA' ? 'border-teal-500 bg-teal-50/50' : 'border-slate-200'">
-                                    <input type="radio" name="payment" value="BCA" x-model="selectedMethod" class="hidden">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-10 bg-slate-100 rounded-md flex items-center justify-center font-bold text-blue-800 italic">BCA</div>
-                                        <div>
-                                            <p class="font-black text-slate-800">Transfer BCA</p>
-                                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Cek Otomatis (Tiket)</p>
-                                        </div>
-                                    </div>
-                                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center" :class="selectedMethod === 'BCA' ? 'border-teal-500 bg-teal-500' : 'border-slate-300'">
-                                        <svg x-show="selectedMethod === 'BCA'" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                                    </div>
-                                </label>
-
-                                <label class="relative flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:border-teal-400 hover:bg-teal-50/50 transition group shadow-sm" :class="selectedMethod === 'BRI' ? 'border-teal-500 bg-teal-50/50' : 'border-slate-200'">
-                                    <input type="radio" name="payment" value="BRI" x-model="selectedMethod" class="hidden">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-10 bg-blue-50 rounded-md flex items-center justify-center font-bold text-orange-600 italic">BRI</div>
-                                        <div>
-                                            <p class="font-black text-slate-800">Transfer BRI</p>
-                                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Cek Otomatis (Tiket)</p>
-                                        </div>
-                                    </div>
-                                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center" :class="selectedMethod === 'BRI' ? 'border-teal-500 bg-teal-500' : 'border-slate-300'">
-                                        <svg x-show="selectedMethod === 'BRI'" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                                    </div>
-                                </label>
-
-                                <label class="relative flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:border-teal-400 hover:bg-teal-50/50 transition group shadow-sm" :class="selectedMethod === 'MANDIRI' ? 'border-teal-500 bg-teal-50/50' : 'border-slate-200'">
-                                    <input type="radio" name="payment" value="MANDIRI" x-model="selectedMethod" class="hidden">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-10 bg-yellow-50 rounded-md flex items-center justify-center font-bold text-blue-700 italic text-[10px]">MANDIRI</div>
-                                        <div>
-                                            <p class="font-black text-slate-800">Transfer Mandiri</p>
-                                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Cek Otomatis (Tiket)</p>
-                                        </div>
-                                    </div>
-                                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center" :class="selectedMethod === 'MANDIRI' ? 'border-teal-500 bg-teal-500' : 'border-slate-300'">
-                                        <svg x-show="selectedMethod === 'MANDIRI'" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                                    </div>
-                                </label>
-
-                                <label class="relative flex items-center justify-between p-4 bg-white border-2 rounded-xl cursor-pointer hover:border-teal-400 hover:bg-teal-50/50 transition group shadow-sm" :class="selectedMethod === 'BSI' ? 'border-teal-500 bg-teal-50/50' : 'border-slate-200'">
-                                    <input type="radio" name="payment" value="BSI" x-model="selectedMethod" class="hidden">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-12 h-10 bg-emerald-50 rounded-md flex items-center justify-center font-bold text-emerald-700 italic">BSI</div>
-                                        <div>
-                                            <p class="font-black text-slate-800">Virtual Account BSI</p>
-                                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Langsung Masuk</p>
-                                        </div>
-                                    </div>
-                                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center" :class="selectedMethod === 'BSI' ? 'border-teal-500 bg-teal-500' : 'border-slate-300'">
-                                        <svg x-show="selectedMethod === 'BSI'" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                                    </div>
-                                </label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button @click="setNominal(50000)" type="button" class="py-2 px-1 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-lg text-xs font-bold text-slate-700 transition active:scale-95">50 Ribu</button>
+                                <button @click="setNominal(100000)" type="button" class="py-2 px-1 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-lg text-xs font-bold text-slate-700 transition active:scale-95">100 Ribu</button>
+                                <button @click="setNominal(250000)" type="button" class="py-2 px-1 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-lg text-xs font-bold text-teal-600 transition active:scale-95">250 Ribu</button>
+                                <button @click="setNominal(500000)" type="button" class="py-2 px-1 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-lg text-xs font-bold text-slate-700 transition active:scale-95">500 Ribu</button>
+                                <button @click="setNominal(1000000)" type="button" class="py-2 px-1 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-lg text-xs font-bold text-slate-700 transition active:scale-95">1 Juta</button>
+                                <button @click="setNominal(2000000)" type="button" class="py-2 px-1 bg-white border border-slate-200 hover:border-teal-400 hover:bg-teal-50 rounded-lg text-xs font-bold text-slate-700 transition active:scale-95">2 Juta</button>
+                                <button @click="setNominal(5000000)" type="button" class="py-2 px-1 bg-white border border-orange-200 bg-orange-50/50 hover:border-orange-400 hover:bg-orange-50 rounded-lg text-xs font-bold text-orange-600 transition active:scale-95">5 Juta</button>
+                                <button @click="setNominal(10000000)" type="button" class="py-2 px-1 bg-white border border-orange-300 bg-orange-100/50 hover:border-orange-500 hover:bg-orange-100 rounded-lg text-xs font-bold text-orange-700 transition active:scale-95">10 Juta</button>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-                            <div>
-                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Total Bayar (Estimasi)</p>
-                                <p class="text-2xl font-black text-teal-700">Rp <span x-text="formatRupiah(totalBayar)">0</span></p>
-                                <p class="text-[10px] text-slate-400 mt-1 italic">*Terdapat penambahan kode unik untuk transfer bank</p>
-                            </div>
-                            
-                            <button @click="processDeposit()" 
-                                    :disabled="!nominal || !selectedMethod || nominal < 10000"
-                                    :class="(!nominal || !selectedMethod || nominal < 10000) ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/30 active:scale-95'"
-                                    class="w-full md:w-auto px-8 py-3.5 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Lanjutkan Deposit
-                            </button>
-                        </div>
+                    <div class="bg-slate-800 rounded-3xl shadow-lg p-5 text-white relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-teal-500 rounded-full blur-3xl opacity-20"></div>
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Estimasi Bayar</p>
+                        <p class="text-3xl font-black text-teal-400 mb-4">Rp <span x-text="formatRupiah(totalBayar)">0</span></p>
+                        
+                        <button @click="processDeposit()" 
+                                :disabled="!nominal || !selectedMethod || nominal < 10000"
+                                :class="(!nominal || !selectedMethod || nominal < 10000) ? 'bg-slate-600 text-slate-400 cursor-not-allowed' : 'bg-teal-500 hover:bg-teal-400 text-white shadow-[0_0_15px_rgba(20,184,166,0.5)] active:scale-95'"
+                                class="w-full py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2">
+                            Lanjutkan Deposit <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
+                        <p class="text-xs font-bold text-yellow-800 mb-1 flex items-center gap-1">⚠️ PENTING</p>
+                        <p class="text-[10px] text-yellow-700 leading-relaxed">Pilih <b>Transfer Tiket</b> (tambah kode unik) ATAU <b>Virtual Account</b> (langsung masuk). Minimal top up Rp 10.000.</p>
                     </div>
                 </div>
 
-                <div class="bg-yellow-50 border border-yellow-200 rounded-3xl p-6 flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-xl shrink-0 mt-0.5">ℹ️</div>
-                    <div>
-                        <h4 class="font-bold text-yellow-800 mb-1">Informasi Penting</h4>
-                        <ul class="text-sm text-yellow-700/80 space-y-1 list-disc pl-4">
-                            <li>Minimal top up saldo adalah Rp 10.000.</li>
-                            <li>Sistem akan menambahkan kode unik 3 digit di belakang nominal untuk mempercepat verifikasi otomatis tiket (contoh: 100.000 menjadi 100.234). <strong>Transfer sesuai dengan kode unik tersebut!</strong></li>
-                            <li>Semua rekening tujuan atas nama <strong>CV Griya Teknologi Nusantara</strong>.</li>
-                            <li>Pastikan Anda transfer sebelum batas waktu 2 jam, atau tiket akan hangus.</li>
-                        </ul>
+                <div class="w-full lg:w-2/3 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="p-5 border-b border-slate-100 bg-slate-50/50">
+                        <h2 class="text-base font-bold text-slate-800 border-l-4 border-teal-500 pl-3">Metode Pembayaran (a.n CV Griya Teknologi Nusantara)</h2>
+                    </div>
+                    
+                    <div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+                        
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-black uppercase">Tiket</span>
+                                <h3 class="text-sm font-bold text-slate-700">Transfer Bank (Cek Otomatis)</h3>
+                            </div>
+                            <div class="space-y-2.5">
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="BCA_TIKET" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/bca.png" alt="BCA" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">Bank BCA</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="BRI_TIKET" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/bri.png" alt="BRI" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">Bank BRI</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="MANDIRI_TIKET" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/mandiri.png" alt="Mandiri" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">Bank Mandiri</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="BSI_TIKET" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/bsi.png" alt="BSI" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">Bank BSI</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center gap-2 mb-3 mt-4 md:mt-0">
+                                <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-[10px] font-black uppercase">VA</span>
+                                <h3 class="text-sm font-bold text-slate-700">Virtual Account (Langsung Masuk)</h3>
+                            </div>
+                            <div class="space-y-2.5">
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="BCA_VA" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/va-bca.png" alt="BCA" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">VA BCA</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="BRI_VA" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/va-bri.png" alt="BRI" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">VA BRI</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="MANDIRI_VA" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/mandiri.png" alt="Mandiri" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">VA Mandiri</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="BSI_VA" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/bsi.png" alt="BSI" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">VA BSI</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                                <label class="relative block cursor-pointer">
+                                    <input type="radio" name="payment" value="PERMATA_VA" x-model="selectedMethod" class="peer sr-only bank-radio">
+                                    <div class="flex items-center justify-between p-3 border-2 border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-8 bg-white border border-slate-100 rounded flex items-center justify-center p-1">
+                                                <img src="../../assets/permata.png" alt="Permata" class="max-h-full max-w-full object-contain">
+                                            </div>
+                                            <span class="text-sm font-bold text-slate-800">VA Permata</span>
+                                        </div>
+                                        <div class="check-icon hidden text-teal-600"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -413,52 +460,44 @@
                 sidebarOpen: false,
                 saldoUser: 1250000, 
                 
-                // Form Data
                 nominal: '',
                 formattedNominal: '',
                 selectedMethod: null,
                 uniqueCode: 0,
 
-                // Computed: Menghitung total bayar (nominal + kode unik random untuk simulasi)
                 get totalBayar() {
                     let num = parseInt(this.nominal) || 0;
                     if (num === 0) return 0;
                     
-                    // Generate kode unik jika belum ada
                     if (this.uniqueCode === 0) {
-                        this.uniqueCode = Math.floor(Math.random() * 900) + 100; // Random 100-999
+                        this.uniqueCode = Math.floor(Math.random() * 900) + 100;
                     }
                     
-                    // BSI VA tidak perlu kode unik (biasanya langsung fix nominal)
-                    if (this.selectedMethod === 'BSI') {
+                    // Jika metode mengandung '_VA', tidak perlu tambah kode unik
+                    if (this.selectedMethod && this.selectedMethod.includes('_VA')) {
                         return num;
                     }
-                    
                     return num + this.uniqueCode;
                 },
 
-                // Format Angka Rupiah
                 formatRupiah(angka) {
                     if(!angka) return '0';
                     return new Intl.NumberFormat('id-ID').format(angka);
                 },
 
-                // Handle ketikan manual di input nominal
                 handleNominalInput(event) {
-                    let val = event.target.value.replace(/\D/g, ''); // Hapus semua selain angka
+                    let val = event.target.value.replace(/\D/g, ''); 
                     this.nominal = val;
                     this.formattedNominal = this.formatRupiah(val);
-                    this.uniqueCode = 0; // Reset kode unik jika user ubah nominal
+                    this.uniqueCode = 0; 
                 },
 
-                // Set dari tombol cepat
                 setNominal(amount) {
                     this.nominal = amount;
                     this.formattedNominal = this.formatRupiah(amount);
-                    this.uniqueCode = 0; // Reset kode unik
+                    this.uniqueCode = 0; 
                 },
 
-                // Proses Deposit
                 processDeposit() {
                     let num = parseInt(this.nominal) || 0;
                     if (num < 10000) {
@@ -466,12 +505,21 @@
                         return;
                     }
 
-                    // Tentukan Rekening berdasarkan Bank
+                    // Logika menentukan Rekening berdasarkan pilihan
+                    let bankName = '';
                     let rekTujuan = '';
-                    if(this.selectedMethod === 'BCA') rekTujuan = '8833441122';
-                    if(this.selectedMethod === 'BRI') rekTujuan = '0123-01-001234-56-7';
-                    if(this.selectedMethod === 'MANDIRI') rekTujuan = '130-00-1234567-8';
-                    if(this.selectedMethod === 'BSI') rekTujuan = '999123456789 (VA)';
+                    let isVA = this.selectedMethod.includes('_VA');
+
+                    if(this.selectedMethod === 'BCA_TIKET') { bankName = 'BCA'; rekTujuan = '8833441122'; }
+                    if(this.selectedMethod === 'BRI_TIKET') { bankName = 'BRI'; rekTujuan = '0123-01-001234-56-7'; }
+                    if(this.selectedMethod === 'MANDIRI_TIKET') { bankName = 'Mandiri'; rekTujuan = '130-00-1234567-8'; }
+                    if(this.selectedMethod === 'BSI_TIKET') { bankName = 'BSI'; rekTujuan = '1234567890'; }
+                    
+                    if(this.selectedMethod === 'BCA_VA') { bankName = 'VA BCA'; rekTujuan = '390123456789'; }
+                    if(this.selectedMethod === 'BRI_VA') { bankName = 'VA BRI'; rekTujuan = '888123456789'; }
+                    if(this.selectedMethod === 'MANDIRI_VA') { bankName = 'VA Mandiri'; rekTujuan = '895123456789'; }
+                    if(this.selectedMethod === 'BSI_VA') { bankName = 'VA BSI'; rekTujuan = '999123456789'; }
+                    if(this.selectedMethod === 'PERMATA_VA') { bankName = 'VA Permata'; rekTujuan = '8123456789012'; }
 
                     Swal.fire({
                         title: '<span class="text-slate-800 font-extrabold text-xl">Membuat Tiket...</span>',
@@ -484,25 +532,25 @@
                     setTimeout(() => {
                         let resultHtml = '';
                         
-                        if(this.selectedMethod === 'BSI') {
+                        if(isVA) {
                             resultHtml = `
-                                <p class="text-sm text-slate-500 mb-4">Silakan transfer via Virtual Account BSI ke:</p>
-                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-left">
+                                <p class="text-sm text-slate-500 mb-4">Silakan transfer via <b>${bankName}</b> ke:</p>
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-left shadow-inner">
                                     <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Atas Nama</p>
                                     <p class="font-black text-slate-800 text-lg mb-3">CV Griya Teknologi Nusantara</p>
                                     
-                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Nomor VA BSI</p>
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Nomor Virtual Account</p>
                                     <p class="font-mono text-xl font-black text-teal-600 tracking-widest">${rekTujuan}</p>
                                 </div>
                                 <p class="text-xs text-slate-500">Nominal Transfer (Tepat):</p>
-                                <div class="bg-teal-50 text-teal-700 font-black text-2xl py-2 rounded-xl border border-teal-200 mt-1">
+                                <div class="bg-teal-50 text-teal-700 font-black text-3xl py-3 rounded-xl border border-teal-200 mt-1 shadow-sm">
                                     Rp ${this.formatRupiah(this.totalBayar)}
                                 </div>
                             `;
                         } else {
                             resultHtml = `
-                                <p class="text-sm text-slate-500 mb-4">Silakan transfer HANYA ke rekening <b>${this.selectedMethod}</b> berikut:</p>
-                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-left">
+                                <p class="text-sm text-slate-500 mb-4">Silakan transfer HANYA ke rekening <b>${bankName}</b> berikut:</p>
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-left shadow-inner">
                                     <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Atas Nama</p>
                                     <p class="font-black text-slate-800 text-lg mb-3">CV Griya Teknologi Nusantara</p>
                                     
@@ -514,8 +562,8 @@
                                     <p class="text-[11px] text-yellow-700">Pastikan nominal transfer sama persis hingga 3 digit terakhir (kode unik) agar saldo otomatis masuk.</p>
                                 </div>
                                 <p class="text-xs text-slate-500">Total Transfer (Wajib Sesuai):</p>
-                                <div class="bg-teal-50 text-teal-700 font-black text-2xl py-2 rounded-xl border border-teal-200 mt-1 flex justify-center gap-1">
-                                    Rp ${this.formatRupiah(parseInt(this.nominal))} <span class="text-orange-500 underline underline-offset-4">${this.uniqueCode}</span>
+                                <div class="bg-teal-50 text-teal-700 font-black text-3xl py-3 rounded-xl border border-teal-200 mt-1 flex justify-center items-baseline gap-1 shadow-sm">
+                                    <span class="text-xl">Rp</span> ${this.formatRupiah(parseInt(this.nominal))}<span class="text-orange-500 underline underline-offset-4 decoration-2">${this.uniqueCode}</span>
                                 </div>
                             `;
                         }
@@ -523,12 +571,10 @@
                         Swal.fire({
                             title: '<span class="text-slate-800 font-extrabold text-2xl">Menunggu Pembayaran</span>',
                             html: resultHtml,
-                            icon: 'info',
                             confirmButtonColor: '#0d9488',
                             confirmButtonText: 'Saya Sudah Transfer',
                             customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-teal-500/30' }
                         }).then(() => {
-                            // Reset state setelah pop up ditutup
                             this.nominal = '';
                             this.formattedNominal = '';
                             this.selectedMethod = null;
@@ -539,6 +585,5 @@
             }
         }
     </script>
-
 </body>
 </html>

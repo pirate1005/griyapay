@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi OTP - Griyapay</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .bg-pattern {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+
+        /* Sembunyikan spinner input number */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+
+<body class="bg-pattern text-slate-800 antialiased min-h-screen flex items-center justify-center p-4" x-data="otpData()">
+
+    <div class="max-w-md w-full bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-8 sm:p-12 relative z-10 animate-fade-in">
+        
+        <div class="text-center mb-8">
+            <div class="inline-block p-1 bg-white rounded-2xl shadow-sm mb-6">
+                <img src="../assets/logo1.png" alt="Logo" class="w-16 h-16 object-contain" onerror="this.outerHTML='<div class=\'w-16 h-16 bg-teal-600 rounded-xl flex items-center justify-center text-white font-black text-3xl\'>G</div>'">
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mb-2">Verifikasi OTP</h2>
+            <p class="text-slate-500 text-sm leading-relaxed">
+                Kode 6 digit telah dikirim ke nomor WhatsApp Anda. Silakan masukkan di bawah ini.
+            </p>
+        </div>
+
+        <form @submit.prevent="verifyOTP">
+            <div class="flex justify-between gap-2 mb-8">
+                <template x-for="(digit, index) in otp" :key="index">
+                    <input
+                        type="number"
+                        maxlength="1"
+                        :id="'otp-' + index"
+                        x-model="otp[index]"
+                        @input="handleInput($event, index)"
+                        @keydown.backspace="handleBackspace($event, index)"
+                        class="w-full h-14 sm:h-16 text-center text-2xl font-black bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10 focus:outline-none transition-all text-slate-800"
+                        required
+                    >
+                </template>
+            </div>
+
+            <button 
+                type="submit" 
+                :disabled="isLoading"
+                class="w-full bg-teal-600 text-white font-black text-lg py-4 rounded-2xl hover:bg-teal-700 transition-all active:scale-[0.98] disabled:opacity-70 flex justify-center items-center gap-3 shadow-xl shadow-teal-600/20"
+            >
+                <span x-show="!isLoading">Konfirmasi OTP</span>
+                <span x-show="isLoading" style="display: none;">Memeriksa...</span>
+                
+                <svg x-show="isLoading" style="display: none;" class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+        </form>
+
+        <div class="mt-10 text-center">
+            <p class="text-sm text-slate-500 mb-2">Belum menerima kode?</p>
+            <div x-show="timer > 0">
+                <p class="text-sm font-bold text-teal-600 flex items-center justify-center gap-2">
+                    <span class="w-2 h-2 bg-teal-500 rounded-full animate-ping"></span>
+                    Kirim ulang dalam <span class="font-mono" x-text="timer + 's'"></span>
+                </p>
+            </div>
+            <button 
+                x-show="timer === 0"
+                @click="resendOTP"
+                class="text-sm font-black text-teal-600 hover:text-teal-800 underline transition-colors"
+                style="display: none;"
+            >
+                Kirim Ulang Kode Sekarang
+            </button>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-slate-100 flex justify-center">
+            <a href="login.html" class="text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Ganti Nomor HP
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function otpData() {
+            return {
+                otp: ['', '', '', '', '', ''],
+                timer: 59,
+                isLoading: false,
+
+                init() {
+                    // Jalankan timer saat halaman dimuat
+                    this.startTimer();
+                    // Fokus ke input pertama
+                    document.getElementById('otp-0').focus();
+                },
+
+                startTimer() {
+                    const countdown = setInterval(() => {
+                        if (this.timer > 0) {
+                            this.timer--;
+                        } else {
+                            clearInterval(countdown);
+                        }
+                    }, 1000);
+                },
+
+                handleInput(e, index) {
+                    const val = e.target.value;
+                    // Hanya izinkan 1 angka
+                    if (val.length > 1) {
+                        this.otp[index] = val.slice(0, 1);
+                    }
+                    
+                    // Pindah fokus ke depan jika sudah diisi
+                    if (this.otp[index] !== '' && index < 5) {
+                        setTimeout(() => {
+                            document.getElementById('otp-' + (index + 1)).focus();
+                        }, 10);
+                    }
+                },
+
+                handleBackspace(e, index) {
+                    // Pindah fokus ke belakang jika dihapus
+                    if (this.otp[index] === '' && index > 0) {
+                        setTimeout(() => {
+                            document.getElementById('otp-' + (index - 1)).focus();
+                        }, 10);
+                    }
+                },
+
+                resendOTP() {
+                    this.timer = 59;
+                    this.startTimer();
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Kode baru telah dikirim!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                },
+
+                verifyOTP() {
+                    const code = this.otp.join('');
+                    if (code.length < 6) return;
+
+                    this.isLoading = true;
+
+                    // Simulasi Verifikasi (Ganti dengan AJAX/Fetch aslinya nanti)
+                    setTimeout(() => {
+                        this.isLoading = false;
+                        
+                        if (code === '123456') { // Kode dummy untuk test
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Verifikasi Berhasil!',
+                                text: 'Selamat datang kembali.',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                customClass: { popup: 'rounded-[2rem]' }
+                            }).then(() => {
+                                window.location.href = 'index.html'; 
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Kode OTP Salah',
+                                text: 'Kode yang Anda masukkan tidak valid.',
+                                confirmButtonColor: '#0d9488',
+                                customClass: { popup: 'rounded-[2rem]' }
+                            });
+                            // Reset OTP
+                            this.otp = ['', '', '', '', '', ''];
+                            document.getElementById('otp-0').focus();
+                        }
+                    }, 2000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

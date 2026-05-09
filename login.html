@@ -7,9 +7,7 @@
     <title>Masuk - Griyapay</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -27,51 +25,40 @@
         }
 
         .swal2-popup { font-family: 'Plus Jakarta Sans', sans-serif !important; }
-
-        /* Mencegah input number menampilkan panah atas/bawah */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
+        
+        /* Animasi Kustom */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
     </style>
 </head>
 
-<body class="bg-pattern text-slate-800 antialiased min-h-screen flex items-center justify-center p-4 md:p-6" x-data="loginLogic()">
+<body class="bg-pattern text-slate-800 antialiased min-h-screen flex items-center justify-center p-4 md:p-6" x-data="loginData()">
 
-    <a href="index.html" class="absolute top-6 left-6 flex items-center gap-2 text-slate-500 hover:text-teal-600 transition font-medium bg-white/80 backdrop-blur px-4 py-2 rounded-full shadow-sm border border-slate-100 z-20">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-        Kembali
-    </a>
-
-    <div class="max-w-5xl w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10">
+    <div class="max-w-5xl w-full bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row relative z-10 animate-fade-in">
         
         <div class="hidden md:flex md:w-1/2 bg-teal-600 relative p-12 flex-col justify-between overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-teal-500 rounded-full blur-[60px] opacity-50 -translate-y-1/2 translate-x-1/2"></div>
             <div class="absolute bottom-0 left-0 w-80 h-80 bg-teal-800 rounded-full blur-[80px] opacity-40 translate-y-1/3 -translate-x-1/3"></div>
 
             <div class="relative z-10">
-                <a href="index.html" class="flex items-center gap-3 group inline-flex mb-12">
-                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-teal-600 font-black text-2xl shadow-lg">G</div>
+                <div class="flex items-center gap-3 mb-12">
+                    <img src="assets/logo1.png" alt="Logo" class="w-12 h-12 object-contain bg-white rounded-xl p-1 shadow-lg" onerror="this.outerHTML='<div class=\'w-12 h-12 bg-white rounded-xl flex items-center justify-center text-teal-600 font-black text-2xl shadow-lg\'>G</div>'">
                     <div class="text-3xl font-extrabold tracking-tight text-white">
-                        Griya<span class="text-teal-200">pay</span>
+                        GRIYA<span class="text-teal-200">PAY.ID</span>
                     </div>
-                </a>
-
-                <h1 class="text-4xl font-black text-white leading-tight mb-6">
-                    Selamat Datang Kembali, Juragan!
-                </h1>
+                </div>
+                <h1 class="text-4xl font-black text-white leading-tight mb-6">Akses Khusus<br>Member Griyapay.</h1>
                 <p class="text-teal-100 text-lg leading-relaxed">
-                    Masuk ke akun Anda untuk melanjutkan transaksi, cek komisi, dan nikmati promo PPOB termurah hari ini.
+                    Nikmati kemudahan transaksi digital, manajemen PPOB, dan laporan keuangan dalam satu platform yang aman dan responsif.
                 </p>
             </div>
 
             <div class="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-3xl mt-12">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center text-white text-xl">🛡️</div>
+                    <div class="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center text-white text-xl shadow-lg">🛡️</div>
                     <div>
-                        <h4 class="text-white font-bold">Transaksi Aman 100%</h4>
-                        <p class="text-teal-100 text-sm">Dilindungi enkripsi berlapis.</p>
+                        <h4 class="text-white font-bold">Keamanan Ganda</h4>
+                        <p class="text-teal-100 text-sm">Dilengkapi Verifikasi OTP & Enkripsi PIN.</p>
                     </div>
                 </div>
             </div>
@@ -79,93 +66,125 @@
 
         <div class="w-full md:w-1/2 p-8 sm:p-12 md:p-16 bg-white flex flex-col justify-center">
             
-            <div class="mb-10 text-center md:text-left">
-                <div class="md:hidden flex items-center justify-center gap-2 mb-6">
-                    <div class="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">G</div>
-                    <div class="text-2xl font-extrabold tracking-tight text-slate-800">
-                        Griya<span class="text-teal-500">pay</span>
-                    </div>
-                </div>
-
-                <h2 class="text-3xl font-black text-slate-900 mb-2">Masuk Akun</h2>
-                <p class="text-slate-500">Silakan masukkan nomor HP dan PIN Anda.</p>
+            <div class="flex items-center justify-center gap-2 mb-10 md:hidden">
+                 <img src="../assets/logo1.png" alt="Logo" class="w-10 h-10 object-contain bg-teal-600 rounded-xl p-1 shadow-md" onerror="this.outerHTML='<div class=\'w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md\'>G</div>'">
+                 <div class="text-2xl font-extrabold tracking-tight text-teal-700">
+                     Griya<span class="text-teal-500">pay</span>
+                 </div>
             </div>
 
-            <form action="#" method="POST" @submit.prevent="submitForm($event)">
+            <div class="mb-10 text-center md:text-left">
+                <h2 class="text-3xl font-black text-slate-900 mb-2">Selamat Datang</h2>
+                <p class="text-slate-500 font-medium">Silakan masuk menggunakan nomor HP dan PIN terdaftar.</p>
+            </div>
+
+            <form @submit.prevent="processLogin">
                 
                 <div class="mb-6">
-                    <label for="phone" class="block text-sm font-bold text-slate-700 mb-2">Nomor Handphone (WhatsApp)</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <span class="text-slate-400 font-bold">+62</span>
-                        </div>
-                        <input type="tel" id="phone" x-model="phone" placeholder="81234567890" inputmode="numeric" required
-                            class="w-full pl-14 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 font-medium focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:text-slate-400">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Nomor Handphone</label>
+                    <div class="relative group">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 font-bold group-focus-within:text-teal-600 transition-colors">+62</span>
+                        <input 
+                            type="tel" 
+                            x-model="formData.phone" 
+                            @input="formatPhone"
+                            placeholder="81234567890" 
+                            class="w-full pl-14 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-bold text-slate-800"
+                            required
+                        >
                     </div>
                 </div>
 
                 <div class="mb-6">
-                    <label for="pin" class="block text-sm font-bold text-slate-700 mb-2">PIN Keamanan</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        </div>
-                        
-                        <input :type="showPin ? 'text' : 'password'" id="pin" x-model="pin" placeholder="••••••" maxlength="6" inputmode="numeric" required
-                            class="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 font-black tracking-widest focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400">
-                        
-                        <button type="button" @click="showPin = !showPin" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-teal-600 transition focus:outline-none">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">PIN Keamanan</label>
+                    <div class="relative group">
+                        <input 
+                            :type="showPin ? 'text' : 'password'" 
+                            x-model="formData.pin" 
+                            @input="formatPin"
+                            placeholder="••••••" 
+                            maxlength="6"
+                            class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-black tracking-[0.5em] text-center md:text-left text-slate-800"
+                            required
+                        >
+                        <button type="button" @click="showPin = !showPin" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-teal-600 transition-colors">
                             <svg x-show="!showPin" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            <svg x-show="showPin" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                            <svg x-show="showPin" style="display: none;" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
                         </button>
                     </div>
                 </div>
 
-                <div class="mb-4 flex justify-center">
+                <div class="mb-8 flex justify-center md:justify-start transform scale-90 sm:scale-100 origin-center md:origin-left">
                     <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
                 </div>
 
-                <div class="flex justify-end mb-8">
-                    <a href="lupa-pin.html" class="text-sm font-bold text-teal-600 hover:text-teal-800 transition">Lupa PIN?</a>
+                <button 
+                    type="submit" 
+                    :disabled="isLoading" 
+                    class="w-full bg-teal-600 text-white font-black text-lg py-4 rounded-2xl hover:bg-teal-700 transition-all active:scale-[0.98] disabled:opacity-70 flex justify-center items-center gap-3 shadow-xl shadow-teal-600/20 mb-6"
+                >
+                    <span x-show="!isLoading">Verifikasi Akun</span>
+                    <span x-show="isLoading" style="display: none;">Memeriksa...</span>
+                    
+                    <svg x-show="!isLoading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    
+                    <svg x-show="isLoading" style="display: none;" class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+
+                <div class="text-center">
+                    <p class="text-sm text-slate-600 font-medium">
+                        Belum punya akun? 
+                        <a href="register.html" class="text-teal-600 font-bold hover:text-teal-700 hover:underline transition-colors">Daftar sekarang</a>
+                    </p>
                 </div>
 
-                <button type="submit" :disabled="isLoading" class="w-full bg-teal-600 text-white font-bold text-lg py-4 rounded-2xl hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-500/30 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 disabled:bg-teal-400 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex justify-center items-center gap-2">
-                    <span x-show="!isLoading">Masuk Sekarang</span>
-                    <svg x-show="isLoading" class="animate-spin h-5 w-5 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <span x-show="isLoading" style="display: none;">Memproses...</span>
-                </button>
             </form>
 
-            <p class="text-center text-slate-500 mt-8 text-sm">
-                Belum punya akun Griyapay? <br class="sm:hidden">
-                <a href="register.html" class="text-teal-600 font-bold hover:underline transition">Daftar Gratis Disini</a>
-            </p>
-
-            <div class="mt-8 pt-8 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-400">
-                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                Koneksi aman & terenkripsi (SSL)
+            <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    Sistem Login Terenkripsi SSL 256-bit
+                </p>
             </div>
-
+            
         </div>
     </div>
 
     <script>
-        function loginLogic() {
+        function loginData() {
             return {
-                phone: '',
-                pin: '',
                 showPin: false,
                 isLoading: false,
+                formData: {
+                    phone: '',
+                    pin: ''
+                },
 
-                submitForm(event) {
-                    // 1. Validasi Google reCAPTCHA
+                formatPhone(e) {
+                    this.formData.phone = e.target.value.replace(/\D/g, '');
+                },
+                formatPin(e) {
+                    this.formData.pin = e.target.value.replace(/\D/g, '');
+                },
+
+                processLogin() {
+                    if (this.formData.phone.length < 10) {
+                        Swal.fire({ icon: 'warning', title: 'Nomor Tidak Valid', text: 'Periksa kembali nomor HP yang Anda masukkan.', confirmButtonColor: '#0d9488', customClass: { popup: 'rounded-[2rem]' }});
+                        return;
+                    }
+                    if (this.formData.pin.length !== 6) {
+                        Swal.fire({ icon: 'warning', title: 'PIN Tidak Valid', text: 'PIN Keamanan harus berjumlah 6 digit.', confirmButtonColor: '#0d9488', customClass: { popup: 'rounded-[2rem]' }});
+                        return;
+                    }
+
                     const recaptchaResponse = grecaptcha.getResponse();
-                    
-                    if (recaptchaResponse.length === 0) {
-                        // Jika belum dicentang
+                    if(recaptchaResponse.length === 0) {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Verifikasi Captcha!',
+                            title: 'Verifikasi Keamanan!',
                             text: 'Silakan centang kotak "I\'m not a robot" terlebih dahulu untuk melanjutkan.',
                             confirmButtonColor: '#0d9488',
                             customClass: { 
@@ -173,25 +192,24 @@
                                 confirmButton: 'rounded-xl px-8 py-3 font-bold shadow-md shadow-teal-500/30' 
                             }
                         });
-                        return; // Hentikan proses login
+                        return;
                     }
 
-                    // 2. Lanjutkan Proses Login Jika Captcha Sudah Dicentang
                     this.isLoading = true;
                     
-                    // Simulasi request ke backend API
                     setTimeout(() => {
                         this.isLoading = false;
                         
                         Swal.fire({
                             icon: 'success',
-                            title: 'Login Berhasil!',
-                            text: 'Selamat datang di Dashboard Griyapay.',
+                            title: 'Kredensial Sesuai!',
+                            text: 'Mengarahkan ke halaman verifikasi OTP...',
                             showConfirmButton: false,
                             timer: 1500,
                             customClass: { popup: 'rounded-[2rem]' }
                         }).then(() => {
-                            window.location.href = 'index.html'; 
+                            // MENGUBAH TUJUAN REDIRECT KE otp.html
+                            window.location.href = 'otp.html'; 
                         });
                         
                     }, 1500);
