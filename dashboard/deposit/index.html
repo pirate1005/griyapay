@@ -554,6 +554,13 @@
                                 </div>
                             `;
                         } else {
+                            // Logika perbaikan pemotongan nominal dan kode unik
+                            let formattedTotal = this.formatRupiah(this.totalBayar); 
+                            let kodeUnikStr = this.uniqueCode.toString().padStart(3, '0');
+                            
+                            // Ambil teks format Rupiah KECUALI 3 digit terakhir
+                            let bagianDepan = formattedTotal.slice(0, -3); 
+                            
                             resultHtml = `
                                 <p class="text-sm text-slate-500 mb-4">Silakan transfer HANYA ke rekening <b>${bankName}</b> berikut:</p>
                                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-left shadow-inner">
@@ -568,19 +575,41 @@
                                     <p class="text-[11px] text-yellow-700">Pastikan nominal transfer sama persis hingga 3 digit terakhir (kode unik) agar saldo otomatis masuk.</p>
                                 </div>
                                 <p class="text-xs text-slate-500">Total Transfer (Wajib Sesuai):</p>
-                                <div class="bg-teal-50 text-teal-700 font-black text-3xl py-3 rounded-xl border border-teal-200 mt-1 flex justify-center items-baseline gap-1 shadow-sm">
-                                    <span class="text-xl">Rp</span> ${this.formatRupiah(parseInt(this.nominal))}<span class="text-orange-500 underline underline-offset-4 decoration-2">${this.uniqueCode}</span>
+                                <div class="bg-teal-50 text-teal-700 font-black text-3xl py-3 rounded-xl border border-teal-200 mt-1 flex justify-center items-baseline shadow-sm">
+                                    <span class="text-xl mr-1">Rp</span> 
+                                    <span>${bagianDepan}</span><span class="text-orange-500 underline underline-offset-4 decoration-2">${kodeUnikStr}</span>
                                 </div>
                             `;
                         }
 
+                        // Konfigurasi SweetAlert dengan Tombol Batal
                         Swal.fire({
                             title: '<span class="text-slate-800 font-extrabold text-2xl">Menunggu Pembayaran</span>',
                             html: resultHtml,
+                            showCancelButton: true, // Tampilkan tombol batal
                             confirmButtonColor: '#0d9488',
+                            cancelButtonColor: '#ef4444', // Warna tombol batal
                             confirmButtonText: 'Saya Sudah Transfer',
-                            customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-10 py-3 font-bold shadow-md shadow-teal-500/30' }
-                        }).then(() => {
+                            cancelButtonText: 'Batalkan', // Teks tombol batal
+                            reverseButtons: true, // Posisi "Batal" di kiri, "Konfirmasi" di kanan
+                            customClass: { 
+                                popup: 'rounded-[2rem]', 
+                                confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md shadow-teal-500/30',
+                                cancelButton: 'rounded-xl px-6 py-3 font-bold'
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika "Saya Sudah Transfer" diklik
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pesanan Diterima',
+                                    text: 'Sistem sedang mengecek pembayaran Anda otomatis.',
+                                    confirmButtonColor: '#0d9488',
+                                    customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-8 py-2 font-bold' }
+                                });
+                            }
+                            
+                            // Reset form (Terjadi baik saat Konfirmasi maupun Batal)
                             this.nominal = '';
                             this.formattedNominal = '';
                             this.selectedMethod = null;
