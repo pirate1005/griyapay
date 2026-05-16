@@ -382,64 +382,142 @@
                             
                             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-200 gap-3">
                                 <div>
-                                    <h2 class="text-lg font-bold text-slate-800">Verifikasi Identitas (KYC)</h2>
-                                    <p class="text-sm text-slate-500">Data identitas diri sesuai dokumen resmi.</p>
+                                    <h2 class="text-lg font-bold text-slate-800">Formulir Verifikasi Identitas (KYC)</h2>
+                                    <p class="text-sm text-slate-500">Lengkapi data di bawah ini sesuai dengan dokumen KTP asli Anda.</p>
                                 </div>
-                                <span class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-green-200">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Akun Terverifikasi
+                                <span class="bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-amber-200">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                                    Belum Terverifikasi
                                 </span>
                             </div>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                
-                                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-                                    <h3 class="font-bold text-slate-800 mb-4 border-l-4 border-teal-500 pl-2">Data Pribadi</h3>
-                                    <div class="space-y-4">
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">NIK</span><span class="text-sm font-bold text-slate-700">3201011205900001</span></div>
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Nama Sesuai KTP</span><span class="text-sm font-bold text-slate-700">Slamet Riyadi</span></div>
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Nama Ibu Kandung</span><span class="text-sm font-bold text-slate-700">Siti Aminah</span></div>
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Tempat, Tgl Lahir</span><span class="text-sm font-bold text-slate-700">Bogor, 12 Mei 1990</span></div>
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Jenis Kelamin</span><span class="text-sm font-bold text-slate-700">Laki-Laki</span></div>
-                                            <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Kewarganegaraan</span><span class="text-sm font-bold text-slate-700">WNI</span></div>
+                            <form @submit.prevent="simpanKYC()" class="space-y-6">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    
+                                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-4">
+                                        <h3 class="font-bold text-slate-800 border-l-4 border-teal-500 pl-2 text-sm uppercase tracking-wider">Data Pribadi</h3>
+                                        
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">NIK (Nomor Induk Kependudukan)</label>
+                                            <input type="text" x-model="kyc.nik" required maxlength="16" placeholder="Masukkan 16 digit NIK" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
                                         </div>
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Pekerjaan</span><span class="text-sm font-bold text-slate-700">Wiraswasta</span></div>
+
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Nama Sesuai KTP</label>
+                                            <input type="text" x-model="kyc.nama" required placeholder="Masukkan nama lengkap" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                        </div>
+
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Nama Ibu Kandung</label>
+                                            <input type="text" x-model="kyc.ibuKandung" required placeholder="Masukkan nama ibu kandung" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Tempat Lahir</label>
+                                                <input type="text" x-model="kyc.tempatLahir" required placeholder="Kota lahir" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                            </div>
+                                            <div>
+                                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Tanggal Lahir</label>
+                                                <input type="date" x-model="kyc.tglLahir" required class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Jenis Kelamin</label>
+                                                <select x-model="kyc.jenisKelamin" required class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition cursor-pointer">
+                                                    <option value="" disabled selected>Pilih</option>
+                                                    <option value="Laki-Laki">Laki-Laki</option>
+                                                    <option value="Perempuan">Perempuan</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Kewarganegaraan</label>
+                                                <select x-model="kyc.kewarganegaraan" required class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition cursor-pointer">
+                                                    <option value="WNI">WNI</option>
+                                                    <option value="WNA">WNA</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Pekerjaan</label>
+                                            <input type="text" x-model="kyc.pekerjaan" required placeholder="Contoh: Wiraswasta" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-4">
+                                        <h3 class="font-bold text-slate-800 border-l-4 border-teal-500 pl-2 text-sm uppercase tracking-wider">Data Alamat</h3>
+                                        
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Provinsi</label>
+                                            <input type="text" x-model="kyc.provinsi" required placeholder="Masukkan provinsi" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                        </div>
+
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Kabupaten / Kota</label>
+                                            <input type="text" x-model="kyc.kota" required placeholder="Masukkan kabupaten/kota" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Kecamatan</label>
+                                                <input type="text" x-model="kyc.kecamatan" required placeholder="Kecamatan" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                            </div>
+                                            <div>
+                                                <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Kelurahan / Desa</label>
+                                                <input type="text" x-model="kyc.kelurahan" required placeholder="Kelurahan" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Alamat Lengkap (RT/RW, Nama Jalan, No. Rumah)</label>
+                                            <textarea rows="3" x-model="kyc.alamat" required placeholder="Tulis alamat lengkap Anda..." class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:border-teal-500 transition resize-none"></textarea>
+                                        </div>
+
+                                        <div>
+                                            <label class="text-[11px] font-bold text-slate-500 uppercase block mb-1">Kode Pos</label>
+                                            <input type="text" x-model="kyc.kodePos" required maxlength="5" placeholder="Kode pos" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:outline-none focus:border-teal-500 transition">
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-                                    <h3 class="font-bold text-slate-800 mb-4 border-l-4 border-teal-500 pl-2">Data Alamat</h3>
-                                    <div class="space-y-4">
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Alamat Lengkap</span><span class="text-sm font-bold text-slate-700 leading-snug">Jl. Mayor Oking Jaya Atmaja No. 12, RT 01 RW 02</span></div>
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Provinsi</span><span class="text-sm font-bold text-slate-700">Jawa Barat</span></div>
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Kab / Kota</span><span class="text-sm font-bold text-slate-700">Kab. Bogor</span></div>
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Kecamatan</span><span class="text-sm font-bold text-slate-700">Cibinong</span></div>
-                                            <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Kelurahan</span><span class="text-sm font-bold text-slate-700">Ciriung</span></div>
+                                    <h3 class="font-bold text-slate-800 mb-4 border-l-4 border-teal-500 pl-2 text-sm uppercase tracking-wider">Dokumen Verifikasi</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        
+                                        <div class="border-2 border-dashed border-slate-300 rounded-2xl bg-white p-4 text-center hover:border-teal-500 transition relative">
+                                            <input type="file" accept="image/*" @change="handleKtpUpload($event)" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                            <div class="py-4">
+                                                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+                                                </div>
+                                                <p class="text-xs font-bold text-slate-700">Pilih Foto KTP</p>
+                                                <p class="text-[10px] text-slate-400 mt-1">Format JPG, PNG (Maks. 2MB)</p>
+                                                <div x-show="ktpFile" class="mt-3 text-[11px] bg-teal-50 text-teal-700 font-bold px-2 py-1 rounded border border-teal-100 inline-block" x-text="ktpFile"></div>
+                                            </div>
                                         </div>
-                                        <div class="flex flex-col"><span class="text-[10px] font-bold text-slate-400 uppercase">Kode Pos</span><span class="text-sm font-bold text-slate-700">16918</span></div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="mt-6 bg-slate-50 border border-slate-200 rounded-2xl p-6">
-                                <h3 class="font-bold text-slate-800 mb-4 border-l-4 border-teal-500 pl-2">Dokumen Verifikasi</h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div class="border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
-                                        <div class="bg-slate-200 h-40 rounded-lg flex items-center justify-center mb-3">
-                                            <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                                        <div class="border-2 border-dashed border-slate-300 rounded-2xl bg-white p-4 text-center hover:border-teal-500 transition relative">
+                                            <input type="file" accept="image/*" @change="handleSelfieUpload($event)" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                            <div class="py-4">
+                                                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                </div>
+                                                <p class="text-xs font-bold text-slate-700">Pilih Foto Selfie + KTP</p>
+                                                <p class="text-[10px] text-slate-400 mt-1">Format JPG, PNG (Maks. 2MB)</p>
+                                                <div x-show="selfieFile" class="mt-3 text-[11px] bg-teal-50 text-teal-700 font-bold px-2 py-1 rounded border border-teal-100 inline-block" x-text="selfieFile"></div>
+                                            </div>
                                         </div>
-                                        <p class="text-sm font-bold text-center text-slate-700">Foto KTP</p>
-                                    </div>
-                                    <div class="border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
-                                        <div class="bg-slate-200 h-40 rounded-lg flex items-center justify-center mb-3">
-                                            <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                        </div>
-                                        <p class="text-sm font-bold text-center text-slate-700">Selfie dengan KTP</p>
+
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="flex justify-end pt-4 border-t border-slate-100">
+                                    <button type="submit" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-black py-3 px-12 rounded-xl text-sm shadow-xl transition-all active:scale-95">Kirim Berkas Verifikasi</button>
+                                </div>
+                            </form>
 
                         </div>
                     </div>
@@ -774,6 +852,62 @@
                     'THERMAL_58': 'THERMAL POS 58mm. Kertas gulung (roll) standar untuk printer bluetooth portabel ukuran lebar 58mm.',
                     'POS_80_150': 'PRINTER POS 80 x 150 mm. Cocok untuk struk panjang menggunakan printer POS khusus (Landscape / Portrait).'
                 },
+
+                // --- KODE YANG DITAMBAHKAN ---
+                kyc: {
+                    nik: '',
+                    nama: '',
+                    ibuKandung: '',
+                    tempatLahir: '',
+                    tglLahir: '',
+                    jenisKelamin: '',
+                    kewarganegaraan: 'WNI',
+                    pekerjaan: '',
+                    provinsi: '',
+                    kota: '',
+                    kecamatan: '',
+                    kelurahan: '',
+                    alamat: '',
+                    kodePos: ''
+                },
+                ktpFile: null,
+                selfieFile: null,
+
+                handleKtpUpload(event) {
+                    const file = event.target.files[0];
+                    if (file) this.ktpFile = file.name;
+                },
+
+                handleSelfieUpload(event) {
+                    const file = event.target.files[0];
+                    if (file) this.selfieFile = file.name;
+                },
+
+                simpanKYC() {
+                    Swal.fire({
+                        title: 'Mengirim Berkas KYC...',
+                        text: 'Mohon tunggu sebentar data sedang dienkripsi.',
+                        allowOutsideClick: false,
+                        didOpen: () => { Swal.showLoading(); },
+                        customClass: { popup: 'rounded-[2rem]' }
+                    });
+
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Berhasil Dikirim!',
+                            text: 'Berkas pendaftaran KYC Anda telah diterima dan masuk antrean verifikasi tim Griyapay.',
+                            confirmButtonColor: '#0d9488',
+                            customClass: { popup: 'rounded-[2rem]', confirmButton: 'rounded-xl px-6 py-2 font-bold' }
+                        });
+                        
+                        // Reset form setelah sukses
+                        this.kyc = { kewarganegaraan: 'WNI' };
+                        this.ktpFile = null;
+                        this.selfieFile = null;
+                    }, 2000);
+                },
+                // --- SELESAI KODE TAMBAHAN ---
 
                 simpanProfil() {
                     Swal.fire({
