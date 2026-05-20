@@ -323,6 +323,7 @@
                 <div class="flex gap-2 mb-8 overflow-x-auto hide-scroll pb-2 border-b border-slate-200">
                     <button @click="activeTab = 'profil'" :class="activeTab === 'profil' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Profil Saya</button>
                     <button @click="activeTab = 'kyc'" :class="activeTab === 'kyc' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Verifikasi KYC</button>
+                    <button @click="activeTab = 'plafond'" :class="activeTab === 'plafond' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Pengajuan Plafond</button>
                     <button @click="activeTab = 'keamanan'" :class="activeTab === 'keamanan' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Keamanan</button>
                     <button @click="activeTab = 'notifikasi'" :class="activeTab === 'notifikasi' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Notifikasi</button>
                     <button @click="activeTab = 'sistem'" :class="activeTab === 'sistem' ? 'border-teal-600 text-teal-700 bg-teal-50' : 'border-transparent text-slate-500 hover:text-teal-600 hover:bg-slate-50'" class="px-6 py-3 border-b-2 font-bold text-sm transition whitespace-nowrap">Sistem & Admin</button>
@@ -519,6 +520,83 @@
                                 </div>
                             </form>
 
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'plafond'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" style="display: none;" class="p-6 md:p-8">
+                        <div class="max-w-4xl mx-auto">
+                            
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-200 gap-3">
+                                <div>
+                                    <h2 class="text-lg font-bold text-slate-800">Form Pengajuan Plafond Kredit</h2>
+                                    <p class="text-sm text-slate-500">Isi data historis transaksi Anda untuk mengajukan plafond tambahan.</p>
+                                </div>
+                                <span class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-blue-200">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Pengajuan Baru
+                                </span>
+                            </div>
+
+                            <form class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">Kode Loket</label>
+                                        <div class="relative">
+                                            <input type="text" value="LKT-2309482" readonly class="w-full bg-slate-100 border border-slate-200 text-slate-500 text-sm font-bold rounded-xl px-4 py-3 cursor-not-allowed outline-none">
+                                            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-slate-400 mt-1">*Kode loket terisi otomatis oleh sistem</p>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">Lama Bergabung (Bulan/Tahun)</label>
+                                        <input type="text" placeholder="Contoh: 2 Tahun 3 Bulan" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">Jumlah Lembar TRX PLN (Rata-rata / Bulan)</label>
+                                        <div class="relative">
+                                            <input type="number" placeholder="Contoh: 1500" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all">
+                                            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">
+                                                Lembar
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">Jumlah Omset Harian (Rp)</label>
+                                        <div class="relative">
+                                            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">
+                                                Rp
+                                            </div>
+                                            <input type="text" placeholder="Contoh: 5.000.000" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm font-bold rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="bg-amber-50 rounded-xl p-4 border border-amber-200 flex items-start gap-3">
+                                    <div class="text-amber-500 mt-0.5 shrink-0">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-amber-800">Catatan Penting</h4>
+                                        <p class="text-xs text-amber-700 mt-1 leading-relaxed">
+                                            Pastikan data yang diinputkan sesuai dengan kondisi di lapangan. Pihak manajemen Griyapay berhak melakukan penyesuaian atau penolakan pengajuan plafond jika data yang dilampirkan tidak valid/fiktif.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="pt-6 border-t border-slate-200 flex justify-end">
+                                    <button type="button" onclick="submitPlafond()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-teal-500/30 transition-all active:scale-95 flex items-center gap-2">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    Kirim Pengajuan
+</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
@@ -817,6 +895,51 @@
     </main>
 
     <script>
+        function submitPlafond() {
+            Swal.fire({
+                title: 'Kirim Pengajuan Plafond?',
+                text: 'Apakah Anda yakin data historis transaksi yang diisi sudah benar dan valid?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0d9488', // Warna teal-600
+                cancelButtonColor: '#cbd5e1',
+                confirmButtonText: 'Ya, Kirim Pengajuan',
+                cancelButtonText: 'Batal',
+                customClass: { 
+                    popup: 'rounded-[2rem]', 
+                    confirmButton: 'rounded-xl px-6 py-2.5 font-bold', 
+                    cancelButton: 'rounded-xl px-6 py-2.5 font-bold text-slate-700' 
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Tampilkan loading sebentar (opsional agar terlihat real)
+                    Swal.fire({
+                        title: 'Memproses Pengajuan...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Simulasi delay proses lalu tampilkan pesan sukses
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pengajuan Berhasil!',
+                            text: 'Pengajuan penambahan plafond Anda telah dikirim dan sedang dalam tahap review oleh Admin.',
+                            confirmButtonColor: '#0d9488',
+                            customClass: { 
+                                popup: 'rounded-[2rem]',
+                                confirmButton: 'rounded-xl px-8 py-2.5 font-bold'
+                            }
+                        }).then(() => {
+                            // Opsional: Anda bisa mereset isi form di sini jika perlu
+                            // document.querySelector("form").reset();
+                        });
+                    }, 1200);
+                }
+            });
+        }
         function settingsLogic() {
             return {
                 activeTab: 'sistem', // Default tab sistem untuk mempermudah testing saat buka halaman
